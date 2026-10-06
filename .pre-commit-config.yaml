@@ -1,0 +1,14 @@
+# Hooks use the development environment installed via pip install -e '.[dev]'.
+repos:
+  - repo: local
+    hooks:
+      - id: ruff-check
+        name: Ruff lint
+        entry: ruff check
+        language: system
+        types_or: [python, pyi]
+      - id: ruff-format
+        name: Ruff format check
+        entry: ruff format --check
+        language: system
+        types_or: [python, pyi]

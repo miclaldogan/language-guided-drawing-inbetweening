@@ -1,0 +1,2 @@
+# Runtime dependencies are intentionally empty until needed.
+# Package metadata and development tooling are defined in ../pyproject.toml.
