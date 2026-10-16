@@ -197,3 +197,7 @@ No blanket dataset license is assigned. The source-code license is also undecide
 ## Academic Context
 
 This repository belongs to a university Artificial Intelligence / Engineering Design course project and may later evolve into a research project. It makes no publication claims. The [scope](docs/PROJECT_SCOPE.md) and [10-week roadmap](docs/ROADMAP.md) distinguish the initial course deliverable from longer-term research targets.
+
+## Status
+
+The repository is currently at the project-foundation stage: structure, tooling, CI, and planning documents are in place; no models, datasets, or training code exist yet. Progress is tracked in the [backlog](docs/BACKLOG.md).
