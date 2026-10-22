@@ -1,0 +1,42 @@
+@startuml sd-04a-job-submission
+!include ../_style/cue.iuml
+skinparam sequenceArrowThickness 1.2
+autonumber "<b>00"
+title SD-4a  Animation generation — submission (synchronous, short) (FR-06, FR-10, NFR-03)
+participant "React SPA" as SPA #E3F0FB
+participant "FastAPI" as API #E6F4EA
+participant "Media store" as MS #FFF4DB
+database "PostgreSQL" as DB #FFF4DB
+
+SPA -> API : POST /jobs {start_asset_id, end_asset_id,\ncommand?, plan?, idempotency_key}
+activate API
+API -> API : session; if plan: validate schema, require command;\nif command: require approved plan; draw random seed
+API -> API : make thumbnail from start drawing (thread pool)
+API -> MS : put(thumbnail)
+note right : thumbnail failure is tolerated:\njob is created without it (decision D-13)
+API -> DB : BEGIN
+API -> DB : SELECT pg_advisory_xact_lock(owner, idempotency_key)
+API -> DB : INSERT media_asset(thumbnail)
+API -> DB : INSERT animation_job(status=queued, ...)\nON CONFLICT (owner_id, idempotency_key) DO NOTHING RETURNING id
+alt composite FK / unique violation (foreign or already attached asset)
+  DB --> API : error
+  API -> DB : ROLLBACK (thumbnail row discarded too)
+  API -> MS : delete thumbnail file
+  API --> SPA : 404 or 422, no job
+else key already used
+  DB --> API : no row returned
+  API -> DB : ROLLBACK (the new thumbnail row must not persist)
+  API -> MS : delete the new thumbnail file
+  API -> DB : SELECT existing job (owner, key)
+  API --> SPA : 202 existing job id (idempotent)
+else new job
+  DB --> API : job id
+  API -> DB : COMMIT
+  API --> SPA : 202 Accepted {job_id}
+end
+deactivate API
+note over SPA, DB
+  The request ends here. GPU work is NOT part of this HTTP call.
+  Execution continues asynchronously through the database queue (SD-4b).
+end note
+@enduml

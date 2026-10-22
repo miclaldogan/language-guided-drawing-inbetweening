@@ -1,0 +1,76 @@
+@startuml act-02-animation-creation
+!include ../_style/cue.iuml
+title Cue — Animation Creation Flow (FR-03, FR-04, FR-05, FR-06)\nKeyframe upload, optional English instruction, plan approval, job submission
+
+start
+:[SPA] S2: click "New animation"; <<#E3F0FB>>
+partition "S3  Keyframe upload (repeated for the Start slot and the End slot)" {
+  repeat
+    :[SPA] Choose or drop an image; <<#E3F0FB>>
+    :[API] Check session, stream to temp file; <<#E6F4EA>>
+    :[API] Validate real content type, size, dimensions; <<#E6F4EA>>
+    if (Valid?) then (no)
+      :[API] 422 with the reason, nothing stored; <<#E6F4EA>>
+      :[SPA] Show error inside the slot; <<#E3F0FB>>
+    else (yes)
+      :[MS] Write file (temp file, fsync, atomic rename); <<#FFF4DB>>
+      :[DB] INSERT media_asset (owner, kind, size, sha256); <<#FFF4DB>>
+      if (DB insert failed?) then (yes)
+        :[API] 500, file stays orphaned until the sweeper removes it; <<#E6F4EA>>
+        :[SPA] Show "Upload failed, try again"; <<#E3F0FB>>
+      else (no)
+        :[SPA] Show preview, name, size, dimensions; <<#E3F0FB>>
+      endif
+    endif
+  repeat while (Both slots hold a valid image?) is (no) not (yes)
+}
+:[SPA] "Continue to motion" (enabled only when both drawings are valid); <<#E3F0FB>>
+partition "S4  Optional English instruction and plan" {
+  if (Instruction typed?) then (no)
+    :[SPA] Drawings-only run, no plan is created; <<#E3F0FB>>
+  else (yes)
+    repeat
+      :[SPA] Click "Preview plan"; <<#E3F0FB>>
+      :[API] Check length limit and session; <<#E6F4EA>>
+      :[PLN] Local LLM proposes a structured plan, rule validator checks it; <<#F1E8FB>>
+      if (Plan valid?) then (no)
+        :[API] 422 with the validator reason; <<#E6F4EA>>
+        :[SPA] Show reasoned rejection, text stays editable; <<#E3F0FB>>
+      elseif (Service unavailable?) then (yes)
+        :[API] 503 plan service unavailable; <<#E6F4EA>>
+        :[SPA] Offer drawings-only generation; <<#E3F0FB>>
+      else (no)
+        :[SPA] Show cue sheet (events, order, speed); <<#E3F0FB>>
+      endif
+    repeat while (User approves "This plan is correct"?) is (no, edits text: approval cleared) not (yes)
+  endif
+}
+:[SPA] Click "Generate animation"; <<#E3F0FB>>
+partition "Job submission" {
+  :[API] Check session, ownership and "not yet attached" for both drawings; <<#E6F4EA>>
+  :[API] Re-validate the plan against the schema, draw a random seed; <<#E6F4EA>>
+  if (Checks passed?) then (no)
+    :[API] 404 or 422, no job is created; <<#E6F4EA>>
+    :[SPA] Show error on S4; <<#E3F0FB>>
+    stop
+  else (yes)
+    :[DB] Advisory lock on owner and idempotency key, then INSERT animation_job (status queued) ON CONFLICT DO NOTHING; <<#FFF4DB>>
+    if (Same idempotency key already used?) then (yes)
+      :[API] Return the existing job, no second job; <<#E6F4EA>>
+    else (no)
+      :[API] 202 Accepted with job id; <<#E6F4EA>>
+    endif
+    note right
+      Per-user active job limit: decision D-07 (pending).
+      If adopted, a rejection branch is added here.
+    end note
+    :[SPA] Navigate to S5 Generation status; <<#E3F0FB>>
+  endif
+}
+stop
+legend right
+  Box colour = layer: blue SPA, green API, amber DB or media store (MS), purple plan interpreter (PLN).
+  Uploads happen before any job exists; unattached drawings are removed after 24 h (maintenance).
+  An empty instruction never calls the language model (FR-05 "generation without command").
+endlegend
+@enduml

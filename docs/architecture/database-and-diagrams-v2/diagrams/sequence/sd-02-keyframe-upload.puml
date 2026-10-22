@@ -1,0 +1,50 @@
+@startuml sd-02-keyframe-upload
+!include ../_style/cue.iuml
+skinparam sequenceArrowThickness 1.2
+autonumber "<b>00"
+title SD-2  Keyframe upload — file first, database second (FR-03)
+participant "React SPA" as SPA #E3F0FB
+participant "FastAPI" as API #E6F4EA
+participant "Media store" as MS #FFF4DB
+database "PostgreSQL" as DB #FFF4DB
+participant "Sweeper\n(maintenance)" as MT #E6F4EA
+
+== Per slot: Start drawing, then End drawing ==
+SPA -> API : POST /assets?kind=start_drawing (multipart)
+activate API
+API -> DB : resolve session -> user (see SD-1)
+API -> API : stream to temp file;\ndetect real content type; check size and dimensions
+alt invalid file
+  API --> SPA : 422 reason (nothing written)
+else valid
+  API -> MS : put(tmp -> fsync -> atomic rename to assets/ab/uuid.ext)
+  alt storage write fails
+    MS --> API : error
+    API --> SPA : 500 (no database row exists)
+  else stored
+    MS --> API : ok
+    API -> DB : INSERT media_asset(owner, kind, storage_key, size, dims, sha256)
+    alt insert fails
+      DB --> API : error
+      API --> SPA : 500 "Upload failed, try again"
+      note right of MS : File has no row: orphan.\nSweeper deletes files that are >= 1 h old\nand unknown to the database.
+    else inserted
+      DB --> API : asset id
+      API --> SPA : 201 {id, width, height}
+    end
+  end
+end
+deactivate API
+
+== Replace or remove ==
+SPA -> API : DELETE /assets/{id}
+API -> DB : DELETE media_asset WHERE id AND owner_id AND not attached to a job
+API -> MS : delete(storage_key) after commit
+note over API, MS : Delete failure leaves an orphan file; the sweeper removes it.
+
+== Abandoned uploads ==
+MT -> DB : SELECT unattached start/end assets older than 24 h
+MT -> DB : DELETE those rows
+MT -> MS : delete files
+note over API : Foreign asset id -> 404 (ownership checked on every call)
+@enduml

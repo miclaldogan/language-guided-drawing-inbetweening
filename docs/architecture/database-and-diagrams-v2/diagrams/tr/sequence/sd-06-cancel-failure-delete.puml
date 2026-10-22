@@ -1,0 +1,57 @@
+' DİL: Türkçe — OTOMATİK ÜRETİLDİ (tools/build_tr.py); elle düzenlemeyin, İngilizce kaynak ve tools/i18n_tr.py esastır.
+@startuml sd-06-cancel-failure-delete
+!include ../../_style/cue.iuml
+skinparam sequenceArrowThickness 1.2
+autonumber "<b>00"
+title SD-6  İptal, işçi kaybı ve silme — durum tutarlılığı (FR-07, FR-09, NFR-03, NFR-05)
+participant "React SPA" as SPA #E3F0FB
+participant "FastAPI" as API #E6F4EA
+database "PostgreSQL" as DB #FFF4DB
+participant "GPU işçisi" as W #F1E8FB
+participant "Bakım" as MT #E6F4EA
+participant "Medya deposu" as MS #FFF4DB
+
+== A  İptal (karar D-02) ==
+SPA -> API : POST /jobs/{id}/cancel
+API -> DB : UPDATE status=cancelled, finished_at=clock_timestamp()\nWHERE id AND owner_id=me AND status IN (queued, running)
+alt 1 satır güncellendi
+  DB --> API : ok
+  API --> SPA : 200 iptal edildi
+  W -> DB : heartbeat UPDATE ... WHERE status=running AND locked_by=me
+  DB --> W : 0 satır
+  W -> W : çıkarımı durdur, kısmi çıktıyı at
+else 0 satır (zaten done, failed ya da cancelled; ya da başkasının)
+  API --> SPA : 409 ve güncel durum / başkasınınsa 404
+end
+note over W, DB : İşçi aynı anda bitirirse:\nkoşullu UPDATE'i 0 satır döner, ROLLBACK, MP4 silinir.\nİki UPDATE'ten tam biri kazanır (40 kez test edildi).
+
+== B  İşçi kaybı ==
+W -x W : süreç çöker / sunucu gücünü kaybeder
+MT -> DB : UPDATE status=failed, error_code=worker_lost\nWHERE status=running AND heartbeat_at < clock_timestamp() - threshold
+DB --> MT : takılı sayılan iş kimlikleri
+SPA -> API : yokla GET /jobs/{id}
+API --> SPA : failed + anlaşılır ileti (otomatik yeniden deneme yok)
+opt "ölü" sanılan işçi aslında yalnızca takılmıştı
+  W -> DB : completion UPDATE ... WHERE status=running AND locked_by=me
+  DB --> W : 0 satır -> ROLLBACK, MP4'ünü sil
+end
+
+== C  Animasyonu sil (FR-09, NFR-05) ==
+SPA -> API : DELETE /jobs/{id}
+activate API
+API -> DB : SELECT status WHERE id AND owner_id=me
+alt başkasının ya da yok
+  API --> SPA : 404
+else durum queued ya da running (karar D-03)
+  API --> SPA : 409 "Cancel the generation first"
+else terminal durum (done, failed, cancelled)
+  API -> DB : BEGIN
+  API -> DB : DELETE animation_job WHERE id AND owner_id RETURNING asset ids
+  API -> DB : DELETE media_asset WHERE id IN (...) RETURNING storage_key
+  API -> DB : COMMIT
+  API --> SPA : 204
+  API -> MS : dosyaları sil (commit'ten sonra)
+  note right of MS : Dosya silme başarısız olursa sahipsiz dosya kalır;\nsüpürücü siler. Kayıt zaten yoktur.
+end
+deactivate API
+@enduml

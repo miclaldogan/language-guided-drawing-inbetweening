@@ -1,0 +1,77 @@
+@startuml ai-01-pipeline
+!include ../_style/cue.iuml
+skinparam linetype polyline
+hide stereotype
+skinparam rectangle {
+  RoundCorner 8
+  FontSize 12
+}
+skinparam rectangle<<proposed>> {
+  BackgroundColor C_AI_BG
+  BorderColor C_AI_BD
+  BorderThickness 2
+  LineStyle 4
+}
+skinparam rectangle<<pretrained>> {
+  BackgroundColor C_EXT_BG
+  BorderColor C_EXT_BD
+}
+skinparam rectangle<<app>> {
+  BackgroundColor C_APP_BG
+  BorderColor C_APP_BD
+}
+skinparam rectangle<<data>> {
+  BackgroundColor C_DATA_BG
+  BorderColor C_DATA_BD
+}
+title Cue — AI Pipeline (proposal view, not an implemented system)\nInference path (product) and training/evaluation path (research, independent of the product database)
+
+rectangle "OFFLINE — dataset, training, evaluation (research, independent of the product)" as OFF #FFFFFF {
+  rectangle "Consented recordings\n8 participants, 40 scenarios,\n640 videos target" <<data>> as REC
+  rectangle "Data pipeline\nframes, line drawings (XDoG, RAFT),\nevent times, participant split" <<app>> as DP
+  rectangle "Training (cloud/institution GPU)\nM2 = LoRA + text\nM3 = LoRA + plan module\nM3c = shuffled-plan control" <<proposed>> as TR
+  rectangle "Evaluation\nR0, M0, M1, M2, M3, M3c\nfrozen test set" <<app>> as EV
+  rectangle "Model version registry\nweights hash, config, commit\n→ model_version row" <<data>> as REG
+}
+
+rectangle "ONLINE — inference for one job" as ON #FFFFFF {
+  rectangle "1  Input validation\ntype, size, dimensions,\nownership (API)" <<app>> as V1
+  rectangle "2  Instruction interpretation\nlocal LLM (optional)\nskipped without instruction" <<proposed>> as LM
+  rectangle "3  Rule-based plan validator\naccepts, or rejects with reason" <<app>> as VAL
+  rectangle "4  Structured motion plan\nJSON + schema version\nuser-approved, stored on the job" <<data>> as PLAN
+  rectangle "Cue generator (registered model_version, loaded by the GPU worker)" as GENG #FFFFFF {
+    rectangle "5  Pretrained backbone\nToonCrafter-512 (frozen)\nfirst + last frame" <<pretrained>> as BB
+    rectangle "6  LoRA adaptation\ntemporal attention\n(trainable, proposed)" <<proposed>> as LORA
+    rectangle "7  Plan-conditioning module\nprogress curve → FiLM\n(trainable, proposed)" <<proposed>> as PM
+    rectangle "8  Animation generation\nup to 16 frames, 512×320, seed" <<proposed>> as GEN
+  }
+  rectangle "9  Output processing\nfirst/last frame = inputs\n(integrity check), frames ZIP, MP4" <<app>> as OUT
+  rectangle "Media store: frames archive (ZIP of PNG) + MP4\njob done, model_version and seed recorded" <<data>> as STORE
+}
+
+REC -down-> DP
+DP -down-> TR
+TR -down-> EV
+EV -down-> REG
+REG ..> GENG : registered weights\nand configuration
+
+V1 -down-> LM : instruction text
+LM -down-> VAL
+VAL -down-> PLAN : valid plan
+VAL .up.> LM : rejection reason\nshown to the user
+V1 ..> BB : two drawings
+PLAN -down-> PM
+BB -down-> GEN
+LORA -down-> GEN
+PM -down-> GEN
+GEN -down-> OUT
+OUT -down-> STORE
+
+legend right
+  Thick purple border = proposed component, not yet implemented or verified (training path conditioning on first+last frame,
+  memory fit on the chosen GPU and plan-module effect are explicit week-1/week-5 checks in the proposal).
+  Grey = existing pretrained component. Green = application step. Amber = data / storage.
+  Without an instruction, steps 2–4 are skipped and the model runs on the two drawings alone.
+  Training uses plans derived from scenario labels; inference uses plans from the LLM or the user (same schema).
+endlegend
+@enduml

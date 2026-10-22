@@ -1,0 +1,56 @@
+' DİL: Türkçe — OTOMATİK ÜRETİLDİ (tools/build_tr.py); elle düzenlemeyin, İngilizce kaynak ve tools/i18n_tr.py esastır.
+@startuml sd-04b-job-execution
+!include ../../_style/cue.iuml
+skinparam sequenceArrowThickness 1.2
+autonumber "<b>00"
+title SD-4b  Animasyon üretimi — GPU işçisiyle asenkron yürütme (FR-06, FR-07, FR-10, NFR-02, NFR-03)
+participant "GPU işçisi" as W #F1E8FB
+participant "Cue üretici\n(model)" as M #F1E8FB
+database "PostgreSQL" as DB #FFF4DB
+participant "Medya deposu" as MS #FFF4DB
+
+loop işçi ana döngüsü
+  W -> DB : UPDATE animation_job SET status=running, started_at, heartbeat_at, locked_by, model_version_id\nWHERE id = (SELECT id ... status=queued ORDER BY created_at FOR UPDATE SKIP LOCKED LIMIT 1) RETURNING *
+  DB --> W : kapılan iş ya da hiçbiri
+  note right of DB : Deyim hemen commit olur.\nGPU çalışırken açık işlem kalmaz.
+  alt iş kapılmadı
+    W -> W : bekle, yeniden yokla
+  else iş kapıldı
+    W -> MS : başlangıç ve bitiş çizimlerini oku
+    alt bir dosya yok
+      W -> DB : UPDATE ... status=failed, error_code=input_missing\nWHERE id AND status=running AND locked_by=me
+    else dosyalar okunabilir
+      W ->> W : heartbeat görevini başlat (çıkarımdan bağımsız)
+      W -> M : model_version ağırlıklarını yükle, en çok 16 kare üret (tohum, plan)
+      activate M
+      group heartbeat görevi (eşzamanlı, birkaç saniyede bir)
+        W -> DB : UPDATE heartbeat_at WHERE id AND status=running AND locked_by=me
+        DB --> W : rowcount
+        note right of W : rowcount 0 => iptal edilmiş ya da takılı sayılmış:\nçıkarımı durdur, çıktıyı at
+      end
+      alt model hatası
+        M --> W : hata
+        W -> DB : UPDATE status=failed, error_code, error_message\nWHERE id AND status=running AND locked_by=me
+      else kareler hazır
+        M --> W : kareler
+        deactivate M
+        W -> W : ilk/son kareyi girdilere eşitle (bütünlük), kareleri paketle (PNG ZIP), MP4 kodla
+        W -> MS : put(frames.zip: tmp -> atomic rename)
+        W -> MS : put(video.mp4: tmp -> atomic rename)
+        note right of MS : Hem kare arşivi (en çok 16 PNG) hem MP4\nsaklanır (karar D-09 kapandı, öneri Şekil 1).\nİki dosya da tek DB işleminden önce vardır.
+        W -> DB : BEGIN
+        W -> DB : INSERT media_asset(frames_archive); INSERT media_asset(result_video)
+        W -> DB : UPDATE status=done, finished_at, video_asset_id,\nframes_asset_id, frame_count WHERE id AND status=running AND locked_by=me
+        alt tam 1 satır güncellendi
+          W -> DB : COMMIT
+        else 0 satır (bu arada iptal edildi ya da takılı sayıldı)
+          W -> DB : ROLLBACK
+          W -> MS : az önce yazılan kare arşivini ve MP4'ü sil
+        end
+      end
+    end
+  end
+end
+
+note over W, MS : Kullanıcılar bu durum değişikliklerini API'yi yoklayarak izler (bkz. SD-5); iptal ve işçi kaybı SD-6'dadır.
+@enduml

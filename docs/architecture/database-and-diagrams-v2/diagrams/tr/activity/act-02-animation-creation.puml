@@ -1,0 +1,77 @@
+' DİL: Türkçe — OTOMATİK ÜRETİLDİ (tools/build_tr.py); elle düzenlemeyin, İngilizce kaynak ve tools/i18n_tr.py esastır.
+@startuml act-02-animation-creation
+!include ../../_style/cue.iuml
+title Cue — Animasyon Oluşturma Akışı (FR-03, FR-04, FR-05, FR-06)\nAnahtar kare yükleme, isteğe bağlı İngilizce komut, plan onayı, iş gönderme
+
+start
+:[SPA] S2: "New animation"a tıkla; <<#E3F0FB>>
+partition "S3  Anahtar kare yükleme (Başlangıç ve Bitiş yuvası için tekrarlanır)" {
+  repeat
+    :[SPA] Bir görüntü seç ya da bırak; <<#E3F0FB>>
+    :[API] Oturumu denetle, geçici dosyaya akıt; <<#E6F4EA>>
+    :[API] Gerçek içerik türünü, boyutu, ölçüleri doğrula; <<#E6F4EA>>
+    if (Geçerli mi?) then (hayır)
+      :[API] 422 ve gerekçe, hiçbir şey saklanmaz; <<#E6F4EA>>
+      :[SPA] Hatayı yuvanın içinde göster; <<#E3F0FB>>
+    else (evet)
+      :[MS] Dosyayı yaz (geçici dosya, fsync, atomik yeniden adlandırma); <<#FFF4DB>>
+      :[DB] INSERT media_asset (sahip, rol, boyut, sha256); <<#FFF4DB>>
+      if (DB kaydı başarısız mı?) then (evet)
+        :[API] 500, dosya süpürücü silene dek sahipsiz kalır; <<#E6F4EA>>
+        :[SPA] "Upload failed, try again" göster; <<#E3F0FB>>
+      else (hayır)
+        :[SPA] Önizleme, ad, boyut, ölçüleri göster; <<#E3F0FB>>
+      endif
+    endif
+  repeat while (İki yuvada da geçerli görüntü var mı?) is (hayır) not (evet)
+}
+:[SPA] "Continue to motion" (yalnız iki çizim geçerliyken etkin); <<#E3F0FB>>
+partition "S4  İsteğe bağlı İngilizce komut ve plan" {
+  if (Komut yazıldı mı?) then (hayır)
+    :[SPA] Yalnız çizimlerle üretim, plan oluşturulmaz; <<#E3F0FB>>
+  else (evet)
+    repeat
+      :[SPA] "Preview plan"a tıkla; <<#E3F0FB>>
+      :[API] Uzunluk sınırını ve oturumu denetle; <<#E6F4EA>>
+      :[PLN] Yerel LLM yapılandırılmış plan önerir, kural doğrulayıcı denetler; <<#F1E8FB>>
+      if (Plan geçerli mi?) then (hayır)
+        :[API] 422 ve doğrulayıcı gerekçesi; <<#E6F4EA>>
+        :[SPA] Gerekçeli reddi göster, metin düzenlenebilir kalır; <<#E3F0FB>>
+      elseif (Hizmet kullanılamıyor mu?) then (evet)
+        :[API] 503 plan hizmeti kullanılamıyor; <<#E6F4EA>>
+        :[SPA] Yalnız çizimlerle üretimi öner; <<#E3F0FB>>
+      else (hayır)
+        :[SPA] Cue sheet göster (olaylar, sıra, hız); <<#E3F0FB>>
+      endif
+    repeat while (Kullanıcı "This plan is correct" ile onaylıyor mu?) is (hayır, metni düzenler: onay silinir) not (evet)
+  endif
+}
+:[SPA] "Generate animation"a tıkla; <<#E3F0FB>>
+partition "İş gönderme" {
+  :[API] Oturumu, sahipliği ve iki çizimin "henüz bağlı değil" olduğunu denetle; <<#E6F4EA>>
+  :[API] Planı şemaya karşı yeniden doğrula, rastgele tohum çek; <<#E6F4EA>>
+  if (Denetimler geçti mi?) then (hayır)
+    :[API] 404 ya da 422, iş oluşturulmaz; <<#E6F4EA>>
+    :[SPA] S4'te hatayı göster; <<#E3F0FB>>
+    stop
+  else (evet)
+    :[DB] Sahip ve idempotency anahtarı üzerinde advisory kilit, sonra INSERT animation_job (status queued) ON CONFLICT DO NOTHING; <<#FFF4DB>>
+    if (Aynı idempotency anahtarı daha önce kullanıldı mı?) then (evet)
+      :[API] Var olan işi döndür, ikinci iş oluşmaz; <<#E6F4EA>>
+    else (hayır)
+      :[API] 202 Kabul edildi, iş kimliği ile; <<#E6F4EA>>
+    endif
+    note right
+      Kullanıcı başına etkin iş sınırı: karar D-07 (onay bekliyor).
+      Kabul edilirse buraya bir ret dalı eklenir.
+    end note
+    :[SPA] S5 Üretim durumu ekranına git; <<#E3F0FB>>
+  endif
+}
+stop
+legend right
+  Kutu rengi = katman: mavi SPA, yeşil API, amber DB ya da medya deposu (MS), mor plan çözümleyici (PLN).
+  Yüklemeler iş oluşmadan önce yapılır; işe bağlanmamış çizimler 24 saat sonra silinir (bakım).
+  Boş komut dil modelini hiç çağırmaz (FR-05 "komutsuz üretim").
+endlegend
+@enduml

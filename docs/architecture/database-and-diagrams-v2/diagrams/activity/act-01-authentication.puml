@@ -1,0 +1,88 @@
+@startuml act-01-authentication
+!include ../_style/cue.iuml
+title Cue — Authentication and Session Flow (FR-01, NFR-01)\nUnauthorized access and failure branches included
+
+start
+switch (User intent)
+case (Open a protected page / call API)
+  :[SPA] Request with session cookie; <<#E3F0FB>>
+  if (Cookie present?) then (no)
+    :[API] 401 Unauthorized; <<#E6F4EA>>
+    :[SPA] Redirect to S1 (Log in); <<#E3F0FB>>
+    stop
+  else (yes)
+    :[API] SHA-256 of cookie token; <<#E6F4EA>>
+    :[DB] SELECT session WHERE token_hash\nAND expires_at > now(); <<#FFF4DB>>
+    if (Valid session?) then (no)
+      :[API] 401 + clear cookie\n(expired, signed-out or forged are indistinguishable); <<#E6F4EA>>
+      :[SPA] Redirect to S1; <<#E3F0FB>>
+      stop
+    else (yes)
+      if (Resource belongs to this user?) then (no)
+        :[API] 404 Not found\n(existence is not revealed); <<#E6F4EA>>
+        :[SPA] Show "Not found"; <<#E3F0FB>>
+        stop
+      else (yes)
+        :[API] Serve request; <<#E6F4EA>>
+        stop
+      endif
+    endif
+  endif
+case (Create account)
+  :[SPA] Submit email + password; <<#E3F0FB>>
+  :[API] Validate email format and password rule; <<#E6F4EA>>
+  if (Valid?) then (no)
+    :[API] 422 with field errors; <<#E6F4EA>>
+    :[SPA] Show errors under fields; <<#E3F0FB>>
+    stop
+  else (yes)
+    :[API] Normalize email (NFKC, lower case); <<#E6F4EA>>
+    :[API] Hash password (Argon2id); <<#E6F4EA>>
+    :[DB] BEGIN, INSERT app_user,\nINSERT auth_session (token hash), COMMIT; <<#FFF4DB>>
+    if (Unique violation on email?) then (yes)
+      :[DB] ROLLBACK; <<#FFF4DB>>
+      :[API] 409 "Could not create account"; <<#E6F4EA>>
+      :[SPA] Show form error; <<#E3F0FB>>
+      stop
+    else (no)
+      :[API] Set cookie (HttpOnly, Secure, SameSite); <<#E6F4EA>>
+      :[SPA] Go to S2 (library); <<#E3F0FB>>
+      stop
+    endif
+  endif
+case (Log in)
+  :[SPA] Submit email + password; <<#E3F0FB>>
+  if (Rate limit exceeded?) then (yes)
+    :[API] 429 Too many attempts; <<#E6F4EA>>
+    :[SPA] Show wait message; <<#E3F0FB>>
+    stop
+  else (no)
+    :[DB] SELECT user BY email; <<#FFF4DB>>
+    :[API] Verify Argon2id hash\n(dummy hash if user unknown); <<#E6F4EA>>
+    if (Credentials correct?) then (no)
+      :[API] Count failed attempt; <<#E6F4EA>>
+      :[API] 401 "Email or password is incorrect."; <<#E6F4EA>>
+      :[SPA] Show generic form error; <<#E3F0FB>>
+      stop
+    else (yes)
+      :[API] Generate NEW 256-bit token\n(no session fixation); <<#E6F4EA>>
+      :[DB] INSERT auth_session (SHA-256 of token); <<#FFF4DB>>
+      :[API] Set cookie (HttpOnly, Secure, SameSite); <<#E6F4EA>>
+      :[SPA] Go to S2 (library); <<#E3F0FB>>
+      stop
+    endif
+  endif
+case (Log out)
+  :[SPA] Click "Log out"; <<#E3F0FB>>
+  :[DB] DELETE auth_session WHERE token_hash; <<#FFF4DB>>
+  :[API] Clear cookie, 204; <<#E6F4EA>>
+  :[SPA] Show S1; <<#E3F0FB>>
+  stop
+endswitch
+legend right
+  Box colour = layer that performs the step:
+  blue = SPA (browser), green = API, amber = PostgreSQL.
+  Unauthorized access: no or invalid session → 401 → S1; authenticated but foreign resource → 404.
+  Only the SHA-256 of the session token is stored. Rate limiting is in-process (single API instance assumed).
+endlegend
+@enduml

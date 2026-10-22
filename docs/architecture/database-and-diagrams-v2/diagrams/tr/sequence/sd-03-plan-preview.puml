@@ -1,0 +1,44 @@
+' DİL: Türkçe — OTOMATİK ÜRETİLDİ (tools/build_tr.py); elle düzenlemeyin, İngilizce kaynak ve tools/i18n_tr.py esastır.
+@startuml sd-03-plan-preview
+!include ../../_style/cue.iuml
+skinparam sequenceArrowThickness 1.2
+autonumber "<b>00"
+title SD-3  Hareket planı önizleme ve onay — komut isteğe bağlıdır (FR-04, FR-05)
+actor "Kullanıcı" as U #E3F0FB
+participant "React SPA" as SPA #E3F0FB
+participant "FastAPI" as API #E6F4EA
+participant "Plan çözümleyici\n(yerel LLM + kural doğrulayıcı)" as PLN #F1E8FB
+
+U -> SPA : İngilizce komut yaz (isteğe bağlı)
+alt komut boş
+  note over SPA, PLN : Çağrı yapılmaz. Dil modeli KULLANILMAZ.\n"Generate animation" doğrudan etkindir (yalnız çizimlerle üretim).
+else komut yazıldı
+  U -> SPA : "Preview plan"a tıkla
+  SPA -> API : POST /plans/preview {command}
+  activate API
+  API -> API : oturum denetimi; uzunluk sınırı
+  API -> PLN : interpret(command)
+  activate PLN
+  alt hizmet kapalı ya da zaman aşımı
+    PLN --> API : hata
+    API --> SPA : 503 plan hizmeti kullanılamıyor
+    SPA --> U : ileti; yalnız çizimlerle üretim hâlâ mümkün
+  else yanıt verdi
+    PLN -> PLN : LLM yapılandırılmış plan önerir;\nkural doğrulayıcı şemayı ve sözlüğü denetler
+    alt plan reddedildi (desteklenmeyen, belirsiz, olumsuz komut ...)
+      PLN --> API : reddedildi + gerekçe
+      API --> SPA : 422 gerekçe
+      SPA --> U : gerekçeli ret; metin düzenlenebilir kalır
+    else plan geçerli
+      PLN --> API : plan JSON + şema sürümü
+      deactivate PLN
+      API --> SPA : 200 plan (SAKLANMAZ)
+      SPA --> U : cue sheet (olaylar, sıra, hız)
+      U -> SPA : "This plan is correct" kutusunu işaretle
+      note over SPA : Onay istemci durumudur. Metni düzenlemek onayı siler\nve planı "güncel değil" yapar.
+    end
+  end
+  deactivate API
+end
+note over SPA, API : Plan ve onay zamanı yalnızca iş gönderilirken kalıcı yazılır (SD-4a).
+@enduml

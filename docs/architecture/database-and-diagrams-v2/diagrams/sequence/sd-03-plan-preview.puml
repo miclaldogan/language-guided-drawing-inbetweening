@@ -1,0 +1,43 @@
+@startuml sd-03-plan-preview
+!include ../_style/cue.iuml
+skinparam sequenceArrowThickness 1.2
+autonumber "<b>00"
+title SD-3  Motion plan preview and confirmation — the instruction is optional (FR-04, FR-05)
+actor "User" as U #E3F0FB
+participant "React SPA" as SPA #E3F0FB
+participant "FastAPI" as API #E6F4EA
+participant "Plan interpreter\n(local LLM + rule validator)" as PLN #F1E8FB
+
+U -> SPA : type English instruction (optional)
+alt instruction is empty
+  note over SPA, PLN : No call is made. Language model is NOT used.\n"Generate animation" is enabled directly (drawings-only run).
+else instruction typed
+  U -> SPA : click "Preview plan"
+  SPA -> API : POST /plans/preview {command}
+  activate API
+  API -> API : session check; length limit
+  API -> PLN : interpret(command)
+  activate PLN
+  alt service down or timeout
+    PLN --> API : error
+    API --> SPA : 503 plan service unavailable
+    SPA --> U : message; drawings-only generation still possible
+  else answered
+    PLN -> PLN : LLM proposes structured plan;\nrule validator checks schema and vocabulary
+    alt plan rejected (unsupported, ambiguous, negative command ...)
+      PLN --> API : rejected + reason
+      API --> SPA : 422 reason
+      SPA --> U : reasoned rejection; text stays editable
+    else plan valid
+      PLN --> API : plan JSON + schema version
+      deactivate PLN
+      API --> SPA : 200 plan (NOT stored)
+      SPA --> U : cue sheet (events, order, speed)
+      U -> SPA : tick "This plan is correct"
+      note over SPA : Approval is client state. Editing the text clears it\nand marks the plan "out of date".
+    end
+  end
+  deactivate API
+end
+note over SPA, API : The plan and approval time are persisted only when the job is submitted (SD-4a).
+@enduml

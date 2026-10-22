@@ -1,0 +1,68 @@
+@startuml sd-01-authentication
+!include ../_style/cue.iuml
+skinparam sequenceArrowThickness 1.2
+autonumber "<b>00"
+title SD-1  Authentication — register, log in, authorized request, log out (FR-01, FR-02, NFR-01)
+actor "User" as U #E3F0FB
+participant "React SPA" as SPA #E3F0FB
+participant "FastAPI" as API #E6F4EA
+database "PostgreSQL" as DB #FFF4DB
+
+== Register ==
+U -> SPA : fill email + password
+SPA -> API : POST /auth/register {email, password}
+activate API
+API -> API : validate; normalize email; Argon2id hash
+API -> DB : BEGIN; INSERT app_user; INSERT auth_session(token_hash); COMMIT
+alt unique violation (email exists)
+  DB --> API : error 23505 (ROLLBACK)
+  API --> SPA : 409 "Could not create account"
+else created
+  DB --> API : ok
+  API --> SPA : 201 + Set-Cookie (HttpOnly, Secure, SameSite)
+end
+deactivate API
+
+== Log in ==
+SPA -> API : POST /auth/login {email, password}
+activate API
+alt rate limit exceeded
+  API --> SPA : 429
+else within limit
+  API -> DB : SELECT user BY email
+  DB --> API : user row or none
+  API -> API : verify Argon2id (dummy hash if none)
+  alt wrong credentials
+    API --> SPA : 401 "Email or password is incorrect."
+  else correct
+    API -> API : new 256-bit token (no reuse)
+    API -> DB : INSERT auth_session(SHA-256(token), expires_at)
+    API --> SPA : 200 + Set-Cookie
+    SPA --> U : show library (S2)
+  end
+end
+deactivate API
+
+== Authorized request, unauthorized access ==
+SPA -> API : GET /jobs/{id}  (cookie)
+activate API
+API -> DB : SELECT session WHERE token_hash AND expires_at > now()
+alt no valid session
+  API --> SPA : 401 + clear cookie
+  SPA --> U : redirect to S1
+else valid session
+  API -> DB : SELECT job WHERE id AND owner_id = session user
+  alt 0 rows (missing or foreign)
+    API --> SPA : 404 Not found
+  else owned
+    API --> SPA : 200 job
+  end
+end
+deactivate API
+
+== Log out ==
+SPA -> API : POST /auth/logout
+API -> DB : DELETE auth_session WHERE token_hash
+API --> SPA : 204 + clear cookie
+note over API, DB : Old cookie now fails step "no valid session" (tested: T11)
+@enduml

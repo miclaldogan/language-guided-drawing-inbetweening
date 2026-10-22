@@ -1,0 +1,51 @@
+' DİL: Türkçe — OTOMATİK ÜRETİLDİ (tools/build_tr.py); elle düzenlemeyin, İngilizce kaynak ve tools/i18n_tr.py esastır.
+@startuml sd-02-keyframe-upload
+!include ../../_style/cue.iuml
+skinparam sequenceArrowThickness 1.2
+autonumber "<b>00"
+title SD-2  Anahtar kare yükleme — önce dosya, sonra veritabanı (FR-03)
+participant "React SPA" as SPA #E3F0FB
+participant "FastAPI" as API #E6F4EA
+participant "Medya deposu" as MS #FFF4DB
+database "PostgreSQL" as DB #FFF4DB
+participant "Süpürücü\n(bakım)" as MT #E6F4EA
+
+== Her yuva için: önce Başlangıç, sonra Bitiş çizimi ==
+SPA -> API : POST /assets?kind=start_drawing (multipart)
+activate API
+API -> DB : oturumdan kullanıcıyı çöz (bkz. SD-1)
+API -> API : geçici dosyaya akıt;\ngerçek içerik türünü belirle; boyut ve ölçüleri denetle
+alt geçersiz dosya
+  API --> SPA : 422 gerekçe (hiçbir şey yazılmadı)
+else geçerli
+  API -> MS : put(tmp -> fsync -> atomic rename to assets/ab/uuid.ext)
+  alt depolama yazımı başarısız
+    MS --> API : hata
+    API --> SPA : 500 (veritabanı satırı yok)
+  else saklandı
+    MS --> API : ok
+    API -> DB : INSERT media_asset(owner, kind, storage_key, size, dims, sha256)
+    alt INSERT başarısız
+      DB --> API : hata
+      API --> SPA : 500 "Upload failed, try again"
+      note right of MS : Dosyanın satırı yok: sahipsiz.\nSüpürücü, ≥ 1 saat eski ve veritabanında\nbulunmayan dosyaları siler.
+    else eklendi
+      DB --> API : asset id
+      API --> SPA : 201 {id, width, height}
+    end
+  end
+end
+deactivate API
+
+== Değiştir ya da kaldır ==
+SPA -> API : DELETE /assets/{id}
+API -> DB : DELETE media_asset WHERE id AND owner_id AND işe bağlı değil
+API -> MS : delete(storage_key) commit'ten sonra
+note over API, MS : Silme başarısız olursa sahipsiz dosya kalır; süpürücü siler.
+
+== Terk edilmiş yüklemeler ==
+MT -> DB : SELECT 24 saatten eski, bağlanmamış start/end varlıkları
+MT -> DB : bu satırları DELETE et
+MT -> MS : dosyaları sil
+note over API : Başkasının varlık kimliği -> 404 (sahiplik her çağrıda denetlenir)
+@enduml

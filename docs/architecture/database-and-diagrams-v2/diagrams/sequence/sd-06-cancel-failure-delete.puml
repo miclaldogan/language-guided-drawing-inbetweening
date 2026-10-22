@@ -1,0 +1,56 @@
+@startuml sd-06-cancel-failure-delete
+!include ../_style/cue.iuml
+skinparam sequenceArrowThickness 1.2
+autonumber "<b>00"
+title SD-6  Cancellation, worker loss and deletion — state consistency (FR-07, FR-09, NFR-03, NFR-05)
+participant "React SPA" as SPA #E3F0FB
+participant "FastAPI" as API #E6F4EA
+database "PostgreSQL" as DB #FFF4DB
+participant "GPU worker" as W #F1E8FB
+participant "Maintenance" as MT #E6F4EA
+participant "Media store" as MS #FFF4DB
+
+== A  Cancel (decision D-02) ==
+SPA -> API : POST /jobs/{id}/cancel
+API -> DB : UPDATE status=cancelled, finished_at=clock_timestamp()\nWHERE id AND owner_id=me AND status IN (queued, running)
+alt 1 row updated
+  DB --> API : ok
+  API --> SPA : 200 cancelled
+  W -> DB : heartbeat UPDATE ... WHERE status=running AND locked_by=me
+  DB --> W : 0 rows
+  W -> W : abort inference, discard partial output
+else 0 rows (already done, failed or cancelled; or foreign)
+  API --> SPA : 409 with current status / 404 if foreign
+end
+note over W, DB : If the worker finishes at the same moment:\nits conditional UPDATE returns 0 rows, ROLLBACK, MP4 deleted.\nExactly one of the two UPDATEs wins (tested 40x).
+
+== B  Worker lost ==
+W -x W : process crashes / host loses power
+MT -> DB : UPDATE status=failed, error_code=worker_lost\nWHERE status=running AND heartbeat_at < clock_timestamp() - threshold
+DB --> MT : reaped job ids
+SPA -> API : poll GET /jobs/{id}
+API --> SPA : failed + clear message (no automatic retry)
+opt the "dead" worker was only stalled
+  W -> DB : completion UPDATE ... WHERE status=running AND locked_by=me
+  DB --> W : 0 rows -> ROLLBACK, delete its MP4
+end
+
+== C  Delete an animation (FR-09, NFR-05) ==
+SPA -> API : DELETE /jobs/{id}
+activate API
+API -> DB : SELECT status WHERE id AND owner_id=me
+alt foreign or missing
+  API --> SPA : 404
+else status is queued or running (decision D-03)
+  API --> SPA : 409 "Cancel the generation first"
+else terminal state (done, failed, cancelled)
+  API -> DB : BEGIN
+  API -> DB : DELETE animation_job WHERE id AND owner_id RETURNING asset ids
+  API -> DB : DELETE media_asset WHERE id IN (...) RETURNING storage_key
+  API -> DB : COMMIT
+  API --> SPA : 204
+  API -> MS : delete files (after commit)
+  note right of MS : A failed file delete leaves an orphan;\nthe sweeper removes it. The record is already gone.
+end
+deactivate API
+@enduml

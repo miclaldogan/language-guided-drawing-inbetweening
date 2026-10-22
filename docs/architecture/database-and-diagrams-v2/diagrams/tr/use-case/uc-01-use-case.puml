@@ -1,0 +1,75 @@
+' DİL: Türkçe — OTOMATİK ÜRETİLDİ (tools/build_tr.py); elle düzenlemeyin, İngilizce kaynak ve tools/i18n_tr.py esastır.
+@startuml uc-01-use-case
+!include ../../_style/cue.iuml
+left to right direction
+skinparam linetype polyline
+skinparam packageStyle rectangle
+skinparam usecase {
+  BackgroundColor C_APP_BG
+  BorderColor C_APP_BD
+  FontSize 12
+}
+skinparam actor {
+  BackgroundColor C_USER_BG
+  BorderColor C_USER_BD
+}
+skinparam package {
+  BorderColor C_EXT_BD
+  FontSize 12
+}
+skinparam nodesep 25
+skinparam ranksep 90
+title Cue — UML Kullanım Durumu (Use Case) Diyagramı\nYalnızca doğrulanmış kullanıcı yetenekleri (FR-01 … FR-10)
+
+actor "Ziyaretçi\n(giriş yapmamış)" as V
+actor "Kayıtlı Kullanıcı" as U
+
+rectangle "Cue web stüdyosu" {
+  package "Hesap" {
+    usecase "Hesap oluştur\n(FR-01)" as UC1
+    usecase "Giriş yap\n(FR-01)" as UC2
+    usecase "Çıkış yap\n(FR-01)" as UC3
+  }
+  package "Kişisel kitaplık" {
+    usecase "Animasyon kitaplığını gez\n(FR-02, FR-09)" as UC4
+    usecase "Animasyonu sil\n(FR-09)" as UC14
+  }
+  package "Animasyon oluşturma" {
+    usecase "Animasyon oluştur\n(FR-06)" as UC5
+    usecase "Başlangıç ve bitiş anahtar\nçizimlerini yükle (FR-03)" as UC6
+    usecase "Hareketi İngilizce tarif et\n(isteğe bağlı, FR-04)" as UC7
+    usecase "Hareket planını önizle\nve onayla (FR-05)" as UC8
+  }
+  package "İzleme ve sonuç" {
+    usecase "Üretim durumunu ve\nhata iletisini izle (FR-07)" as UC9
+    usecase "Üretimi iptal et\n(FR-07)" as UC10
+    usecase "Sonucu oynat (FR-08)" as UC11
+    usecase "MP4 indir (FR-08)" as UC12
+    usecase "Üretim kaydını gör\nmodel sürümü, tohum, süre\n(FR-10)" as UC13
+  }
+}
+
+V -right-> UC1
+V -right-> UC2
+U -up-|> V
+U --> UC3
+U --> UC4
+U --> UC14
+U --> UC5
+U --> UC9
+U --> UC11
+U --> UC12
+
+UC5 ..> UC6 : <<include>>
+UC7 ..> UC5 : <<extend>>
+UC8 ..> UC7 : <<extend>>
+UC10 ..> UC9 : <<extend>>
+UC11 ..> UC13 : <<include>>
+
+legend bottom
+  Hesap oluşturma ve giriş dışındaki tüm kullanım durumları geçerli bir oturum gerektirir; her kullanıcı yalnızca kendi verisiyle çalışır (FR-02; başkasının kaynağı 404 döner).
+  Animasyonu sil: etkin (queued/running) işler önce iptal edilmelidir (karar D-03).
+  Kapsam dışı (çizilmedi): parola sıfırlama, paylaşım, yönetici paneli, olumsuz komutlar, video girdisi.
+  Operatör işleri (model kaydı, hesap silme) kullanıcı yeteneği değildir.
+endlegend
+@enduml

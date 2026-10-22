@@ -1,0 +1,103 @@
+@startuml dep-01-deployment
+!include ../_style/cue.iuml
+skinparam linetype polyline
+hide stereotype
+skinparam node {
+  BackgroundColor #FFFFFF
+  BorderColor C_EXT_BD
+  FontSize 12
+}
+skinparam rectangle {
+  RoundCorner 8
+}
+skinparam rectangle<<user>> {
+  BackgroundColor C_USER_BG
+  BorderColor C_USER_BD
+}
+skinparam rectangle<<app>> {
+  BackgroundColor C_APP_BG
+  BorderColor C_APP_BD
+}
+skinparam rectangle<<ai>> {
+  BackgroundColor C_AI_BG
+  BorderColor C_AI_BD
+}
+skinparam rectangle<<ext>> {
+  BackgroundColor C_EXT_BG
+  BorderColor C_EXT_BD
+}
+skinparam database {
+  BackgroundColor C_DATA_BG
+  BorderColor C_DATA_BD
+}
+skinparam storage {
+  BackgroundColor C_DATA_BG
+  BorderColor C_DATA_BD
+}
+title Cue — Deployment view\nA: local academic deployment (Docker Compose, committed)   B: future managed deployment (growth path, NOT part of the MVP)
+
+node "A  Local academic deployment — one machine with an NVIDIA GPU, Docker Compose" as A {
+  rectangle "Browser (user device)" <<user>> as Abr
+  node "Compose network: public (only the proxy is published)" as Apub {
+    rectangle "reverse proxy\nHTTPS, serves React build" <<ext>> as Apx
+  }
+  node "Compose network: internal (no published ports)" as Aint {
+    rectangle "api (FastAPI)\nrole cue_api" <<app>> as Aapi
+    rectangle "migrate (one-shot)\nrole cue_migrator" <<app>> as Amig
+    rectangle "maintenance\nrole cue_maintenance" <<app>> as Amt
+    database "db (PostgreSQL 18)\nvolume: pgdata" as Adb
+    storage "media volume\n(MediaStore)" as Ams
+    rectangle "worker (GPU)\nrole cue_worker\nGPU passthrough" <<ai>> as Aw
+    rectangle "plan interpreter\n(local LLM + validator)" <<ai>> as Apl
+    storage "model weights volume\n(read-only)" as Amw
+  }
+  rectangle "secrets: .env / Docker secrets\n(DB role passwords, session pepper)" <<ext>> as Asec
+  storage "backup target (outside the Compose host)\npg_dump + media copy, DB first" as Abk
+}
+
+node "B  Future managed deployment (illustrative, not committed)" as B {
+  rectangle "Browser" <<user>> as Bbr
+  rectangle "Static hosting / CDN\nReact build" <<user>> as Bcdn
+  rectangle "Load balancer / TLS" <<ext>> as Blb
+  rectangle "API service\n(1..n instances)" <<app>> as Bapi
+  database "Managed PostgreSQL\n(backups, PITR)" as Bdb
+  storage "Object storage\n(private bucket, signed URLs)" as Bos
+  rectangle "GPU worker pool\n(1..n, same claim protocol)" <<ai>> as Bw
+  rectangle "Secrets manager" <<ext>> as Bsec
+}
+
+Abr --> Apx : HTTPS
+Apx --> Aapi : /api
+Aapi --> Adb : SQL
+Aapi --> Ams : files
+Aapi --> Apl : preview plan
+Aw ..> Adb : poll and claim jobs
+Aw --> Ams : drawings, MP4
+Aw --> Amw
+Amt --> Adb
+Amt --> Ams
+Amig --> Adb : schema migrations\n(before api and worker start)
+Asec .. Aapi
+Adb ..> Abk : daily dump
+Ams ..> Abk : copy after the dump
+
+Bbr --> Bcdn
+Bbr --> Blb : HTTPS
+Blb --> Bapi
+Bapi --> Bdb
+Bapi --> Bos
+Bw ..> Bdb : poll and claim jobs
+Bw --> Bos
+Bsec .. Bapi
+Bsec .. Bw
+
+legend right
+  A is the committed MVP. B only shows that the same components and the same database queue scale by adding
+  instances (more API replicas, more GPU workers) without a message broker or a new data model.
+  Differences in B: object storage replaces the media volume (MediaStore implementation changes only),
+  managed PostgreSQL replaces the container, signed short-lived URLs are issued after the ownership check.
+  Not part of any deployment here: billing, subscription, organisations, admin panel, Kubernetes.
+  Trust boundaries: browser -> proxy is the only public path; db, media and worker have no published ports.
+  Start-up order (A): provision roles and login accounts (superuser, once) -> migrate (DDL owner, no CREATEROLE) -> api, worker, maintenance.
+endlegend
+@enduml

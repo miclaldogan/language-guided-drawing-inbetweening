@@ -1,0 +1,47 @@
+@startuml conceptual-erd
+!include ../_style/cue.iuml
+hide circle
+skinparam ranksep 110
+skinparam nodesep 50
+left to right direction
+title Cue — Conceptual ERD (business view)\nTechnology independent, no data types
+
+entity "User" as U #E6F4EA;line:2F855A {
+  e-mail
+  credentials (hashed)
+}
+entity "Session" as S #E6F4EA;line:2F855A {
+  validity period
+}
+entity "Media Asset" as M #FFF4DB;line:B7791F {
+  role: start drawing, end drawing,\nresult video, frames archive, thumbnail
+  content type, size, dimensions
+}
+entity "Animation Job" as J #E6F4EA;line:2F855A {
+  status (queued … cancelled)
+  optional English instruction
+  optional approved Motion Plan *
+  seed, parameters, timings, error
+}
+entity "Model Version" as V #F1E8FB;line:6B46C1 {
+  name, version, weights fingerprint
+  supports plan?, active?
+}
+
+U ||--o{ S : "opens"
+U ||--o{ J : "submits"
+U ||--o{ M : "owns"
+M ||--o| J : "is start drawing of"
+M ||--o| J : "is end drawing of"
+M |o--o| J : "is result video of"
+M |o--o| J : "is frames archive of"
+M |o--o| J : "is thumbnail of"
+V |o--o{ J : "generated"
+
+legend right
+  * Motion Plan is an optional value embedded in the job (versioned JSON), not a separate entity.
+  A job has exactly two input drawings, at most one result video and one frames archive; an asset belongs to at most one job.
+  Both drawings must belong to the job owner. Uploaded drawings may exist before the job does.
+  Logical and physical detail are shown together in physical-erd (see reports/05).
+endlegend
+@enduml

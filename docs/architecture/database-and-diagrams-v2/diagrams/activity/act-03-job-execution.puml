@@ -1,0 +1,65 @@
+@startuml act-03-job-execution
+!include ../_style/cue.iuml
+title Cue — Job Execution and Failure Flow (FR-06, FR-07, FR-10, NFR-03)\nThree independent triggers act on animation_job; every state change is a conditional UPDATE
+
+start
+switch (Trigger)
+case (A  Job is queued: GPU worker loop)
+  repeat
+    :[W] Claim: UPDATE … WHERE id = (SELECT … status queued FOR UPDATE SKIP LOCKED LIMIT 1) RETURNING; <<#F1E8FB>>
+    :[DB] Commit at once, no transaction stays open while the GPU works; <<#FFF4DB>>
+    backward:[W] Sleep, poll again; <<#F1E8FB>>
+  repeat while (A job was claimed and an active model_version exists?) is (no) not (yes)
+  :[DB] Row is now running, locked_by, started_at, heartbeat_at and model_version_id are set; <<#FFF4DB>>
+  :[W] Read both drawings from the media store; <<#F1E8FB>>
+  if (Both files readable?) then (no)
+    :[DB] UPDATE status failed, error_code input_missing WHERE status running AND locked_by me; <<#FFF4DB>>
+    stop
+  else (yes)
+  endif
+  :[W] Load the registered model_version, run generation (up to 16 frames), heartbeat runs independently; <<#F1E8FB>>
+  if (Heartbeat UPDATE affected 0 rows?) then (yes)
+    :[W] Abort and discard all partial output; <<#F1E8FB>>
+    stop
+  else (no)
+  endif
+  if (Model error or out of memory?) then (yes)
+    :[DB] UPDATE status failed, error_code, error_message WHERE status running AND locked_by me; <<#FFF4DB>>
+    note right: 0 rows means the job was already cancelled or reaped, nothing is overwritten
+    stop
+  else (no)
+  endif
+  :[W] Set first and last frame to the input drawings (integrity check), pack the frames (ZIP), encode MP4; <<#F1E8FB>>
+  :[MS] Write frames archive and MP4 (temp files, atomic rename); <<#FFF4DB>>
+  :[DB] BEGIN, INSERT media_asset (frames_archive, result_video), UPDATE status done (video, frames, frame_count) WHERE status running AND locked_by me; <<#FFF4DB>>
+  if (UPDATE affected exactly 1 row?) then (yes)
+    :[DB] COMMIT, job is done and the result is available; <<#FFF4DB>>
+    :[SPA] S5 polling shows Done, "View result" opens S6; <<#E3F0FB>>
+  else (no: cancelled or reaped meanwhile)
+    :[DB] ROLLBACK, no video or frames row remains; <<#FFF4DB>>
+    :[MS] Delete the just written frames archive and MP4; <<#FFF4DB>>
+  endif
+  stop
+case (B  Worker crashed or stalled: maintenance task)
+  :[MT] Find running jobs whose heartbeat_at is older than the threshold; <<#E6F4EA>>
+  :[DB] UPDATE status failed, error_code worker_lost WHERE status running AND heartbeat stale; <<#FFF4DB>>
+  :[SPA] S5 shows the failed state with a clear message, no automatic retry; <<#E3F0FB>>
+  note right: A late result from the "dead" worker fails its conditional UPDATE and is discarded
+  stop
+case (C  User cancels)
+  :[SPA] Confirm "Cancel generation"; <<#E3F0FB>>
+  :[API] Check session and ownership; <<#E6F4EA>>
+  :[DB] UPDATE status cancelled WHERE id AND owner_id AND status IN (queued, running); <<#FFF4DB>>
+  if (Affected 1 row?) then (yes)
+    :[API] 200, job is terminal; the worker notices at its next heartbeat; <<#E6F4EA>>
+  else (no: already done, failed or cancelled)
+    :[API] 409 with the current status; <<#E6F4EA>>
+  endif
+  stop
+endswitch
+legend right
+  Box colour = layer: blue SPA, green API/maintenance (MT), amber DB or media store (MS), purple GPU worker (W).
+  Terminal states (done, failed, cancelled) are never updated again; each UPDATE is guarded by "WHERE status = expected".
+  Timestamps use clock_timestamp(), not now() (finding F-01).
+endlegend
+@enduml

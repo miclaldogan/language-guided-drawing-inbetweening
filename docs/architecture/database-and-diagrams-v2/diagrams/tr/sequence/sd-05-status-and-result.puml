@@ -1,0 +1,72 @@
+' DİL: Türkçe — OTOMATİK ÜRETİLDİ (tools/build_tr.py); elle düzenlemeyin, İngilizce kaynak ve tools/i18n_tr.py esastır.
+@startuml sd-05-status-and-result
+!include ../../_style/cue.iuml
+skinparam sequenceArrowThickness 1.2
+autonumber "<b>00"
+title SD-5  Durum yoklama, sonucu oynatma ve indirme — yetkili (FR-02, FR-07, FR-08, FR-09, FR-10, NFR-01)
+participant "React SPA" as SPA #E3F0FB
+participant "FastAPI" as API #E6F4EA
+database "PostgreSQL" as DB #FFF4DB
+participant "Medya deposu" as MS #FFF4DB
+
+== Kitaplık (S2) ==
+SPA -> API : GET /jobs?limit=20&cursor
+API -> DB : oturum çözme (SD-1), sonra\nSELECT jobs WHERE owner_id = ben\nAND (created_at, id) < imleç ORDER BY created_at DESC, id DESC
+DB --> API : yalnız kendi işleri
+API --> SPA : 200 liste (durum, küçük resim kimliği, created_at)
+note right of API : Başka kullanıcıların işleri sonuçta asla görünmez.
+
+== Durum (S5): queued ya da running iken kısa aralıklı yoklama ==
+loop 2-5 sn'de bir, yalnızca durum queued ya da running iken
+  SPA -> API : GET /jobs/{id}
+  API -> DB : SELECT job WHERE id AND owner_id = me
+  alt 0 satır (yok ya da başkasının)
+    API --> SPA : 404 Bulunamadı
+  else kendi işi
+    DB --> API : durum, zamanlar, hata, model_version, tohum
+    API --> SPA : 200 {status, ...}
+  end
+end
+note over SPA, API : SSE/WebSocket yerine yoklama seçildi: tek yönlü güncelleme,\ndurumsuz, vekil dostu, küçük ölçek (yeni gereksinim yok).
+
+alt status = failed
+  SPA --> SPA : error_message ve iş kimliğini göster (S5)
+else status = cancelled
+  SPA --> SPA : iptal durumunu göster
+else status = done
+  == Sonuç (S6): oynatma ve indirme ==
+  SPA -> API : GET /jobs/{id}/video  (Range)
+  activate API
+  API -> DB : SELECT job + video asset WHERE id AND owner_id = me AND status = done
+  alt bulunamadı ya da başkasının
+    API --> SPA : 404
+  else kendi işi ve done
+    DB --> API : storage_key, content_type, size
+    API -> MS : open(storage_key, range)
+    alt dosya yok
+      MS --> API : bulunamadı
+      API --> SPA : 404/500 "video unavailable" (günlük; iş kaydı değişmez)
+    else akıtıldı
+      MS --> API : bytes
+      API --> SPA : 206 video/mp4 (Cache-Control: private)
+    end
+  end
+  deactivate API
+  SPA -> API : GET /jobs/{id}/frames/{n}  (kare gezinme, n = 1..frame_count)
+  API -> DB : SELECT job + frames asset WHERE id AND owner_id = me AND status = done
+  alt bulunamadı, başkasının ya da n aralık dışı
+    API --> SPA : 404
+  else kare mevcut
+    API -> MS : open(kare arşivi), n numaralı PNG'yi oku
+    alt arşiv yok
+      MS --> API : bulunamadı
+      API --> SPA : 404/500 "frame unavailable" (günlük; iş kaydı değişmez)
+    else okundu
+      MS --> API : PNG baytları
+      API --> SPA : 200 image/png (Cache-Control: private)
+    end
+  end
+  SPA -> API : GET /jobs/{id}/video?download=1
+  note right of API : Aynı yetkilendirme yolu;\nContent-Disposition: attachment. Depo anahtarları ve yolları\ntarayıcıya asla döndürülmez.
+end
+@enduml

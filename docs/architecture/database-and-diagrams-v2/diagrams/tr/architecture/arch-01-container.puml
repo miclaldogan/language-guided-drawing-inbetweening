@@ -1,0 +1,76 @@
+' DİL: Türkçe — OTOMATİK ÜRETİLDİ (tools/build_tr.py); elle düzenlemeyin, İngilizce kaynak ve tools/i18n_tr.py esastır.
+@startuml arch-01-container
+!include ../../_style/cue.iuml
+skinparam linetype polyline
+hide stereotype
+skinparam rectangle {
+  RoundCorner 8
+}
+skinparam rectangle<<user>> {
+  BackgroundColor C_USER_BG
+  BorderColor C_USER_BD
+}
+skinparam rectangle<<app>> {
+  BackgroundColor C_APP_BG
+  BorderColor C_APP_BD
+}
+skinparam rectangle<<ai>> {
+  BackgroundColor C_AI_BG
+  BorderColor C_AI_BD
+}
+skinparam database {
+  BackgroundColor C_DATA_BG
+  BorderColor C_DATA_BD
+}
+skinparam storage {
+  BackgroundColor C_DATA_BG
+  BorderColor C_DATA_BD
+}
+skinparam actor {
+  BackgroundColor C_USER_BG
+  BorderColor C_USER_BD
+}
+
+title Cue — Sistem Mimarisi (C4 Container görünümü)\nSenkron istekler düz çizgi; asenkron (veritabanı aracılı) işler kesikli çizgidir
+
+actor "Kayıtlı Kullanıcı" as U
+
+rectangle "Kullanıcı cihazı — tarayıcı (güven sınırı dışında)" as DEV #FFFFFF {
+  rectangle "React SPA\n6 ekran" <<user>> as SPA
+}
+
+rectangle "Uygulama sunucusu — Docker Compose (güven sınırı: dışarıdan yalnızca HTTPS)" as HOST #FFFFFF {
+  rectangle "Ters vekil (reverse proxy)\nTLS sonlandırma" as PX #EDF2F7;line:4A5568
+  rectangle "FastAPI arka uç\nkimlik doğrulama, sahiplik denetimi, doğrulama,\niş gönderme, medya akıtma" <<app>> as API
+  database "PostgreSQL 18\nkullanıcı, oturum, iş (kuyruk),\nmedya meta verisi, model sürümleri" as DB
+  storage "Medya deposu\nMediaStore arayüzü arkasında dosya birimi\nçizimler, kare arşivi, MP4, küçük resimler" as MS
+  rectangle "Bakım işleri\ntakılı iş denetimi, sahipsiz dosya süpürücü,\noturum temizliği" <<app>> as MT
+}
+
+rectangle "GPU sunucusu — işçi tarafı (yerel akademik dağıtımda uygulama sunucusuyla aynı makine)" as GPU #FFFFFF {
+  rectangle "Plan çözümleyici\nyerel LLM (isteğe bağlı) +\nkural tabanlı doğrulayıcı" <<ai>> as PLN
+  rectangle "GPU işçisi\niş kapar, üretimi çalıştırır,\nMP4 + iş durumunu yazar" <<ai>> as W
+  rectangle "Cue üretici\nToonCrafter (dondurulmuş) + LoRA\n+ plan modülü (önerilen)" <<ai>> as MOD
+}
+
+U --> SPA : kullanır
+SPA --> PX : HTTPS (JSON, multipart yükleme,\naralık istekleri)
+PX --> API
+API --> DB : SQL (rol cue_api)
+API --> MS : put / open / delete (yaz / aç / sil)
+API --> PLN : plan önizleme\n(senkron, yalnız\nkomut verilmişse)
+W ..> DB : yokla ve iş kap\nSELECT … FOR UPDATE SKIP LOCKED\n(rol cue_worker)
+W --> MS : çizimleri oku,\nMP4 yaz
+W --> MOD : çıkarım çalıştır
+MT --> DB : rol cue_maintenance
+MT --> MS : sahipsizleri sil
+
+legend right
+  Renkler: mavi = kullanıcı/ön yüz, yeşil = API/uygulama,
+  amber = veritabanı/depolama, mor = yapay zekâ/GPU, gri = altyapı.
+  Mesaj aracısı (broker) yok: iş kuyruğu animation_job tablosudur (PostgreSQL).
+  Tarayıcı veritabanı veya medya deposuyla doğrudan konuşmaz.
+  GPU işçisinin API uç noktası yoktur; yalnızca veritabanını yoklar, medyayı okur/yazar.
+  Plan çözümleyicinin yeri (GPU sunucusu / API süreci) açık bir uygulama kararıdır (D-18).
+endlegend
+@enduml

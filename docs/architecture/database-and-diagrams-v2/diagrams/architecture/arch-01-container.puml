@@ -1,0 +1,75 @@
+@startuml arch-01-container
+!include ../_style/cue.iuml
+skinparam linetype polyline
+hide stereotype
+skinparam rectangle {
+  RoundCorner 8
+}
+skinparam rectangle<<user>> {
+  BackgroundColor C_USER_BG
+  BorderColor C_USER_BD
+}
+skinparam rectangle<<app>> {
+  BackgroundColor C_APP_BG
+  BorderColor C_APP_BD
+}
+skinparam rectangle<<ai>> {
+  BackgroundColor C_AI_BG
+  BorderColor C_AI_BD
+}
+skinparam database {
+  BackgroundColor C_DATA_BG
+  BorderColor C_DATA_BD
+}
+skinparam storage {
+  BackgroundColor C_DATA_BG
+  BorderColor C_DATA_BD
+}
+skinparam actor {
+  BackgroundColor C_USER_BG
+  BorderColor C_USER_BD
+}
+
+title Cue — System Architecture (C4 Container view)\nSynchronous requests are solid; asynchronous (database-mediated) work is dashed
+
+actor "Registered User" as U
+
+rectangle "User device — browser (outside trust boundary)" as DEV #FFFFFF {
+  rectangle "React SPA\n6 screens" <<user>> as SPA
+}
+
+rectangle "Application host — Docker Compose (trust boundary: HTTPS only from outside)" as HOST #FFFFFF {
+  rectangle "Reverse proxy\nTLS termination" as PX #EDF2F7;line:4A5568
+  rectangle "FastAPI backend\nauth, ownership checks, validation,\njob submission, media streaming" <<app>> as API
+  database "PostgreSQL 18\nusers, sessions, jobs (queue),\nmedia metadata, model versions" as DB
+  storage "Media store\nfile volume behind MediaStore interface\ndrawings, frames archive, MP4, thumbnails" as MS
+  rectangle "Maintenance tasks\nstale-job reaper, orphan sweeper,\nsession cleanup" <<app>> as MT
+}
+
+rectangle "GPU host — worker side (same machine as the application host in local academic deployment)" as GPU #FFFFFF {
+  rectangle "Plan interpreter\nlocal LLM (optional) +\nrule-based validator" <<ai>> as PLN
+  rectangle "GPU worker\nclaims jobs, runs generation,\nwrites MP4 + job state" <<ai>> as W
+  rectangle "Cue generator\nToonCrafter (frozen) + LoRA\n+ plan module (proposed)" <<ai>> as MOD
+}
+
+U --> SPA : uses
+SPA --> PX : HTTPS (JSON, multipart upload,\nrange requests)
+PX --> API
+API --> DB : SQL (role cue_api)
+API --> MS : put / open / delete
+API --> PLN : preview plan\n(synchronous, only if\ninstruction given)
+W ..> DB : poll & claim job\nSELECT … FOR UPDATE SKIP LOCKED\n(role cue_worker)
+W --> MS : read drawings,\nwrite MP4
+W --> MOD : run inference
+MT --> DB : role cue_maintenance
+MT --> MS : delete orphans
+
+legend right
+  Colours: blue = user/front end, green = API/application,
+  amber = database/storage, purple = AI/GPU, grey = infrastructure.
+  No message broker: the job queue is the animation_job table (PostgreSQL).
+  The browser never talks to the database or media store directly.
+  The GPU worker has no API endpoint; it only polls the database and reads/writes media.
+  Plan interpreter location (GPU host vs API process) is an open implementation decision (D-18).
+endlegend
+@enduml

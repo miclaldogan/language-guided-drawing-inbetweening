@@ -1,0 +1,55 @@
+@startuml sd-04b-job-execution
+!include ../_style/cue.iuml
+skinparam sequenceArrowThickness 1.2
+autonumber "<b>00"
+title SD-4b  Animation generation — asynchronous execution by the GPU worker (FR-06, FR-07, FR-10, NFR-02, NFR-03)
+participant "GPU worker" as W #F1E8FB
+participant "Cue generator\n(model)" as M #F1E8FB
+database "PostgreSQL" as DB #FFF4DB
+participant "Media store" as MS #FFF4DB
+
+loop worker main loop
+  W -> DB : UPDATE animation_job SET status=running, started_at, heartbeat_at, locked_by, model_version_id\nWHERE id = (SELECT id ... status=queued ORDER BY created_at FOR UPDATE SKIP LOCKED LIMIT 1) RETURNING *
+  DB --> W : claimed job or nothing
+  note right of DB : Statement commits immediately.\nNo transaction stays open while the GPU runs.
+  alt nothing claimed
+    W -> W : sleep, poll again
+  else job claimed
+    W -> MS : read start and end drawings
+    alt a file is missing
+      W -> DB : UPDATE ... status=failed, error_code=input_missing\nWHERE id AND status=running AND locked_by=me
+    else files readable
+      W ->> W : start heartbeat task (independent of inference)
+      W -> M : load model_version weights, generate up to 16 frames (seed, plan)
+      activate M
+      group heartbeat task (concurrent, every few seconds)
+        W -> DB : UPDATE heartbeat_at WHERE id AND status=running AND locked_by=me
+        DB --> W : rowcount
+        note right of W : rowcount 0 => cancelled or reaped:\nabort inference, discard output
+      end
+      alt model error
+        M --> W : error
+        W -> DB : UPDATE status=failed, error_code, error_message\nWHERE id AND status=running AND locked_by=me
+      else frames ready
+        M --> W : frames
+        deactivate M
+        W -> W : set first/last frame = inputs (integrity), pack frames (ZIP of PNG), encode MP4
+        W -> MS : put(frames.zip: tmp -> atomic rename)
+        W -> MS : put(video.mp4: tmp -> atomic rename)
+        note right of MS : Both the frames archive (up to 16 PNG) and the MP4 are\nstored (decision D-09 resolved, proposal Figure 1).\nBoth files exist before the single DB transaction.
+        W -> DB : BEGIN
+        W -> DB : INSERT media_asset(frames_archive); INSERT media_asset(result_video)
+        W -> DB : UPDATE status=done, finished_at, video_asset_id,\nframes_asset_id, frame_count WHERE id AND status=running AND locked_by=me
+        alt exactly 1 row updated
+          W -> DB : COMMIT
+        else 0 rows (cancelled or reaped meanwhile)
+          W -> DB : ROLLBACK
+          W -> MS : delete the just written frames archive and MP4
+        end
+      end
+    end
+  end
+end
+
+note over W, MS : Users observe these state changes by polling the API (see SD-5); cancellation and worker loss are covered by SD-6.
+@enduml

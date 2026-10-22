@@ -1,0 +1,48 @@
+' DİL: Türkçe — OTOMATİK ÜRETİLDİ (tools/build_tr.py); elle düzenlemeyin, İngilizce kaynak ve tools/i18n_tr.py esastır.
+@startuml conceptual-erd
+!include ../../_style/cue.iuml
+hide circle
+skinparam ranksep 110
+skinparam nodesep 50
+left to right direction
+title Cue — Kavramsal ERD (iş görünümü)\nTeknolojiden bağımsız, veri tipi yok
+
+entity "Kullanıcı" as U #E6F4EA;line:2F855A {
+  e-posta
+  kimlik bilgisi (özetlenmiş)
+}
+entity "Oturum" as S #E6F4EA;line:2F855A {
+  geçerlilik süresi
+}
+entity "Medya Varlığı" as M #FFF4DB;line:B7791F {
+  rol: başlangıç çizimi, bitiş çizimi,\nsonuç videosu, kare arşivi, küçük resim
+  içerik türü, boyut, ölçüler
+}
+entity "Animasyon İşi" as J #E6F4EA;line:2F855A {
+  durum (queued … cancelled)
+  isteğe bağlı İngilizce komut
+  isteğe bağlı onaylı Hareket Planı *
+  tohum, parametreler, zamanlar, hata
+}
+entity "Model Sürümü" as V #F1E8FB;line:6B46C1 {
+  ad, sürüm, ağırlık parmak izi
+  planı destekler mi?, etkin mi?
+}
+
+U ||--o{ S : "açar"
+U ||--o{ J : "gönderir"
+U ||--o{ M : "sahiptir"
+M ||--o| J : "başlangıç çizimidir"
+M ||--o| J : "bitiş çizimidir"
+M |o--o| J : "sonuç videosudur"
+M |o--o| J : "kare arşividir"
+M |o--o| J : "küçük resimdir"
+V |o--o{ J : "üretti"
+
+legend right
+  * Hareket Planı işin içine gömülü isteğe bağlı bir değerdir (sürümlü JSON); ayrı bir varlık değildir.
+  Bir işin tam iki girdi çizimi, en çok bir sonuç videosu ve bir kare arşivi vardır; bir varlık en çok bir işe aittir.
+  İki çizim de iş sahibine ait olmalıdır. Yüklenen çizimler iş oluşmadan önce de var olabilir.
+  Mantıksal ve fiziksel ayrıntı birlikte physical-erd diyagramında gösterilir (bkz. reports/05).
+endlegend
+@enduml

@@ -1,0 +1,43 @@
+' DİL: Türkçe — OTOMATİK ÜRETİLDİ (tools/build_tr.py); elle düzenlemeyin, İngilizce kaynak ve tools/i18n_tr.py esastır.
+@startuml sd-04a-job-submission
+!include ../../_style/cue.iuml
+skinparam sequenceArrowThickness 1.2
+autonumber "<b>00"
+title SD-4a  Animasyon üretimi — gönderim (senkron, kısa) (FR-06, FR-10, NFR-03)
+participant "React SPA" as SPA #E3F0FB
+participant "FastAPI" as API #E6F4EA
+participant "Medya deposu" as MS #FFF4DB
+database "PostgreSQL" as DB #FFF4DB
+
+SPA -> API : POST /jobs {start_asset_id, end_asset_id,\ncommand?, plan?, idempotency_key}
+activate API
+API -> API : oturum; plan varsa: şemayı doğrula, komutu zorunlu kıl;\nkomut varsa: onaylı plan iste; rastgele tohum çek
+API -> API : başlangıç çiziminden küçük resim üret (iş parçacığı havuzu)
+API -> MS : put(thumbnail)
+note right : küçük resim hatası tolere edilir:\niş onsuz oluşturulur (karar D-13)
+API -> DB : BEGIN
+API -> DB : SELECT pg_advisory_xact_lock(owner, idempotency_key)
+API -> DB : INSERT media_asset(thumbnail)
+API -> DB : INSERT animation_job(status=queued, ...)\nON CONFLICT (owner_id, idempotency_key) DO NOTHING RETURNING id
+alt bileşik FK / benzersizlik ihlali (başkasının ya da zaten bağlı varlık)
+  DB --> API : hata
+  API -> DB : ROLLBACK (küçük resim satırı da atılır)
+  API -> MS : küçük resim dosyasını sil
+  API --> SPA : 404 ya da 422, iş yok
+else anahtar daha önce kullanılmış
+  DB --> API : satır dönmedi
+  API -> DB : ROLLBACK (yeni küçük resim satırı kalmamalı)
+  API -> MS : yeni küçük resim dosyasını sil
+  API -> DB : SELECT var olan iş (sahip, anahtar)
+  API --> SPA : 202 var olan iş kimliği (idempotent)
+else yeni iş
+  DB --> API : job id
+  API -> DB : COMMIT
+  API --> SPA : 202 Accepted {job_id}
+end
+deactivate API
+note over SPA, DB
+  İstek burada biter. GPU işi bu HTTP çağrısının PARÇASI DEĞİLDİR.
+  Yürütme veritabanı kuyruğu üzerinden asenkron sürer (SD-4b).
+end note
+@enduml

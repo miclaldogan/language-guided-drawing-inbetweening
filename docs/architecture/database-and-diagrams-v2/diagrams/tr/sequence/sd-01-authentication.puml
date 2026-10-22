@@ -1,0 +1,69 @@
+' DİL: Türkçe — OTOMATİK ÜRETİLDİ (tools/build_tr.py); elle düzenlemeyin, İngilizce kaynak ve tools/i18n_tr.py esastır.
+@startuml sd-01-authentication
+!include ../../_style/cue.iuml
+skinparam sequenceArrowThickness 1.2
+autonumber "<b>00"
+title SD-1  Kimlik doğrulama — kayıt, giriş, yetkili istek, çıkış (FR-01, FR-02, NFR-01)
+actor "Kullanıcı" as U #E3F0FB
+participant "React SPA" as SPA #E3F0FB
+participant "FastAPI" as API #E6F4EA
+database "PostgreSQL" as DB #FFF4DB
+
+== Kayıt ==
+U -> SPA : e-posta + parola gir
+SPA -> API : POST /auth/register {email, password}
+activate API
+API -> API : doğrula; e-postayı normalize et; Argon2id özeti
+API -> DB : BEGIN; INSERT app_user; INSERT auth_session(token_hash); COMMIT
+alt benzersizlik ihlali (e-posta kayıtlı)
+  DB --> API : error 23505 (ROLLBACK)
+  API --> SPA : 409 "Could not create account"
+else oluşturuldu
+  DB --> API : ok
+  API --> SPA : 201 + Set-Cookie (HttpOnly, Secure, SameSite)
+end
+deactivate API
+
+== Giriş ==
+SPA -> API : POST /auth/login {email, password}
+activate API
+alt hız sınırı aşıldı
+  API --> SPA : 429
+else sınır içinde
+  API -> DB : SELECT user BY email
+  DB --> API : kullanıcı satırı ya da yok
+  API -> API : Argon2id doğrula (kullanıcı yoksa sahte özet)
+  alt yanlış bilgi
+    API --> SPA : 401 "Email or password is incorrect."
+  else doğru
+    API -> API : yeni 256 bit belirteç (yeniden kullanım yok)
+    API -> DB : INSERT auth_session(SHA-256(token), expires_at)
+    API --> SPA : 200 + Set-Cookie
+    SPA --> U : kitaplığı göster (S2)
+  end
+end
+deactivate API
+
+== Yetkili istek, yetkisiz erişim ==
+SPA -> API : GET /jobs/{id}  (cookie)
+activate API
+API -> DB : SELECT session WHERE token_hash AND expires_at > now()
+alt geçerli oturum yok
+  API --> SPA : 401 + çerezi temizle
+  SPA --> U : S1'e yönlendir
+else geçerli oturum
+  API -> DB : SELECT job WHERE id AND owner_id = session user
+  alt 0 satır (yok ya da başkasının)
+    API --> SPA : 404 Bulunamadı
+  else kendi işi
+    API --> SPA : 200 job
+  end
+end
+deactivate API
+
+== Çıkış ==
+SPA -> API : POST /auth/logout
+API -> DB : DELETE auth_session WHERE token_hash
+API --> SPA : 204 + çerezi temizle
+note over API, DB : Eski çerez artık "geçerli oturum yok" adımında reddedilir (test: T11)
+@enduml

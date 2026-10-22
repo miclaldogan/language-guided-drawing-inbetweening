@@ -1,0 +1,53 @@
+@startuml sm-01-job-state-machine
+!include ../_style/cue.iuml
+hide empty description
+skinparam state {
+  BackgroundColor #FFFFFF
+  BorderColor C_EXT_BD
+  FontSize 12
+  AttributeFontSize 11
+}
+skinparam state<<active>> {
+  BackgroundColor C_AI_BG
+  BorderColor C_AI_BD
+}
+skinparam state<<terminalok>> {
+  BackgroundColor C_APP_BG
+  BorderColor C_APP_BD
+}
+skinparam state<<terminalbad>> {
+  BackgroundColor C_EXT_BG
+  BorderColor C_EXT_BD
+}
+title Cue — Generation Job State Machine (animation_job.status, FR-07, NFR-03)\nEvery transition is a conditional UPDATE "WHERE status = <expected state>"
+
+state "queued" as Q <<active>> : INSERT by API submit (idempotent)\nstarted_at, finished_at, video, frames, locked_by = NULL
+state "running" as R <<active>> : set atomically by the worker claim\nstarted_at, locked_by, heartbeat_at, model_version_id NOT NULL\nfinished_at, video, frames = NULL
+state "done" as D <<terminalok>> : terminal\nvideo_asset_id, frames_asset_id, frame_count,\nmodel_version_id, finished_at NOT NULL\nerror_code = NULL
+state "failed" as F <<terminalbad>> : terminal\nfinished_at, error_code, error_message NOT NULL\nvideo, frames = NULL
+state "cancelled" as C <<terminalbad>> : terminal\nfinished_at NOT NULL, video, frames = NULL, error_code = NULL
+
+[*] --> Q : API: INSERT animation_job
+Q --> R : Worker claim\n[row free (SKIP LOCKED) and active model_version exists]
+R --> R : Worker heartbeat\n[locked_by = me]
+R --> D : Worker completion\n[locked_by = me]\nINSERT frames archive + video, UPDATE in ONE transaction
+R --> F : Worker error\n[locked_by = me]
+R --> F : Maintenance reaper\n[heartbeat stale] error_code = worker_lost
+Q --> F : Worker finds invalid input\n(input_missing, model_unavailable)
+Q --> C : API cancel [owner = caller]
+R --> C : API cancel [owner = caller]
+D --> [*]
+F --> [*]
+C --> [*]
+
+note bottom of D
+  Terminal states are final: no UPDATE can leave them
+  (all guards test status), so a late worker result is rejected (0 rows) and its media is discarded.
+end note
+legend right
+  Matches database CHECK constraints animation_job_state_queued / running / done / failed / cancelled
+  and animation_job_status_valid (verified by database/validation tests).
+  Colours: purple = active (non-terminal), green = successful terminal, grey = failed or cancelled terminal.
+  Not drawn because not committed: retry, pause, draft.
+endlegend
+@enduml

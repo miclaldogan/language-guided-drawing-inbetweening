@@ -1,0 +1,102 @@
+' DİL: Türkçe — OTOMATİK ÜRETİLDİ (tools/build_tr.py); elle düzenlemeyin, İngilizce kaynak ve tools/i18n_tr.py esastır.
+@startuml physical-erd
+!include ../../_style/cue.iuml
+hide circle
+skinparam ranksep 150
+skinparam nodesep 45
+left to right direction
+
+title Cue — Fiziksel ERD (PostgreSQL 18)\ndatabase/migrations/*.up.sql dosyalarından üretildi
+
+entity "app_user" as app_user #E6F4EA;line:2F855A {
+  * **id** : uuid <<PK>>
+  --
+  * email : text <<UQ>>
+  * password_hash : text
+  * created_at : timestamptz
+}
+
+entity "auth_session" as auth_session #E6F4EA;line:2F855A {
+  * **id** : uuid <<PK>>
+  --
+  * user_id : uuid <<FK>>
+  * token_hash : bytea <<UQ>>
+  * created_at : timestamptz
+  * last_seen_at : timestamptz
+  * expires_at : timestamptz
+}
+
+entity "model_version" as model_version #F1E8FB;line:6B46C1 {
+  * **id** : uuid <<PK>>
+  --
+  * name : text
+  * version_label : text
+  * weights_sha256 : text
+    code_commit : text
+    training_run_ref : text
+  * supports_plan : boolean
+  * inference_defaults : jsonb
+  * is_active : boolean
+  * created_at : timestamptz
+}
+
+entity "media_asset" as media_asset #FFF4DB;line:B7791F {
+  * **id** : uuid <<PK>>
+  --
+  * owner_id : uuid <<FK>>
+  * kind : text
+  * storage_key : text <<UQ>>
+  * content_type : text
+  * byte_size : bigint
+    width : integer
+    height : integer
+  * sha256 : text
+  * created_at : timestamptz
+}
+
+entity "animation_job" as animation_job #E6F4EA;line:2F855A {
+  * **id** : uuid <<PK>>
+  --
+  * owner_id : uuid <<FK>>
+  * idempotency_key : uuid
+  * status : text
+    command_text : text
+    plan : jsonb
+    plan_schema_version : smallint
+    plan_approved_at : timestamptz
+  * seed : bigint
+  * inference_params : jsonb
+  * start_asset_id : uuid <<FK>>
+  * end_asset_id : uuid <<FK>>
+    thumbnail_asset_id : uuid <<FK>>
+    video_asset_id : uuid <<FK>>
+    frames_asset_id : uuid <<FK>>
+    frame_count : smallint
+    model_version_id : uuid <<FK>>
+    locked_by : text
+    heartbeat_at : timestamptz
+  * created_at : timestamptz
+    started_at : timestamptz
+    finished_at : timestamptz
+    error_code : text
+    error_message : text
+}
+
+app_user ||--o{ auth_session : "user_id"
+app_user ||--o{ media_asset : "owner_id"
+media_asset ||--o| animation_job : "end_asset_id"
+media_asset |o--o| animation_job : "frames_asset_id"
+model_version |o--o{ animation_job : "model_version_id"
+app_user ||--o{ animation_job : "owner_id"
+media_asset ||--o| animation_job : "start_asset_id"
+media_asset |o--o| animation_job : "thumbnail_asset_id"
+media_asset |o--o| animation_job : "video_asset_id"
+
+legend right
+  * = NOT NULL (boş olamaz)
+  PK/FK/UQ = birincil / yabancı / tek sütunlu benzersiz anahtar
+  media_asset -> animation_job ilişkileri bileşik FK'dir: (<etiket>, owner_id) -> media_asset(id, owner_id);
+  iş ile varlıkları aynı kullanıcıya ait olmak zorundadır. Silme: auth_session CASCADE; diğerleri RESTRICT/NO ACTION.
+  Ayrıntı: database/data-dictionary.md (sütunlar, kısıtlar), database/indexes.md (indeksler)
+endlegend
+@enduml

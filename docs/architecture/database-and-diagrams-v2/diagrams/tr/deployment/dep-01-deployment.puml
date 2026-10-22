@@ -1,0 +1,104 @@
+' DİL: Türkçe — OTOMATİK ÜRETİLDİ (tools/build_tr.py); elle düzenlemeyin, İngilizce kaynak ve tools/i18n_tr.py esastır.
+@startuml dep-01-deployment
+!include ../../_style/cue.iuml
+skinparam linetype polyline
+hide stereotype
+skinparam node {
+  BackgroundColor #FFFFFF
+  BorderColor C_EXT_BD
+  FontSize 12
+}
+skinparam rectangle {
+  RoundCorner 8
+}
+skinparam rectangle<<user>> {
+  BackgroundColor C_USER_BG
+  BorderColor C_USER_BD
+}
+skinparam rectangle<<app>> {
+  BackgroundColor C_APP_BG
+  BorderColor C_APP_BD
+}
+skinparam rectangle<<ai>> {
+  BackgroundColor C_AI_BG
+  BorderColor C_AI_BD
+}
+skinparam rectangle<<ext>> {
+  BackgroundColor C_EXT_BG
+  BorderColor C_EXT_BD
+}
+skinparam database {
+  BackgroundColor C_DATA_BG
+  BorderColor C_DATA_BD
+}
+skinparam storage {
+  BackgroundColor C_DATA_BG
+  BorderColor C_DATA_BD
+}
+title Cue — Dağıtım görünümü\nA: yerel akademik dağıtım (Docker Compose, taahhüt)   B: gelecekteki yönetilen dağıtım (büyüme yolu, MVP'nin PARÇASI DEĞİL)
+
+node "A  Yerel akademik dağıtım — NVIDIA GPU'lu tek makine, Docker Compose" as A {
+  rectangle "Tarayıcı (kullanıcı cihazı)" <<user>> as Abr
+  node "Compose ağı: genel (yalnız vekil yayınlanır)" as Apub {
+    rectangle "ters vekil (reverse proxy)\nHTTPS, React derlemesini sunar" <<ext>> as Apx
+  }
+  node "Compose ağı: iç (yayınlanan port yok)" as Aint {
+    rectangle "api (FastAPI)\nrol cue_api" <<app>> as Aapi
+    rectangle "migrate (tek seferlik)\nrol cue_migrator" <<app>> as Amig
+    rectangle "bakım (maintenance)\nrol cue_maintenance" <<app>> as Amt
+    database "db (PostgreSQL 18)\nbirim: pgdata" as Adb
+    storage "medya birimi\n(MediaStore)" as Ams
+    rectangle "işçi (GPU)\nrol cue_worker\nGPU geçişi (passthrough)" <<ai>> as Aw
+    rectangle "plan çözümleyici\n(yerel LLM + doğrulayıcı)" <<ai>> as Apl
+    storage "model ağırlıkları birimi\n(salt okunur)" as Amw
+  }
+  rectangle "sırlar: .env / Docker secrets\n(DB rol parolaları, oturum pepper'ı)" <<ext>> as Asec
+  storage "yedek hedefi (Compose sunucusunun dışında)\npg_dump + medya kopyası, önce DB" as Abk
+}
+
+node "B  Gelecekteki yönetilen dağıtım (örnekleyici, taahhüt değil)" as B {
+  rectangle "Tarayıcı" <<user>> as Bbr
+  rectangle "Statik barındırma / CDN\nReact derlemesi" <<user>> as Bcdn
+  rectangle "Yük dengeleyici / TLS" <<ext>> as Blb
+  rectangle "API hizmeti\n(1..n örnek)" <<app>> as Bapi
+  database "Yönetilen PostgreSQL\n(yedek, PITR)" as Bdb
+  storage "Nesne depolama\n(özel kova, imzalı URL)" as Bos
+  rectangle "GPU işçi havuzu\n(1..n, aynı kapma protokolü)" <<ai>> as Bw
+  rectangle "Sır yöneticisi" <<ext>> as Bsec
+}
+
+Abr --> Apx : HTTPS
+Apx --> Aapi : /api
+Aapi --> Adb : SQL
+Aapi --> Ams : dosyalar
+Aapi --> Apl : plan önizleme
+Aw ..> Adb : işleri yokla ve kap
+Aw --> Ams : çizimler, MP4
+Aw --> Amw
+Amt --> Adb
+Amt --> Ams
+Amig --> Adb : şema migration'ları\n(api ve işçi başlamadan önce)
+Asec .. Aapi
+Adb ..> Abk : günlük döküm
+Ams ..> Abk : dökümden sonra kopya
+
+Bbr --> Bcdn
+Bbr --> Blb : HTTPS
+Blb --> Bapi
+Bapi --> Bdb
+Bapi --> Bos
+Bw ..> Bdb : işleri yokla ve kap
+Bw --> Bos
+Bsec .. Bapi
+Bsec .. Bw
+
+legend right
+  A taahhüt edilen MVP'dir. B yalnızca aynı bileşenlerin ve aynı veritabanı kuyruğunun örnek ekleyerek ölçeklendiğini gösterir
+  (daha çok API kopyası, daha çok GPU işçisi); mesaj aracısı ya da yeni veri modeli gerekmez.
+  B'deki farklar: nesne depolama medya birimini değiştirir (yalnız MediaStore gerçeklemesi değişir),
+  yönetilen PostgreSQL kapsayıcının yerine geçer, sahiplik denetiminden sonra kısa ömürlü imzalı URL verilir.
+  Burada hiçbir dağıtımın parçası değil: faturalama, abonelik, organizasyon, yönetici paneli, Kubernetes.
+  Güven sınırları: tarayıcı -> vekil tek genel yoldur; db, medya ve işçinin yayınlanan portu yoktur.
+  Başlatma sırası (A): rolleri ve giriş hesaplarını sağla (süper kullanıcı, bir kez) -> migrate (DDL sahibi, CREATEROLE yok) -> api, işçi, bakım.
+endlegend
+@enduml

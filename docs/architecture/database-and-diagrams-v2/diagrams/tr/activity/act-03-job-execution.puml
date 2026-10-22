@@ -1,0 +1,66 @@
+' DİL: Türkçe — OTOMATİK ÜRETİLDİ (tools/build_tr.py); elle düzenlemeyin, İngilizce kaynak ve tools/i18n_tr.py esastır.
+@startuml act-03-job-execution
+!include ../../_style/cue.iuml
+title Cue — İş Yürütme ve Hata Akışı (FR-06, FR-07, FR-10, NFR-03)\nanimation_job üzerinde üç bağımsız tetikleyici çalışır; her durum değişikliği koşullu UPDATE'tir
+
+start
+switch (Tetikleyici)
+case (A  İş kuyrukta: GPU işçisi döngüsü)
+  repeat
+    :[W] Kapma: UPDATE … WHERE id = (SELECT … status queued FOR UPDATE SKIP LOCKED LIMIT 1) RETURNING; <<#F1E8FB>>
+    :[DB] Hemen commit, GPU çalışırken açık işlem kalmaz; <<#FFF4DB>>
+    backward:[W] Bekle, yeniden yokla; <<#F1E8FB>>
+  repeat while (İş kapıldı ve etkin model_version var mı?) is (hayır) not (evet)
+  :[DB] Satır artık running; locked_by, started_at, heartbeat_at ve model_version_id doldu; <<#FFF4DB>>
+  :[W] İki çizimi medya deposundan oku; <<#F1E8FB>>
+  if (İki dosya da okunabiliyor mu?) then (hayır)
+    :[DB] UPDATE status failed, error_code input_missing WHERE status running AND locked_by me; <<#FFF4DB>>
+    stop
+  else (evet)
+  endif
+  :[W] Kayıtlı model_version'ı yükle, üretimi çalıştır (en çok 16 kare), heartbeat bağımsız çalışır; <<#F1E8FB>>
+  if (Heartbeat UPDATE'i 0 satır etkiledi mi?) then (evet)
+    :[W] Durdur ve tüm kısmi çıktıyı at; <<#F1E8FB>>
+    stop
+  else (hayır)
+  endif
+  if (Model hatası ya da bellek yetersiz mi?) then (evet)
+    :[DB] UPDATE status failed, error_code, error_message WHERE status running AND locked_by me; <<#FFF4DB>>
+    note right: 0 satır = iş zaten iptal edilmiş ya da takılı sayılmış, hiçbir şey ezilmez
+    stop
+  else (hayır)
+  endif
+  :[W] İlk ve son kareyi girdi çizimlerine eşitle (bütünlük denetimi), kareleri paketle (ZIP), MP4 kodla; <<#F1E8FB>>
+  :[MS] Kare arşivini ve MP4'ü yaz (geçici dosyalar, atomik yeniden adlandırma); <<#FFF4DB>>
+  :[DB] BEGIN, INSERT media_asset (frames_archive, result_video), UPDATE status done (video, frames, frame_count) WHERE status running AND locked_by me; <<#FFF4DB>>
+  if (UPDATE tam 1 satır etkiledi mi?) then (evet)
+    :[DB] COMMIT, iş bitti ve sonuç kullanılabilir; <<#FFF4DB>>
+    :[SPA] S5 yoklaması Done gösterir, "View result" S6'yı açar; <<#E3F0FB>>
+  else (hayır: bu arada iptal edildi ya da takılı sayıldı)
+    :[DB] ROLLBACK, video ya da kare arşivi satırı kalmaz; <<#FFF4DB>>
+    :[MS] Az önce yazılan kare arşivini ve MP4'ü sil; <<#FFF4DB>>
+  endif
+  stop
+case (B  İşçi çöktü ya da takıldı: bakım işi)
+  :[MT] heartbeat_at değeri eşikten eski running işleri bul; <<#E6F4EA>>
+  :[DB] UPDATE status failed, error_code worker_lost WHERE status running AND heartbeat bayat; <<#FFF4DB>>
+  :[SPA] S5 başarısız durumu anlaşılır iletiyle gösterir, otomatik yeniden deneme yok; <<#E3F0FB>>
+  note right: "Ölü" sanılan işçinin geç sonucu koşullu UPDATE'te 0 satır görür ve atılır
+  stop
+case (C  Kullanıcı iptal eder)
+  :[SPA] "Cancel generation"ı onayla; <<#E3F0FB>>
+  :[API] Oturumu ve sahipliği denetle; <<#E6F4EA>>
+  :[DB] UPDATE status cancelled WHERE id AND owner_id AND status IN (queued, running); <<#FFF4DB>>
+  if (1 satır etkilendi mi?) then (evet)
+    :[API] 200, iş terminal durumda; işçi bir sonraki heartbeat'te fark eder; <<#E6F4EA>>
+  else (hayır: zaten done, failed ya da cancelled)
+    :[API] 409 ve güncel durum; <<#E6F4EA>>
+  endif
+  stop
+endswitch
+legend right
+  Kutu rengi = katman: mavi SPA, yeşil API/bakım (MT), amber DB ya da medya deposu (MS), mor GPU işçisi (W).
+  Terminal durumlar (done, failed, cancelled) bir daha güncellenmez; her UPDATE "WHERE status = beklenen durum" ile korunur.
+  Zaman damgalarında now() değil clock_timestamp() kullanılır (bulgu F-01).
+endlegend
+@enduml

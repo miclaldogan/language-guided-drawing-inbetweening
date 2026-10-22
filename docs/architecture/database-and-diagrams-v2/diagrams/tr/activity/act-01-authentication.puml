@@ -1,0 +1,89 @@
+' DİL: Türkçe — OTOMATİK ÜRETİLDİ (tools/build_tr.py); elle düzenlemeyin, İngilizce kaynak ve tools/i18n_tr.py esastır.
+@startuml act-01-authentication
+!include ../../_style/cue.iuml
+title Cue — Kimlik Doğrulama ve Oturum Akışı (FR-01, NFR-01)\nYetkisiz erişim ve hata dalları dâhil
+
+start
+switch (Kullanıcı niyeti)
+case (Korumalı sayfayı aç / API çağır)
+  :[SPA] Oturum çerezi ile istek gönder; <<#E3F0FB>>
+  if (Çerez var mı?) then (hayır)
+    :[API] 401 Yetkisiz; <<#E6F4EA>>
+    :[SPA] S1'e (Giriş) yönlendir; <<#E3F0FB>>
+    stop
+  else (evet)
+    :[API] Çerez belirtecinin SHA-256 özeti; <<#E6F4EA>>
+    :[DB] SELECT oturum WHERE token_hash\nAND expires_at > now(); <<#FFF4DB>>
+    if (Geçerli oturum var mı?) then (hayır)
+      :[API] 401 + çerezi temizle\n(süresi dolmuş, çıkış yapılmış ya da sahte ayırt edilemez); <<#E6F4EA>>
+      :[SPA] S1'e yönlendir; <<#E3F0FB>>
+      stop
+    else (evet)
+      if (Kaynak bu kullanıcıya ait mi?) then (hayır)
+        :[API] 404 Bulunamadı\n(varlığı belli edilmez); <<#E6F4EA>>
+        :[SPA] "Not found" göster; <<#E3F0FB>>
+        stop
+      else (evet)
+        :[API] İsteği karşıla; <<#E6F4EA>>
+        stop
+      endif
+    endif
+  endif
+case (Hesap oluştur)
+  :[SPA] E-posta + parola gönder; <<#E3F0FB>>
+  :[API] E-posta biçimini ve parola kuralını doğrula; <<#E6F4EA>>
+  if (Geçerli mi?) then (hayır)
+    :[API] 422 ve alan hataları; <<#E6F4EA>>
+    :[SPA] Hataları alanların altında göster; <<#E3F0FB>>
+    stop
+  else (evet)
+    :[API] E-postayı normalize et (NFKC, küçük harf); <<#E6F4EA>>
+    :[API] Parolayı özetle (Argon2id); <<#E6F4EA>>
+    :[DB] BEGIN, INSERT app_user,\nINSERT auth_session (belirteç özeti), COMMIT; <<#FFF4DB>>
+    if (E-postada benzersizlik ihlali var mı?) then (evet)
+      :[DB] ROLLBACK; <<#FFF4DB>>
+      :[API] 409 "Could not create account"; <<#E6F4EA>>
+      :[SPA] Form hatasını göster; <<#E3F0FB>>
+      stop
+    else (hayır)
+      :[API] Çerezi ayarla (HttpOnly, Secure, SameSite); <<#E6F4EA>>
+      :[SPA] S2'ye (kitaplık) git; <<#E3F0FB>>
+      stop
+    endif
+  endif
+case (Giriş yap)
+  :[SPA] E-posta + parola gönder; <<#E3F0FB>>
+  if (Hız sınırı aşıldı mı?) then (evet)
+    :[API] 429 Çok fazla deneme; <<#E6F4EA>>
+    :[SPA] Bekleme iletisini göster; <<#E3F0FB>>
+    stop
+  else (hayır)
+    :[DB] SELECT kullanıcı BY email; <<#FFF4DB>>
+    :[API] Argon2id özetini doğrula\n(kullanıcı yoksa sahte özet); <<#E6F4EA>>
+    if (Bilgiler doğru mu?) then (hayır)
+      :[API] Başarısız denemeyi say; <<#E6F4EA>>
+      :[API] 401 "Email or password is incorrect."; <<#E6F4EA>>
+      :[SPA] Genel form hatasını göster; <<#E3F0FB>>
+      stop
+    else (evet)
+      :[API] YENİ 256 bit belirteç üret\n(oturum sabitleme yok); <<#E6F4EA>>
+      :[DB] INSERT auth_session (belirtecin SHA-256 özeti); <<#FFF4DB>>
+      :[API] Çerezi ayarla (HttpOnly, Secure, SameSite); <<#E6F4EA>>
+      :[SPA] S2'ye (kitaplık) git; <<#E3F0FB>>
+      stop
+    endif
+  endif
+case (Çıkış yap)
+  :[SPA] "Log out"a tıkla; <<#E3F0FB>>
+  :[DB] DELETE auth_session WHERE token_hash; <<#FFF4DB>>
+  :[API] Çerezi temizle, 204; <<#E6F4EA>>
+  :[SPA] S1'i göster; <<#E3F0FB>>
+  stop
+endswitch
+legend right
+  Kutu rengi = adımı yapan katman:
+  mavi = SPA (tarayıcı), yeşil = API, amber = PostgreSQL.
+  Yetkisiz erişim: oturum yok/geçersiz → 401 → S1; oturum geçerli ama kaynak başkasının → 404.
+  Oturum belirtecinin yalnızca SHA-256 özeti saklanır. Hız sınırı süreç içidir (tek API örneği varsayımı).
+endlegend
+@enduml

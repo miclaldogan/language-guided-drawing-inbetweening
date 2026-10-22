@@ -1,0 +1,54 @@
+' DİL: Türkçe — OTOMATİK ÜRETİLDİ (tools/build_tr.py); elle düzenlemeyin, İngilizce kaynak ve tools/i18n_tr.py esastır.
+@startuml sm-01-job-state-machine
+!include ../../_style/cue.iuml
+hide empty description
+skinparam state {
+  BackgroundColor #FFFFFF
+  BorderColor C_EXT_BD
+  FontSize 12
+  AttributeFontSize 11
+}
+skinparam state<<active>> {
+  BackgroundColor C_AI_BG
+  BorderColor C_AI_BD
+}
+skinparam state<<terminalok>> {
+  BackgroundColor C_APP_BG
+  BorderColor C_APP_BD
+}
+skinparam state<<terminalbad>> {
+  BackgroundColor C_EXT_BG
+  BorderColor C_EXT_BD
+}
+title Cue — Üretim İşi Durum Makinesi (animation_job.status, FR-07, NFR-03)\nHer geçiş koşullu bir UPDATE'tir: "WHERE status = <beklenen durum>"
+
+state "queued" as Q <<active>> : API gönderiminde INSERT (idempotent)\nstarted_at, finished_at, video, frames, locked_by = NULL
+state "running" as R <<active>> : işçinin kapmasıyla atomik olarak ayarlanır\nstarted_at, locked_by, heartbeat_at, model_version_id NOT NULL\nfinished_at, video, frames = NULL
+state "done" as D <<terminalok>> : terminal (son durum)\nvideo_asset_id, frames_asset_id, frame_count,\nmodel_version_id, finished_at NOT NULL\nerror_code = NULL
+state "failed" as F <<terminalbad>> : terminal (son durum)\nfinished_at, error_code, error_message NOT NULL\nvideo, frames = NULL
+state "cancelled" as C <<terminalbad>> : terminal (son durum)\nfinished_at NOT NULL, video, frames = NULL, error_code = NULL
+
+[*] --> Q : API: INSERT animation_job
+Q --> R : İşçi kapar\n[satır boşta (SKIP LOCKED) ve etkin model_version var]
+R --> R : İşçi heartbeat\n[locked_by = ben]
+R --> D : İşçi tamamlar\n[locked_by = ben]\nINSERT kare arşivi + video, UPDATE TEK işlemde
+R --> F : İşçi hatası\n[locked_by = ben]
+R --> F : Bakım: takılı iş denetimi\n[heartbeat bayat] error_code = worker_lost
+Q --> F : İşçi geçersiz girdi bulur\n(input_missing, model_unavailable)
+Q --> C : API iptal [sahip = çağıran]
+R --> C : API iptal [sahip = çağıran]
+D --> [*]
+F --> [*]
+C --> [*]
+
+note bottom of D
+  Terminal durumlar son durumdur: hiçbir UPDATE onlardan çıkaramaz
+  (tüm korumalar status'u sınar), bu yüzden işçinin geç sonucu reddedilir (0 satır) ve medyası atılır.
+end note
+legend right
+  Veritabanı CHECK kısıtlarıyla birebir uyumlu: animation_job_state_queued / running / done / failed / cancelled
+  ve animation_job_status_valid (database/validation testleriyle doğrulandı).
+  Renkler: mor = etkin (terminal olmayan), yeşil = başarılı terminal, gri = başarısız ya da iptal terminal.
+  Taahhüt edilmediği için çizilmedi: yeniden deneme, duraklatma, taslak.
+endlegend
+@enduml

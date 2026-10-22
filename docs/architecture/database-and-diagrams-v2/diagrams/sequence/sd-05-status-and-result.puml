@@ -1,0 +1,71 @@
+@startuml sd-05-status-and-result
+!include ../_style/cue.iuml
+skinparam sequenceArrowThickness 1.2
+autonumber "<b>00"
+title SD-5  Status polling, result playback and download — authorized (FR-02, FR-07, FR-08, FR-09, FR-10, NFR-01)
+participant "React SPA" as SPA #E3F0FB
+participant "FastAPI" as API #E6F4EA
+database "PostgreSQL" as DB #FFF4DB
+participant "Media store" as MS #FFF4DB
+
+== Library (S2) ==
+SPA -> API : GET /jobs?limit=20&cursor
+API -> DB : session lookup (SD-1), then\nSELECT jobs WHERE owner_id = me\nAND (created_at, id) < cursor ORDER BY created_at DESC, id DESC
+DB --> API : own jobs only
+API --> SPA : 200 list (status, thumbnail id, created_at)
+note right of API : Other users' jobs never appear in the result.
+
+== Status (S5): short polling while queued or running ==
+loop every 2-5 s, only while status is queued or running
+  SPA -> API : GET /jobs/{id}
+  API -> DB : SELECT job WHERE id AND owner_id = me
+  alt 0 rows (missing or foreign)
+    API --> SPA : 404 Not found
+  else owned
+    DB --> API : status, timestamps, error, model_version, seed
+    API --> SPA : 200 {status, ...}
+  end
+end
+note over SPA, API : Polling chosen over SSE/WebSocket: one-way updates,\nstateless, proxy friendly, small scale (no new requirement).
+
+alt status = failed
+  SPA --> SPA : show error_message and job id (S5)
+else status = cancelled
+  SPA --> SPA : show cancelled state
+else status = done
+  == Result (S6): playback and download ==
+  SPA -> API : GET /jobs/{id}/video  (Range)
+  activate API
+  API -> DB : SELECT job + video asset WHERE id AND owner_id = me AND status = done
+  alt not found or foreign
+    API --> SPA : 404
+  else owned and done
+    DB --> API : storage_key, content_type, size
+    API -> MS : open(storage_key, range)
+    alt file missing
+      MS --> API : not found
+      API --> SPA : 404/500 "video unavailable" (log; job record unchanged)
+    else streamed
+      MS --> API : bytes
+      API --> SPA : 206 video/mp4 (Cache-Control: private)
+    end
+  end
+  deactivate API
+  SPA -> API : GET /jobs/{id}/frames/{n}  (frame stepping, n = 1..frame_count)
+  API -> DB : SELECT job + frames asset WHERE id AND owner_id = me AND status = done
+  alt not found, foreign or n out of range
+    API --> SPA : 404
+  else frame available
+    API -> MS : open(frames archive), read PNG number n
+    alt archive missing
+      MS --> API : not found
+      API --> SPA : 404/500 "frame unavailable" (log; job record unchanged)
+    else read
+      MS --> API : PNG bytes
+      API --> SPA : 200 image/png (Cache-Control: private)
+    end
+  end
+  SPA -> API : GET /jobs/{id}/video?download=1
+  note right of API : Same authorization path;\nContent-Disposition: attachment. Storage keys and paths\nare never returned to the browser.
+end
+@enduml

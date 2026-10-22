@@ -1,0 +1,74 @@
+@startuml uc-01-use-case
+!include ../_style/cue.iuml
+left to right direction
+skinparam linetype polyline
+skinparam packageStyle rectangle
+skinparam usecase {
+  BackgroundColor C_APP_BG
+  BorderColor C_APP_BD
+  FontSize 12
+}
+skinparam actor {
+  BackgroundColor C_USER_BG
+  BorderColor C_USER_BD
+}
+skinparam package {
+  BorderColor C_EXT_BD
+  FontSize 12
+}
+skinparam nodesep 25
+skinparam ranksep 90
+title Cue — UML Use Case Diagram\nVerified user capabilities only (FR-01 … FR-10)
+
+actor "Visitor\n(not signed in)" as V
+actor "Registered User" as U
+
+rectangle "Cue web studio" {
+  package "Account" {
+    usecase "Create account\n(FR-01)" as UC1
+    usecase "Log in\n(FR-01)" as UC2
+    usecase "Log out\n(FR-01)" as UC3
+  }
+  package "Personal library" {
+    usecase "Browse animation library\n(FR-02, FR-09)" as UC4
+    usecase "Delete animation\n(FR-09)" as UC14
+  }
+  package "Create animation" {
+    usecase "Create animation\n(FR-06)" as UC5
+    usecase "Upload start and end\nkeyframe drawings (FR-03)" as UC6
+    usecase "Describe motion in English\n(optional, FR-04)" as UC7
+    usecase "Preview and approve\nmotion plan (FR-05)" as UC8
+  }
+  package "Monitor and result" {
+    usecase "Track generation status\nand error message (FR-07)" as UC9
+    usecase "Cancel generation\n(FR-07)" as UC10
+    usecase "Play result (FR-08)" as UC11
+    usecase "Download MP4 (FR-08)" as UC12
+    usecase "View generation record\nmodel version, seed, duration\n(FR-10)" as UC13
+  }
+}
+
+V -right-> UC1
+V -right-> UC2
+U -up-|> V
+U --> UC3
+U --> UC4
+U --> UC14
+U --> UC5
+U --> UC9
+U --> UC11
+U --> UC12
+
+UC5 ..> UC6 : <<include>>
+UC7 ..> UC5 : <<extend>>
+UC8 ..> UC7 : <<extend>>
+UC10 ..> UC9 : <<extend>>
+UC11 ..> UC13 : <<include>>
+
+legend bottom
+  All use cases except Create account and Log in require a valid session; every user acts on their own data only (FR-02; foreign resources return 404).
+  Delete animation: active (queued/running) jobs must be cancelled first (decision D-03).
+  Out of scope (not drawn): password reset, sharing, admin panel, negative prompts, video input.
+  Operator tasks (model registration, account deletion) are not user capabilities.
+endlegend
+@enduml

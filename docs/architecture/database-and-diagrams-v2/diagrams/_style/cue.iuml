@@ -1,0 +1,71 @@
+' Cue — ortak diyagram stili. Renk = katman anlamı (başka amaçla renk kullanılmaz):
+'   mavi = kullanıcı/ön yüz · yeşil = API/uygulama · amber = veritabanı/depolama · mor = yapay zekâ/GPU · gri = dış/altyapı
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName DejaVu Sans
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam roundCorner 6
+skinparam ArrowColor #4A5568
+skinparam ArrowFontColor #2D3748
+skinparam ArrowFontSize 11
+skinparam TitleFontSize 16
+skinparam TitleFontStyle bold
+skinparam LegendBackgroundColor #F7FAFC
+skinparam LegendBorderColor #CBD5E0
+skinparam LegendFontSize 11
+skinparam padding 3
+skinparam nodesep 40
+skinparam ranksep 50
+
+!define C_USER_BG #E3F0FB
+!define C_USER_BD #2B6CB0
+!define C_APP_BG #E6F4EA
+!define C_APP_BD #2F855A
+!define C_DATA_BG #FFF4DB
+!define C_DATA_BD #B7791F
+!define C_AI_BG #F1E8FB
+!define C_AI_BD #6B46C1
+!define C_EXT_BG #EDF2F7
+!define C_EXT_BD #4A5568
+
+skinparam entity {
+  BackgroundColor C_DATA_BG
+  BorderColor C_DATA_BD
+  FontColor #1A202C
+  AttributeFontSize 11
+}
+skinparam entity<<job>> {
+  BackgroundColor C_APP_BG
+  BorderColor C_APP_BD
+}
+skinparam entity<<ref>> {
+  BackgroundColor C_AI_BG
+  BorderColor C_AI_BD
+}
+skinparam entity<<core>> {
+  BackgroundColor C_DATA_BG
+  BorderColor C_DATA_BD
+}
+
+' --- aktivite diyagramları: renk = eylemi yapan katman (SPA mavi, API yeşil, DB amber, AI/GPU mor) ---
+skinparam ActivityBackgroundColor #FFFFFF
+skinparam ActivityBorderColor C_EXT_BD
+skinparam ActivityDiamondBackgroundColor #FFFFFF
+skinparam ActivityDiamondBorderColor C_EXT_BD
+skinparam ActivityFontSize 12
+skinparam ActivityDiamondFontSize 11
+skinparam NoteBackgroundColor #FFFBEA
+skinparam NoteBorderColor C_DATA_BD
+skinparam PartitionBorderColor C_EXT_BD
+skinparam PartitionFontSize 12
+
+' --- sıra diyagramları ---
+skinparam SequenceLifeLineBorderColor #A0AEC0
+skinparam SequenceGroupBackgroundColor #F7FAFC
+skinparam SequenceGroupBorderColor #A0AEC0
+skinparam SequenceGroupHeaderFontStyle bold
+skinparam SequenceDividerBackgroundColor #EDF2F7
+skinparam SequenceDividerBorderColor #A0AEC0
+skinparam SequenceBoxBorderColor #CBD5E0
+skinparam MaxMessageSize 220
+skinparam sequenceMessageAlign left

@@ -1,0 +1,78 @@
+' DİL: Türkçe — OTOMATİK ÜRETİLDİ (tools/build_tr.py); elle düzenlemeyin, İngilizce kaynak ve tools/i18n_tr.py esastır.
+@startuml ai-01-pipeline
+!include ../../_style/cue.iuml
+skinparam linetype polyline
+hide stereotype
+skinparam rectangle {
+  RoundCorner 8
+  FontSize 12
+}
+skinparam rectangle<<proposed>> {
+  BackgroundColor C_AI_BG
+  BorderColor C_AI_BD
+  BorderThickness 2
+  LineStyle 4
+}
+skinparam rectangle<<pretrained>> {
+  BackgroundColor C_EXT_BG
+  BorderColor C_EXT_BD
+}
+skinparam rectangle<<app>> {
+  BackgroundColor C_APP_BG
+  BorderColor C_APP_BD
+}
+skinparam rectangle<<data>> {
+  BackgroundColor C_DATA_BG
+  BorderColor C_DATA_BD
+}
+title Cue — Yapay Zekâ Boru Hattı (öneri görünümü, gerçeklenmiş bir sistem değil)\nÇıkarım yolu (ürün) ve eğitim/değerlendirme yolu (araştırma, ürün veritabanından bağımsız)
+
+rectangle "ÇEVRİMDIŞI — veri seti, eğitim, değerlendirme (araştırma, üründen bağımsız)" as OFF #FFFFFF {
+  rectangle "Rızalı kayıtlar\n8 katılımcı, 40 senaryo,\n640 video hedefi" <<data>> as REC
+  rectangle "Veri hattı\nkareler, çizgi dönüşümü (XDoG, RAFT),\nolay zamanları, katılımcı bölmesi" <<app>> as DP
+  rectangle "Eğitim (bulut/kurum GPU)\nM2 = LoRA + metin\nM3 = LoRA + plan modülü\nM3c = karıştırılmış plan kontrolü" <<proposed>> as TR
+  rectangle "Değerlendirme\nR0, M0, M1, M2, M3, M3c\ndonmuş test kümesi" <<app>> as EV
+  rectangle "Model sürüm kaydı\nağırlık özeti, yapılandırma, commit\n→ model_version satırı" <<data>> as REG
+}
+
+rectangle "ÇEVRİMİÇİ — tek bir iş için çıkarım" as ON #FFFFFF {
+  rectangle "1  Girdi doğrulama\ntür, boyut, ölçü,\nsahiplik (API)" <<app>> as V1
+  rectangle "2  Komut yorumlama\nyerel LLM (isteğe bağlı)\nkomut yoksa atlanır" <<proposed>> as LM
+  rectangle "3  Kural tabanlı plan doğrulayıcı\nkabul eder ya da gerekçeyle reddeder" <<app>> as VAL
+  rectangle "4  Yapılandırılmış hareket planı\nJSON + şema sürümü\nkullanıcı onaylı, işe kaydedilir" <<data>> as PLAN
+  rectangle "Cue üretici (kayıtlı model_version, GPU işçisi tarafından yüklenir)" as GENG #FFFFFF {
+    rectangle "5  Önceden eğitilmiş omurga\nToonCrafter-512 (dondurulmuş)\nilk + son kare" <<pretrained>> as BB
+    rectangle "6  LoRA uyarlaması\nzamansal dikkat\n(eğitilir, önerilen)" <<proposed>> as LORA
+    rectangle "7  Plan koşullama modülü\nilerleme eğrisi → FiLM\n(eğitilir, önerilen)" <<proposed>> as PM
+    rectangle "8  Animasyon üretimi\nen çok 16 kare, 512×320, tohum" <<proposed>> as GEN
+  }
+  rectangle "9  Çıktı işleme\nilk/son kare = girdiler\n(bütünlük denetimi), kare ZIP'i, MP4" <<app>> as OUT
+  rectangle "Medya deposu: kare arşivi (PNG ZIP) + MP4\niş done, model_version ve tohum kaydedilir" <<data>> as STORE
+}
+
+REC -down-> DP
+DP -down-> TR
+TR -down-> EV
+EV -down-> REG
+REG ..> GENG : kayıtlı ağırlıklar\nve yapılandırma
+
+V1 -down-> LM : komut metni
+LM -down-> VAL
+VAL -down-> PLAN : geçerli plan
+VAL .up.> LM : ret gerekçesi\nkullanıcıya gösterilir
+V1 ..> BB : iki çizim
+PLAN -down-> PM
+BB -down-> GEN
+LORA -down-> GEN
+PM -down-> GEN
+GEN -down-> OUT
+OUT -down-> STORE
+
+legend right
+  Kalın mor kenarlık = önerilen bileşen, henüz gerçeklenmedi ya da doğrulanmadı (eğitim yolunun ilk+son kareyi koşul alması,
+  seçilen GPU'da bellek uyumu ve plan modülünün etkisi öneri formunda açık 1. hafta/5. hafta denetimleridir).
+  Gri = mevcut önceden eğitilmiş bileşen. Yeşil = uygulama adımı. Amber = veri / depolama.
+  Komut yoksa 2–4. adımlar atlanır ve model yalnızca iki çizimle çalışır.
+  Eğitim senaryo etiketlerinden türetilen planları, çıkarım LLM'den ya da kullanıcıdan gelen planı kullanır (aynı şema).
+endlegend
+@enduml
