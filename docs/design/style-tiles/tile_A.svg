@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900">
+<rect width="1440" height="900" fill="#0E0B14"/>
+<text x="64" y="80" font-family="Sora" font-size="34" font-weight="600" fill="#F7F3FF" >Cue</text>
+<text x="64" y="112" font-family="Manrope" font-size="15" font-weight="600" fill="#C5BED3" >A — Midnight Motion</text>
+<text x="64" y="134" font-family="Manrope" font-size="13" font-weight="500" fill="#968CA8" >Purple-toned structure: panels, borders, selection. Canvas darker than app background.</text>
+<text x="64" y="176" font-family="Manrope" font-size="13" font-weight="700" fill="#C5BED3" >Surface share 60/30/10</text>
+<rect x="64" y="188" width="420.0" height="36" fill="#0A0810" stroke="#342847"/>
+<rect x="484.0" y="188" width="210.0" height="36" fill="#151020" stroke="#342847"/>
+<rect x="694.0" y="188" width="28.0" height="36" fill="#FF9A45"/>
+<rect x="722.0" y="188" width="21.0" height="36" fill="#A68BFF"/>
+<rect x="743.0" y="188" width="14.0" height="36" fill="#70BAFF"/>
+<rect x="757.0" y="188" width="7.0" height="36" fill="#F5D56B"/>
+<text x="64" y="246" font-family="Manrope" font-size="12" font-weight="500" fill="#968CA8" >60% app+canvas darks · 30% purple-toned panels/borders/selection · 10% accents (orange ≤ 4%)</text>
+<rect x="64" y="268" width="68" height="52" rx="6" fill="#0E0B14" stroke="#342847"/>
+<text x="64" y="338" font-family="Manrope" font-size="11" font-weight="600" fill="#C5BED3" >bg-app</text>
+<text x="64" y="352" font-family="Manrope" font-size="11" font-weight="500" fill="#968CA8" >#0E0B14</text>
+<rect x="142" y="268" width="68" height="52" rx="6" fill="#0A0810" stroke="#342847"/>
+<text x="142" y="338" font-family="Manrope" font-size="11" font-weight="600" fill="#C5BED3" >canvas</text>
+<text x="142" y="352" font-family="Manrope" font-size="11" font-weight="500" fill="#968CA8" >#0A0810</text>
+<rect x="220" y="268" width="68" height="52" rx="6" fill="#151020" stroke="#342847"/>
+<text x="220" y="338" font-family="Manrope" font-size="11" font-weight="600" fill="#C5BED3" >surface</text>
+<text x="220" y="352" font-family="Manrope" font-size="11" font-weight="500" fill="#968CA8" >#151020</text>
+<rect x="298" y="268" width="68" height="52" rx="6" fill="#241A33" stroke="#342847"/>
+<text x="298" y="338" font-family="Manrope" font-size="11" font-weight="600" fill="#C5BED3" >elevated</text>
+<text x="298" y="352" font-family="Manrope" font-size="11" font-weight="500" fill="#968CA8" >#241A33</text>
+<rect x="376" y="268" width="68" height="52" rx="6" fill="#2B2050" stroke="#342847"/>
+<text x="376" y="338" font-family="Manrope" font-size="11" font-weight="600" fill="#C5BED3" >selected</text>
+<text x="376" y="352" font-family="Manrope" font-size="11" font-weight="500" fill="#968CA8" >#2B2050</text>
+<rect x="454" y="268" width="68" height="52" rx="6" fill="#FF9A45" stroke="#342847"/>
+<text x="454" y="338" font-family="Manrope" font-size="11" font-weight="600" fill="#C5BED3" >orange</text>
+<text x="454" y="352" font-family="Manrope" font-size="11" font-weight="500" fill="#968CA8" >#FF9A45</text>
+<rect x="532" y="268" width="68" height="52" rx="6" fill="#A68BFF" stroke="#342847"/>
+<text x="532" y="338" font-family="Manrope" font-size="11" font-weight="600" fill="#C5BED3" >purple</text>
+<text x="532" y="352" font-family="Manrope" font-size="11" font-weight="500" fill="#968CA8" >#A68BFF</text>
+<rect x="610" y="268" width="68" height="52" rx="6" fill="#70BAFF" stroke="#342847"/>
+<text x="610" y="338" font-family="Manrope" font-size="11" font-weight="600" fill="#C5BED3" >blue</text>
+<text x="610" y="352" font-family="Manrope" font-size="11" font-weight="500" fill="#968CA8" >#70BAFF</text>
+<rect x="688" y="268" width="68" height="52" rx="6" fill="#F5D56B" stroke="#342847"/>
+<text x="688" y="338" font-family="Manrope" font-size="11" font-weight="600" fill="#C5BED3" >yellow</text>
+<text x="688" y="352" font-family="Manrope" font-size="11" font-weight="500" fill="#968CA8" >#F5D56B</text>
+<text x="64" y="410" font-family="Sora" font-size="28" font-weight="600" fill="#F7F3FF" >Motion plan</text>
+<text x="64" y="438" font-family="Manrope" font-size="16" font-weight="500" fill="#C5BED3" >Gaze shifts first, then the head turns.</text>
+<text x="64" y="462" font-family="Manrope" font-size="13" font-weight="500" fill="#968CA8" >Ğ ş ı İ ç ö ü — 0123456789 — 5 FPS · 16 frames</text>
+<rect x="64" y="490" width="196" height="48" rx="8" fill="#FF9A45"/>
+<text x="86" y="520" font-family="Manrope" font-size="15" font-weight="700" fill="#0E0B14" >Generate animation</text>
+<rect x="274" y="494" width="110" height="40" rx="8" fill="#241A33" stroke="#5B4E78"/>
+<text x="300" y="519" font-family="Manrope" font-size="15" font-weight="700" fill="#F7F3FF" >Back</text>
+<rect x="398" y="498" width="116" height="28" rx="14" fill="#12263A" stroke="#70BAFF"/>
+<text x="414" y="517" font-family="Manrope" font-size="13" font-weight="700" fill="#70BAFF" >Processing</text>
+<rect x="526" y="498" width="86" height="28" rx="14" fill="#2E2810" stroke="#F5D56B"/>
+<text x="540" y="517" font-family="Manrope" font-size="13" font-weight="700" fill="#F5D56B" >Check</text>
+<rect x="64" y="544" width="6" height="26" rx="2" fill="#FF9A45"/>
+<rect x="78" y="552" width="6" height="18" rx="2" fill="#5B4E78"/>
+<rect x="92" y="552" width="6" height="18" rx="2" fill="#5B4E78"/>
+<rect x="106" y="552" width="6" height="18" rx="2" fill="#5B4E78"/>
+<rect x="120" y="552" width="6" height="18" rx="2" fill="#5B4E78"/>
+<rect x="134" y="552" width="6" height="18" rx="2" fill="#5B4E78"/>
+<rect x="148" y="552" width="6" height="18" rx="2" fill="#5B4E78"/>
+<rect x="162" y="552" width="6" height="18" rx="2" fill="#5B4E78"/>
+<rect x="176" y="552" width="6" height="18" rx="2" fill="#5B4E78"/>
+<rect x="190" y="552" width="6" height="18" rx="2" fill="#5B4E78"/>
+<rect x="204" y="552" width="6" height="18" rx="2" fill="#5B4E78"/>
+<rect x="218" y="552" width="6" height="18" rx="2" fill="#5B4E78"/>
+<rect x="232" y="552" width="6" height="18" rx="2" fill="#5B4E78"/>
+<rect x="246" y="552" width="6" height="18" rx="2" fill="#5B4E78"/>
+<rect x="260" y="552" width="6" height="18" rx="2" fill="#5B4E78"/>
+<rect x="274" y="544" width="6" height="26" rx="2" fill="#FF9A45"/>
+<text x="64" y="596" font-family="Manrope" font-size="12" font-weight="500" fill="#968CA8" >16-frame strip: first and last are your drawings</text>
+<rect x="800" y="64" width="576" height="772" rx="12" fill="#151020" stroke="#342847"/>
+<rect x="800" y="64" width="576" height="56" rx="12" fill="#151020"/><line x1="800" y1="120" x2="1376" y2="120" stroke="#342847"/>
+<text x="824" y="98" font-family="Sora" font-size="20" font-weight="600" fill="#F7F3FF" >Cue</text>
+<text x="920" y="98" font-family="Manrope" font-size="14" font-weight="600" fill="#C5BED3" >Library</text>
+<rect x="1230" y="76" width="122" height="32" rx="8" fill="#FF9A45"/>
+<text x="1246" y="97" font-family="Manrope" font-size="13" font-weight="700" fill="#0E0B14" >New animation</text>
+<text x="824" y="164" font-family="Sora" font-size="22" font-weight="600" fill="#F7F3FF" >Motion plan</text>
+<rect x="824" y="184" width="528" height="64" rx="8" fill="#241A33" stroke="#7A6D94"/>
+<text x="840" y="212" font-family="Manrope" font-size="14" font-weight="500" fill="#F7F3FF" >First move the eyes to the left, then turn the head slowly.</text>
+<text x="840" y="234" font-family="Manrope" font-size="12" font-weight="500" fill="#968CA8" >English · 61 / 280</text>
+<rect x="824" y="268" width="260" height="162" rx="8" fill="#0A0810" stroke="#342847"/>
+<rect x="894" y="284" width="120" height="130" rx="4" fill="#F4F1FA"/>
+<circle cx="954" cy="340" r="30" fill="none" stroke="#2a2438" stroke-width="3"/>
+<text x="832" y="448" font-family="Manrope" font-size="12" font-weight="700" fill="#C5BED3" >Start keyframe</text>
+<rect x="1092" y="268" width="260" height="162" rx="8" fill="#0A0810" stroke="#342847"/>
+<rect x="1162" y="284" width="120" height="130" rx="4" fill="#F4F1FA"/>
+<circle cx="1222" cy="346" r="30" fill="none" stroke="#2a2438" stroke-width="3"/>
+<text x="1100" y="448" font-family="Manrope" font-size="12" font-weight="700" fill="#C5BED3" >End keyframe</text>
+<text x="824" y="486" font-family="Manrope" font-size="14" font-weight="700" fill="#C5BED3" >Cue sheet (schematic, not to scale)</text>
+<text x="824" y="536" font-family="Manrope" font-size="13" font-weight="600" fill="#C5BED3" >Gaze</text>
+<rect x="890" y="514" width="450" height="32" rx="6" fill="#0A0810"/>
+<rect x="890.0" y="514" width="202.5" height="32" rx="6" fill="#2B2050" stroke="#A68BFF" stroke-width="1.5"/>
+<circle cx="906.0" cy="530" r="10" fill="#A68BFF"/>
+<text x="902.0" y="535" font-family="Manrope" font-size="12" font-weight="700" fill="#0E0B14" >1</text>
+<text x="924.0" y="535" font-family="Manrope" font-size="13" font-weight="600" fill="#F7F3FF" >look left</text>
+<text x="824" y="588" font-family="Manrope" font-size="13" font-weight="600" fill="#C5BED3" >Head</text>
+<rect x="890" y="566" width="450" height="32" rx="6" fill="#0A0810"/>
+<rect x="1092.5" y="566" width="247.50000000000003" height="32" rx="6" fill="#2B2050" stroke="#A68BFF" stroke-width="1.5"/>
+<circle cx="1108.5" cy="582" r="10" fill="#A68BFF"/>
+<text x="1104.5" y="587" font-family="Manrope" font-size="12" font-weight="700" fill="#0E0B14" >2</text>
+<text x="1126.5" y="587" font-family="Manrope" font-size="13" font-weight="600" fill="#F7F3FF" >turn head · slow</text>
+<rect x="824" y="630" width="528" height="44" rx="8" fill="#151020" stroke="#A68BFF"/>
+<rect x="840" y="644" width="16" height="16" rx="3" fill="none" stroke="#A68BFF" stroke-width="2"/>
+<text x="868" y="658" font-family="Manrope" font-size="14" font-weight="600" fill="#F7F3FF" >Plan looks right</text>
+<rect x="824" y="700" width="528" height="48" rx="8" fill="#FF9A45"/>
+<text x="1030" y="730" font-family="Manrope" font-size="15" font-weight="700" fill="#0E0B14" >Generate animation</text>
+<text x="824" y="790" font-family="Manrope" font-size="12" font-weight="500" fill="#968CA8" >Status: queued → running → done. No fake percentages.</text>
+</svg>
