@@ -1,0 +1,199 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900"><defs>
+<filter id="grain" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+<feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.14  0 0 0 0 0.086  0 0 0 0 0.16  0 0 0 1.3 -0.5"/></filter>
+<filter id="fiber" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+<feTurbulence type="fractalNoise" baseFrequency="0.012 0.30" numOctaves="2" seed="21"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.45  0 0 0 0 0.30  0 0 0 0 0.20  0 0 0 1.6 -0.7"/></filter>
+<filter id="rough" x="-5%" y="-10%" width="110%" height="120%">
+<feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="3" seed="4" result="n"/>
+<feDisplacementMap in="SourceGraphic" in2="n" scale="16" xChannelSelector="R" yChannelSelector="G"/></filter>
+<pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+<line x1="0" y1="0" x2="0" y2="8" stroke="#6B5A72" stroke-width="1" opacity=".35"/></pattern>
+</defs>
+<rect x="0" y="0" width="1440" height="900" rx="0" fill="#F8AA09" />
+<clipPath id="c42"><rect x="0" y="0" width="1440" height="900" rx="0"/></clipPath>
+<g clip-path="url(#c42)"><rect x="0" y="0" width="1440" height="900" filter="url(#grain)" opacity="0.12"/><rect x="0" y="0" width="1440" height="900" filter="url(#fiber)" opacity="0.05"/></g>
+<rect x="40.0" y="31.4" width="2.6999999999999997" height="18.6" rx="0.6" fill="#4F0964" />
+<rect x="45.1" y="36.199999999999996" width="2.6999999999999997" height="12.6" rx="0.6" fill="#241629" />
+<rect x="50.2" y="36.199999999999996" width="2.6999999999999997" height="12.6" rx="0.6" fill="#241629" />
+<rect x="55.3" y="36.199999999999996" width="2.6999999999999997" height="12.6" rx="0.6" fill="#241629" />
+<rect x="60.400000000000006" y="36.199999999999996" width="2.6999999999999997" height="12.6" rx="0.6" fill="#241629" />
+<rect x="65.5" y="36.199999999999996" width="2.6999999999999997" height="12.6" rx="0.6" fill="#241629" />
+<rect x="70.6" y="31.4" width="2.6999999999999997" height="18.6" rx="0.6" fill="#4F0964" />
+<text x="79.6" y="50" font-family="Fraunces Display Bold" font-size="35.4" font-weight="800" fill="#241629" text-anchor="start" >Cue</text>
+<text x="190" y="48" font-family="Manrope" font-size="16" font-weight="600" fill="#241629" text-anchor="start" >Library</text>
+<line x1="40" y1="76" x2="1400" y2="76" stroke="#241629" stroke-width="1.2" opacity=".55"/>
+<circle cx="1190" cy="40" r="15" fill="#FBF3E4" stroke="#241629" stroke-width="1.5"/>
+<text x="1190" y="46" font-family="Fraunces Display Bold" font-size="15" font-weight="800" fill="#241629" text-anchor="middle" >M</text>
+<text x="1214" y="45" font-family="Manrope" font-size="14" font-weight="600" fill="#241629" text-anchor="start" >mira@studio.example</text>
+<g transform="translate(1376,32) scale(1.0)" fill="none" stroke="#241629" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l5 5 5-5"/></g>
+<circle cx="54" cy="118" r="13" fill="#241629"/>
+<g transform="translate(46,110) scale(1.0)" fill="none" stroke="#FBF3E4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 8.5 6.5 12.5 13.5 4"/></g>
+<text x="76" y="123" font-family="Manrope" font-size="15" font-weight="600" fill="#241629" text-anchor="start" >Keyframes</text>
+<line x1="161.39999999999998" y1="118" x2="181.39999999999998" y2="118" stroke="#4B3B52" stroke-width="1.5"/>
+<circle cx="203.39999999999998" cy="118" r="13" fill="#4F0964" stroke="#241629" stroke-width="1.5"/>
+<text x="203.39999999999998" y="124" font-family="Fraunces Display Bold" font-size="15" font-weight="800" fill="#FBF3E4" text-anchor="middle" >2</text>
+<text x="225.39999999999998" y="123" font-family="Manrope" font-size="15" font-weight="800" fill="#241629" text-anchor="start" >Motion</text>
+<line x1="285.0" y1="118" x2="305.0" y2="118" stroke="#4B3B52" stroke-width="1.5"/>
+<circle cx="327.0" cy="118" r="12.5" fill="none" stroke="#4B3B52" stroke-width="1.5"/>
+<text x="327.0" y="124" font-family="Manrope" font-size="14" font-weight="700" fill="#4B3B52" text-anchor="middle" >3</text>
+<text x="349.0" y="123" font-family="Manrope" font-size="15" font-weight="600" fill="#4B3B52" text-anchor="start" >Generate</text>
+<line x1="425.8" y1="118" x2="445.8" y2="118" stroke="#4B3B52" stroke-width="1.5"/>
+<circle cx="467.8" cy="118" r="12.5" fill="none" stroke="#4B3B52" stroke-width="1.5"/>
+<text x="467.8" y="124" font-family="Manrope" font-size="14" font-weight="700" fill="#4B3B52" text-anchor="middle" >4</text>
+<text x="489.8" y="123" font-family="Manrope" font-size="15" font-weight="600" fill="#4B3B52" text-anchor="start" >Result</text>
+<text x="40" y="190" font-family="Fraunces Display" font-size="46" font-weight="600" fill="#241629" text-anchor="start" >Describe the motion</text>
+<text x="40" y="220" font-family="Manrope" font-size="16" font-weight="500" fill="#4B3B52" text-anchor="start" >Cue turns your sentence into an ordered plan. Nothing is generated until you approve it.</text>
+<rect x="40" y="255" width="560" height="536" rx="12" fill="#241629" opacity="0.16" />
+<rect x="40" y="252" width="560" height="536" rx="12" fill="#F6E8D1" stroke="#241629" stroke-width="1.5" />
+<clipPath id="c43"><rect x="40" y="252" width="560" height="536" rx="12"/></clipPath>
+<g clip-path="url(#c43)"><rect x="40" y="252" width="560" height="536" filter="url(#grain)" opacity="0.09"/><rect x="40" y="252" width="560" height="536" filter="url(#fiber)" opacity="0.05"/></g>
+<text x="68" y="302" font-family="Fraunces Display" font-size="26" font-weight="600" fill="#241629" text-anchor="start" >Your instruction</text>
+<text x="68" y="336" font-family="Manrope" font-size="14" font-weight="800" fill="#241629" text-anchor="start" >Describe the motion (optional)</text>
+<rect x="68" y="348" width="504" height="118" rx="8" fill="#FBF3E4" stroke="#6B5A72" stroke-width="1.5" />
+<text x="84" y="378" font-family="Manrope" font-size="16" font-weight="500" fill="#241629" text-anchor="start" >First move the eyes to the left, then</text>
+<text x="84" y="404" font-family="Manrope" font-size="16" font-weight="500" fill="#241629" text-anchor="start" >slowly turn the head.</text>
+<line x1="256" y1="391" x2="256" y2="413" stroke="#4F0964" stroke-width="2"/>
+<text x="572" y="484" font-family="Manrope" font-size="13" font-weight="600" fill="#6B5A72" text-anchor="end" >61 / 280</text>
+<text x="68" y="484" font-family="Manrope" font-size="13" font-weight="500" fill="#6B5A72" text-anchor="start" >English only. Leave it empty to use the drawings alone.</text>
+<text x="68" y="520" font-family="Manrope" font-size="13" font-weight="800" fill="#241629" text-anchor="start" >Try an example</text>
+<rect x="68" y="530" width="184" height="32" rx="16" fill="#FBF3E4" stroke="#6B5A72" stroke-width="1.2" />
+<text x="82" y="551" font-family="Manrope" font-size="13" font-weight="700" fill="#241629" text-anchor="start" >Eyes first, then head</text>
+<rect x="264" y="530" width="200" height="32" rx="16" fill="#FBF3E4" stroke="#6B5A72" stroke-width="1.2" />
+<text x="278" y="551" font-family="Manrope" font-size="13" font-weight="700" fill="#241629" text-anchor="start" >Head turns while smiling</text>
+<rect x="68" y="582" width="160" height="44" rx="9" fill="#FBF3E4" stroke="#241629" stroke-width="1.5" />
+<text x="97.6" y="609.5" font-family="Manrope" font-size="15" font-weight="700" fill="#241629" text-anchor="start" >Preview plan</text>
+<line x1="68" y1="650" x2="572" y2="650" stroke="#CDB99A" stroke-width="1.2"/>
+<text x="68" y="682" font-family="Manrope" font-size="14" font-weight="800" fill="#241629" text-anchor="start" >Keyframes</text>
+<rect x="68" y="694" width="128" height="80" rx="5" fill="#FFFDF7" />
+<clipPath id="d44"><rect x="68" y="694" width="128" height="80" rx="5"/></clipPath><g clip-path="url(#d44)">
+<path d="M123.9 754.3 L124.6 768.1 M140.1 754.3 L139.4 768.1" fill="none" stroke="#241629" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M93.6 794.1 Q97.9 771.8 132.0 770.6 Q166.1 771.8 170.4 794.1" fill="none" stroke="#241629" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<ellipse cx="132.0" cy="728.4" rx="22.3" ry="27.3" fill="none" stroke="#241629" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M109.7 723.4 Q111.9 696.2 136.5 698.9 Q152.1 702.5 154.3 722.2 Q138.7 711.5 119.7 714.8Z" fill="none" stroke="#241629" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<ellipse cx="123.3" cy="727.2" rx="3.1" ry="2.0" fill="none" stroke="#241629" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="123.3" cy="727.2" r="1.2" fill="#241629"/>
+<path d="M120.2 722.2 Q123.3 720.6 126.4 722.2" fill="none" stroke="#241629" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<ellipse cx="140.7" cy="727.2" rx="3.1" ry="2.0" fill="none" stroke="#241629" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="140.7" cy="727.2" r="1.2" fill="#241629"/>
+<path d="M137.6 722.2 Q140.7 720.6 143.8 722.2" fill="none" stroke="#241629" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M132.0 729.0 L130.8 735.2 L133.9 735.2" fill="none" stroke="#241629" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M126.4 742.0 Q132.0 746.1 137.6 742.0" fill="none" stroke="#241629" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<rect x="68" y="694" width="128" height="80" rx="5" fill="none" stroke="#241629" stroke-width="1.2" />
+<rect x="262" y="694" width="128" height="80" rx="5" fill="#FFFDF7" />
+<clipPath id="d45"><rect x="262" y="694" width="128" height="80" rx="5"/></clipPath><g clip-path="url(#d45)">
+<path d="M304.5 754.3 L305.2 768.1 M320.7 754.3 L320.0 768.1" fill="none" stroke="#241629" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M287.6 794.1 Q291.9 771.8 312.6 770.6 Q360.1 771.8 364.4 794.1" fill="none" stroke="#241629" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<ellipse cx="312.6" cy="728.4" rx="19.1" ry="27.3" fill="none" stroke="#241629" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M293.5 723.4 Q295.4 696.2 316.4 698.9 Q329.8 702.5 331.7 722.2 Q318.3 711.5 302.1 714.8Z" fill="none" stroke="#241629" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<ellipse cx="298.6" cy="727.2" rx="3.1" ry="2.0" fill="none" stroke="#241629" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="297.2" cy="727.2" r="1.2" fill="#241629"/>
+<path d="M295.5 722.2 Q298.6 720.6 301.7 722.2" fill="none" stroke="#241629" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<ellipse cx="312.1" cy="727.2" rx="3.1" ry="2.0" fill="none" stroke="#241629" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="310.6" cy="727.2" r="1.2" fill="#241629"/>
+<path d="M309.0 722.2 Q312.1 720.6 315.2 722.2" fill="none" stroke="#241629" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M301.4 729.0 L300.2 735.2 L303.3 735.2" fill="none" stroke="#241629" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M298.1 742.0 Q303.7 753.0 309.3 742.0" fill="none" stroke="#241629" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<rect x="262" y="694" width="128" height="80" rx="5" fill="none" stroke="#241629" stroke-width="1.2" />
+<path d="M204 734 H254 M248 728 L254 734 L248 740" fill="none" stroke="#241629" stroke-width="1.8" stroke-linecap="round"/>
+<text x="68" y="770" font-family="Manrope" font-size="1" font-weight="500" fill="#241629" text-anchor="start" ></text>
+<text x="572" y="740" font-family="Manrope" font-size="14" font-weight="800" fill="#4F0964" text-anchor="end" text-decoration="underline">Change drawings</text>
+<rect x="624" y="255" width="776" height="536" rx="12" fill="#241629" opacity="0.16" />
+<rect x="624" y="252" width="776" height="536" rx="12" fill="#F6E8D1" stroke="#241629" stroke-width="1.5" />
+<clipPath id="c46"><rect x="624" y="252" width="776" height="536" rx="12"/></clipPath>
+<g clip-path="url(#c46)"><rect x="624" y="252" width="776" height="536" filter="url(#grain)" opacity="0.09"/><rect x="624" y="252" width="776" height="536" filter="url(#fiber)" opacity="0.05"/></g>
+<text x="652" y="302" font-family="Fraunces Display" font-size="26" font-weight="600" fill="#241629" text-anchor="start" >Motion plan</text>
+<rect x="1220" y="280" width="152" height="28" rx="14" fill="#E8D7F0" stroke="#4F0964" stroke-width="1.2" />
+<g transform="translate(1230,286) scale(1.0)" fill="none" stroke="#4F0964" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 8.5 6.5 12.5 13.5 4"/></g>
+<text x="1252" y="299" font-family="Manrope" font-size="13" font-weight="700" fill="#4F0964" text-anchor="start" >Plan is ready</text>
+<text x="652" y="332" font-family="Manrope" font-size="14" font-weight="500" fill="#4B3B52" text-anchor="start" >Order is shown, not exact timing. Chevrons show speed.</text>
+<text x="744" y="386" font-family="Manrope" font-size="12" font-weight="800" fill="#B03E06" text-anchor="start" >Start drawing</text>
+<text x="1372" y="386" font-family="Manrope" font-size="12" font-weight="800" fill="#B03E06" text-anchor="end" >End drawing</text>
+<rect x="751.85" y="396" width="18.055" height="22" rx="1.5" fill="#D2620F" />
+<rect x="791.1" y="403.48" width="18.055" height="14.520000000000001" rx="1.5" fill="#241629" opacity="0.85" />
+<rect x="830.35" y="403.48" width="18.055" height="14.520000000000001" rx="1.5" fill="#241629" opacity="0.85" />
+<rect x="869.6" y="403.48" width="18.055" height="14.520000000000001" rx="1.5" fill="#241629" opacity="0.85" />
+<rect x="908.85" y="403.48" width="18.055" height="14.520000000000001" rx="1.5" fill="#241629" opacity="0.85" />
+<rect x="948.1" y="403.48" width="18.055" height="14.520000000000001" rx="1.5" fill="#241629" opacity="0.85" />
+<rect x="987.35" y="403.48" width="18.055" height="14.520000000000001" rx="1.5" fill="#241629" opacity="0.85" />
+<rect x="1026.6" y="403.48" width="18.055" height="14.520000000000001" rx="1.5" fill="#241629" opacity="0.85" />
+<rect x="1065.85" y="403.48" width="18.055" height="14.520000000000001" rx="1.5" fill="#241629" opacity="0.85" />
+<rect x="1105.1" y="403.48" width="18.055" height="14.520000000000001" rx="1.5" fill="#241629" opacity="0.85" />
+<rect x="1144.35" y="403.48" width="18.055" height="14.520000000000001" rx="1.5" fill="#241629" opacity="0.85" />
+<rect x="1183.6" y="403.48" width="18.055" height="14.520000000000001" rx="1.5" fill="#241629" opacity="0.85" />
+<rect x="1222.85" y="403.48" width="18.055" height="14.520000000000001" rx="1.5" fill="#241629" opacity="0.85" />
+<rect x="1262.1" y="403.48" width="18.055" height="14.520000000000001" rx="1.5" fill="#241629" opacity="0.85" />
+<rect x="1301.35" y="403.48" width="18.055" height="14.520000000000001" rx="1.5" fill="#241629" opacity="0.85" />
+<rect x="1340.6" y="396" width="18.055" height="22" rx="1.5" fill="#D2620F" />
+<text x="652" y="480" font-family="Manrope" font-size="14" font-weight="800" fill="#241629" text-anchor="start" >Gaze</text>
+<rect x="744" y="442" width="628" height="60" rx="6" fill="#EDE0CA" />
+<line x1="744.0" y1="442" x2="744.0" y2="502" stroke="#CDB99A" stroke-width=".8"/>
+<line x1="783.2" y1="442" x2="783.2" y2="502" stroke="#CDB99A" stroke-width=".8"/>
+<line x1="822.5" y1="442" x2="822.5" y2="502" stroke="#CDB99A" stroke-width=".8"/>
+<line x1="861.8" y1="442" x2="861.8" y2="502" stroke="#CDB99A" stroke-width=".8"/>
+<line x1="901.0" y1="442" x2="901.0" y2="502" stroke="#CDB99A" stroke-width=".8"/>
+<line x1="940.2" y1="442" x2="940.2" y2="502" stroke="#CDB99A" stroke-width=".8"/>
+<line x1="979.5" y1="442" x2="979.5" y2="502" stroke="#CDB99A" stroke-width=".8"/>
+<line x1="1018.8" y1="442" x2="1018.8" y2="502" stroke="#CDB99A" stroke-width=".8"/>
+<line x1="1058.0" y1="442" x2="1058.0" y2="502" stroke="#CDB99A" stroke-width=".8"/>
+<line x1="1097.2" y1="442" x2="1097.2" y2="502" stroke="#CDB99A" stroke-width=".8"/>
+<line x1="1136.5" y1="442" x2="1136.5" y2="502" stroke="#CDB99A" stroke-width=".8"/>
+<line x1="1175.8" y1="442" x2="1175.8" y2="502" stroke="#CDB99A" stroke-width=".8"/>
+<line x1="1215.0" y1="442" x2="1215.0" y2="502" stroke="#CDB99A" stroke-width=".8"/>
+<line x1="1254.2" y1="442" x2="1254.2" y2="502" stroke="#CDB99A" stroke-width=".8"/>
+<line x1="1293.5" y1="442" x2="1293.5" y2="502" stroke="#CDB99A" stroke-width=".8"/>
+<line x1="1332.8" y1="442" x2="1332.8" y2="502" stroke="#CDB99A" stroke-width=".8"/>
+<line x1="1372.0" y1="442" x2="1372.0" y2="502" stroke="#CDB99A" stroke-width=".8"/>
+<rect x="746" y="447" width="262" height="50" rx="7" fill="#241629" opacity="0.18" />
+<rect x="744" y="445" width="262" height="50" rx="7" fill="#E8D7F0" stroke="#241629" stroke-width="1.5" />
+<circle cx="771" cy="470" r="16" fill="#4F0964"/>
+<text x="771" y="477" font-family="Fraunces Display Bold" font-size="20" font-weight="800" fill="#FBF3E4" text-anchor="middle" >1</text>
+<text x="796" y="467" font-family="Manrope" font-size="15" font-weight="800" fill="#241629" text-anchor="start" >Look left</text>
+<text x="796" y="486" font-family="Manrope" font-size="13" font-weight="600" fill="#4B3B52" text-anchor="start" >Eyes · fast</text>
+<path d="M948 460 l8 10 -8 10" fill="none" stroke="#B03E06" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M961 460 l8 10 -8 10" fill="none" stroke="#B03E06" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M974 460 l8 10 -8 10" fill="none" stroke="#B03E06" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="652" y="556" font-family="Manrope" font-size="14" font-weight="800" fill="#241629" text-anchor="start" >Head</text>
+<rect x="744" y="518" width="628" height="60" rx="6" fill="#EDE0CA" />
+<line x1="744.0" y1="518" x2="744.0" y2="578" stroke="#CDB99A" stroke-width=".8"/>
+<line x1="783.2" y1="518" x2="783.2" y2="578" stroke="#CDB99A" stroke-width=".8"/>
+<line x1="822.5" y1="518" x2="822.5" y2="578" stroke="#CDB99A" stroke-width=".8"/>
+<line x1="861.8" y1="518" x2="861.8" y2="578" stroke="#CDB99A" stroke-width=".8"/>
+<line x1="901.0" y1="518" x2="901.0" y2="578" stroke="#CDB99A" stroke-width=".8"/>
+<line x1="940.2" y1="518" x2="940.2" y2="578" stroke="#CDB99A" stroke-width=".8"/>
+<line x1="979.5" y1="518" x2="979.5" y2="578" stroke="#CDB99A" stroke-width=".8"/>
+<line x1="1018.8" y1="518" x2="1018.8" y2="578" stroke="#CDB99A" stroke-width=".8"/>
+<line x1="1058.0" y1="518" x2="1058.0" y2="578" stroke="#CDB99A" stroke-width=".8"/>
+<line x1="1097.2" y1="518" x2="1097.2" y2="578" stroke="#CDB99A" stroke-width=".8"/>
+<line x1="1136.5" y1="518" x2="1136.5" y2="578" stroke="#CDB99A" stroke-width=".8"/>
+<line x1="1175.8" y1="518" x2="1175.8" y2="578" stroke="#CDB99A" stroke-width=".8"/>
+<line x1="1215.0" y1="518" x2="1215.0" y2="578" stroke="#CDB99A" stroke-width=".8"/>
+<line x1="1254.2" y1="518" x2="1254.2" y2="578" stroke="#CDB99A" stroke-width=".8"/>
+<line x1="1293.5" y1="518" x2="1293.5" y2="578" stroke="#CDB99A" stroke-width=".8"/>
+<line x1="1332.8" y1="518" x2="1332.8" y2="578" stroke="#CDB99A" stroke-width=".8"/>
+<line x1="1372.0" y1="518" x2="1372.0" y2="578" stroke="#CDB99A" stroke-width=".8"/>
+<rect x="1052" y="523" width="262" height="50" rx="7" fill="#241629" opacity="0.18" />
+<rect x="1050" y="521" width="262" height="50" rx="7" fill="#E8D7F0" stroke="#241629" stroke-width="1.5" />
+<circle cx="1077" cy="546" r="16" fill="#4F0964"/>
+<text x="1077" y="553" font-family="Fraunces Display Bold" font-size="20" font-weight="800" fill="#FBF3E4" text-anchor="middle" >2</text>
+<text x="1102" y="543" font-family="Manrope" font-size="15" font-weight="800" fill="#241629" text-anchor="start" >Turn left</text>
+<text x="1102" y="562" font-family="Manrope" font-size="13" font-weight="600" fill="#4B3B52" text-anchor="start" >Head · slow</text>
+<path d="M1254 536 l8 10 -8 10" fill="none" stroke="#B03E06" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M1267 536 l8 10 -8 10" fill="none" stroke="#CDB99A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M1280 536 l8 10 -8 10" fill="none" stroke="#CDB99A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M1006 470 H1028.0 V546 H1046" fill="none" stroke="#241629" stroke-width="1.8"/><path d="M1041 541 L1049 546 L1041 551" fill="none" stroke="#241629" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="652" y="604" font-family="Manrope" font-size="15" font-weight="600" fill="#241629" text-anchor="start" >In plain words: the eyes look left quickly, then the head turns left slowly.</text>
+<rect x="652" y="630" width="720" height="64" rx="8" fill="#FBF3E4" stroke="#4F0964" stroke-width="2" />
+<rect x="672" y="650" width="24" height="24" rx="5" fill="#4F0964" />
+<g transform="translate(676,654) scale(1.0)" fill="none" stroke="#FBF3E4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 8.5 6.5 12.5 13.5 4"/></g>
+<text x="710" y="661" font-family="Manrope" font-size="16" font-weight="800" fill="#241629" text-anchor="start" >This plan matches what I meant</text>
+<text x="710" y="680" font-family="Manrope" font-size="13" font-weight="500" fill="#6B5A72" text-anchor="start" >Change the sentence and preview again if it does not.</text>
+<rect x="40" y="812" width="140" height="48" rx="9" fill="#FBF3E4" stroke="#241629" stroke-width="1.5" />
+<text x="93.2" y="841.5" font-family="Manrope" font-size="15" font-weight="700" fill="#241629" text-anchor="start" >Back</text>
+<rect x="1136" y="815" width="264" height="50" rx="9" fill="#241629" opacity="0.9" />
+<rect x="1136" y="812" width="264" height="50" rx="9" fill="#4F0964" stroke="#241629" stroke-width="1.5" />
+<text x="1192.4" y="842.5" font-family="Manrope" font-size="15" font-weight="700" fill="#FBF3E4" text-anchor="start" >Generate animation</text>
+</svg>

@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900"><defs>
+<filter id="grain" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+<feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.14  0 0 0 0 0.086  0 0 0 0 0.16  0 0 0 1.3 -0.5"/></filter>
+<filter id="fiber" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+<feTurbulence type="fractalNoise" baseFrequency="0.012 0.30" numOctaves="2" seed="21"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.45  0 0 0 0 0.30  0 0 0 0 0.20  0 0 0 1.6 -0.7"/></filter>
+<filter id="rough" x="-5%" y="-10%" width="110%" height="120%">
+<feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="3" seed="4" result="n"/>
+<feDisplacementMap in="SourceGraphic" in2="n" scale="16" xChannelSelector="R" yChannelSelector="G"/></filter>
+<pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+<line x1="0" y1="0" x2="0" y2="8" stroke="#6B5A72" stroke-width="1" opacity=".35"/></pattern>
+</defs>
+<rect x="0" y="0" width="1440" height="900" rx="0" fill="#F8AA09" />
+<clipPath id="c91"><rect x="0" y="0" width="1440" height="900" rx="0"/></clipPath>
+<g clip-path="url(#c91)"><rect x="0" y="0" width="1440" height="900" filter="url(#grain)" opacity="0.12"/><rect x="0" y="0" width="1440" height="900" filter="url(#fiber)" opacity="0.05"/></g>
+<rect x="40.0" y="31.4" width="2.6999999999999997" height="18.6" rx="0.6" fill="#4F0964" />
+<rect x="45.1" y="36.199999999999996" width="2.6999999999999997" height="12.6" rx="0.6" fill="#241629" />
+<rect x="50.2" y="36.199999999999996" width="2.6999999999999997" height="12.6" rx="0.6" fill="#241629" />
+<rect x="55.3" y="36.199999999999996" width="2.6999999999999997" height="12.6" rx="0.6" fill="#241629" />
+<rect x="60.400000000000006" y="36.199999999999996" width="2.6999999999999997" height="12.6" rx="0.6" fill="#241629" />
+<rect x="65.5" y="36.199999999999996" width="2.6999999999999997" height="12.6" rx="0.6" fill="#241629" />
+<rect x="70.6" y="31.4" width="2.6999999999999997" height="18.6" rx="0.6" fill="#4F0964" />
+<text x="79.6" y="50" font-family="Fraunces Display Bold" font-size="35.4" font-weight="800" fill="#241629" text-anchor="start" >Cue</text>
+<text x="190" y="48" font-family="Manrope" font-size="16" font-weight="600" fill="#241629" text-anchor="start" >Library</text>
+<line x1="40" y1="76" x2="1400" y2="76" stroke="#241629" stroke-width="1.2" opacity=".55"/>
+<circle cx="1190" cy="40" r="15" fill="#FBF3E4" stroke="#241629" stroke-width="1.5"/>
+<text x="1190" y="46" font-family="Fraunces Display Bold" font-size="15" font-weight="800" fill="#241629" text-anchor="middle" >M</text>
+<text x="1214" y="45" font-family="Manrope" font-size="14" font-weight="600" fill="#241629" text-anchor="start" >mira@studio.example</text>
+<g transform="translate(1376,32) scale(1.0)" fill="none" stroke="#241629" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l5 5 5-5"/></g>
+<circle cx="54" cy="118" r="13" fill="#4F0964" stroke="#241629" stroke-width="1.5"/>
+<text x="54" y="124" font-family="Fraunces Display Bold" font-size="15" font-weight="800" fill="#FBF3E4" text-anchor="middle" >1</text>
+<text x="76" y="123" font-family="Manrope" font-size="15" font-weight="800" fill="#241629" text-anchor="start" >Keyframes</text>
+<line x1="161.39999999999998" y1="118" x2="181.39999999999998" y2="118" stroke="#4B3B52" stroke-width="1.5"/>
+<circle cx="203.39999999999998" cy="118" r="12.5" fill="none" stroke="#4B3B52" stroke-width="1.5"/>
+<text x="203.39999999999998" y="124" font-family="Manrope" font-size="14" font-weight="700" fill="#4B3B52" text-anchor="middle" >2</text>
+<text x="225.39999999999998" y="123" font-family="Manrope" font-size="15" font-weight="600" fill="#4B3B52" text-anchor="start" >Motion</text>
+<line x1="285.0" y1="118" x2="305.0" y2="118" stroke="#4B3B52" stroke-width="1.5"/>
+<circle cx="327.0" cy="118" r="12.5" fill="none" stroke="#4B3B52" stroke-width="1.5"/>
+<text x="327.0" y="124" font-family="Manrope" font-size="14" font-weight="700" fill="#4B3B52" text-anchor="middle" >3</text>
+<text x="349.0" y="123" font-family="Manrope" font-size="15" font-weight="600" fill="#4B3B52" text-anchor="start" >Generate</text>
+<line x1="425.8" y1="118" x2="445.8" y2="118" stroke="#4B3B52" stroke-width="1.5"/>
+<circle cx="467.8" cy="118" r="12.5" fill="none" stroke="#4B3B52" stroke-width="1.5"/>
+<text x="467.8" y="124" font-family="Manrope" font-size="14" font-weight="700" fill="#4B3B52" text-anchor="middle" >4</text>
+<text x="489.8" y="123" font-family="Manrope" font-size="15" font-weight="600" fill="#4B3B52" text-anchor="start" >Result</text>
+<text x="40" y="190" font-family="Fraunces Display" font-size="46" font-weight="600" fill="#241629" text-anchor="start" >Add your two keyframes</text>
+<text x="40" y="220" font-family="Manrope" font-size="16" font-weight="500" fill="#4B3B52" text-anchor="start" >Cue animates from the start drawing to the end drawing. Keep both the same size.</text>
+<rect x="40" y="261" width="1360" height="520" rx="12" fill="#241629" opacity="0.16" />
+<rect x="40" y="258" width="1360" height="520" rx="12" fill="#F6E8D1" stroke="#241629" stroke-width="1.5" />
+<clipPath id="c92"><rect x="40" y="258" width="1360" height="520" rx="12"/></clipPath>
+<g clip-path="url(#c92)"><rect x="40" y="258" width="1360" height="520" filter="url(#grain)" opacity="0.09"/><rect x="40" y="258" width="1360" height="520" filter="url(#fiber)" opacity="0.05"/></g>
+<rect x="72" y="286" width="28" height="28" rx="14" fill="#4F0964" />
+<text x="86" y="307" font-family="Fraunces Display Bold" font-size="16" font-weight="800" fill="#FBF3E4" text-anchor="middle" >1</text>
+<text x="112" y="307" font-family="Fraunces Display" font-size="20" font-weight="600" fill="#241629" text-anchor="start" >Start drawing</text>
+<rect x="740" y="286" width="28" height="28" rx="3" fill="#F88526" stroke="#241629" stroke-width="1.5" />
+<text x="754" y="307" font-family="Fraunces Display Bold" font-size="16" font-weight="800" fill="#241629" text-anchor="middle" >2</text>
+<text x="780" y="307" font-family="Fraunces Display" font-size="20" font-weight="600" fill="#241629" text-anchor="start" >End drawing</text>
+<rect x="72" y="326" width="620" height="340" rx="8" fill="#FFFDF7" />
+<clipPath id="d93"><rect x="72" y="326" width="620" height="340" rx="8"/></clipPath><g clip-path="url(#d93)">
+<path d="M350.0 575.2 L352.4 630.0 M414.0 575.2 L411.6 630.0" fill="none" stroke="#241629" stroke-width="5.422999999999999" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M229.2 733.5 Q246.4 644.8 382.0 639.8 Q517.6 644.8 534.8 733.5" fill="none" stroke="#241629" stroke-width="5.422999999999999" stroke-linecap="round" stroke-linejoin="round"/>
+<ellipse cx="382.0" cy="472.2" rx="88.7" ry="108.5" fill="none" stroke="#241629" stroke-width="5.422999999999999" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M293.3 452.5 Q302.1 344.2 399.7 355.1 Q461.9 369.2 470.7 447.6 Q408.6 405.0 333.2 418.0Z" fill="none" stroke="#241629" stroke-width="5.422999999999999" stroke-linecap="round" stroke-linejoin="round"/>
+<ellipse cx="347.5" cy="467.3" rx="12.3" ry="7.9" fill="none" stroke="#241629" stroke-width="5.422999999999999" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="347.5" cy="467.3" r="4.9" fill="#241629"/>
+<path d="M335.2 447.5 Q347.5 441.4 359.8 447.5" fill="none" stroke="#241629" stroke-width="5.422999999999999" stroke-linecap="round" stroke-linejoin="round"/>
+<ellipse cx="416.5" cy="467.3" rx="12.3" ry="7.9" fill="none" stroke="#241629" stroke-width="5.422999999999999" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="416.5" cy="467.3" r="4.9" fill="#241629"/>
+<path d="M404.2 447.5 Q416.5 441.4 428.8 447.5" fill="none" stroke="#241629" stroke-width="5.422999999999999" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M382.0 474.7 L377.1 499.3 L389.4 499.3" fill="none" stroke="#241629" stroke-width="5.422999999999999" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M359.8 526.4 Q382.0 542.7 404.2 526.4" fill="none" stroke="#241629" stroke-width="5.422999999999999" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<rect x="72" y="326" width="620" height="340" rx="8" fill="none" stroke="#241629" stroke-width="2" />
+<text x="72" y="696" font-family="Manrope" font-size="14" font-weight="800" fill="#241629" text-anchor="start" >start-pose.png</text>
+<text x="186" y="696" font-family="Manrope" font-size="14" font-weight="500" fill="#6B5A72" text-anchor="start" >1.2 MB · 1024 × 640</text>
+<rect x="520" y="678" width="80" height="36" rx="9" fill="#FBF3E4" stroke="#241629" stroke-width="1.5" />
+<text x="530.6" y="701.5" font-family="Manrope" font-size="15" font-weight="700" fill="#241629" text-anchor="start" >Replace</text>
+<rect x="608" y="678" width="84" height="36" rx="9" fill="#FBF3E4" stroke="#241629" stroke-width="1.5" />
+<text x="624.8" y="701.5" font-family="Manrope" font-size="15" font-weight="700" fill="#241629" text-anchor="start" >Remove</text>
+<rect x="740" y="326" width="620" height="340" rx="8" fill="#FBF3E4" stroke="#6B5A72" stroke-width="2" stroke-dasharray="10 8" />
+<g transform="translate(1030,440) scale(2.5)" fill="none" stroke="#6B5A72" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="12" height="10" rx="1.5"/><circle cx="6" cy="7" r="1.2"/><path d="m3 12 3.5-3 3 2.5 2-1.5 2 2"/></g>
+<text x="1050" y="520" font-family="Manrope" font-size="18" font-weight="800" fill="#241629" text-anchor="middle" >Drop the end drawing here</text>
+<text x="1050" y="546" font-family="Manrope" font-size="14" font-weight="500" fill="#4B3B52" text-anchor="middle" >PNG or JPG, up to 10 MB, same size as the start drawing</text>
+<rect x="974" y="574" width="152" height="42" rx="9" fill="#FBF3E4" stroke="#241629" stroke-width="1.5" />
+<text x="999.6" y="600.5" font-family="Manrope" font-size="15" font-weight="700" fill="#241629" text-anchor="start" >Browse files</text>
+<rect x="740" y="684" width="620" height="52" rx="8" fill="#F6D9D4" stroke="#A1413C" stroke-width="1.5" />
+<rect x="740" y="684" width="6" height="52" rx="3" fill="#A1413C" />
+<g transform="translate(762,701) scale(1.125)" fill="none" stroke="#A1413C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2 14.5 13.5H1.5Z"/><path d="M8 6.5v3.2M8 11.8v.1"/></g>
+<text x="792" y="706" font-family="Manrope" font-size="15" font-weight="800" fill="#A1413C" text-anchor="start" >That file is 14.3 MB. Choose an image under 10 MB.</text>
+<text x="792" y="726" font-family="Manrope" font-size="13" font-weight="500" fill="#4B3B52" text-anchor="start" >Nothing was uploaded. Your start drawing is kept.</text>
+<path d="M700 496 H732 M726 490 L732 496 L726 502" fill="none" stroke="#241629" stroke-width="1.8" stroke-linecap="round"/>
+<rect x="40" y="806" width="170" height="48" rx="9" fill="#FBF3E4" stroke="#241629" stroke-width="1.5" />
+<text x="62.0" y="835.5" font-family="Manrope" font-size="15" font-weight="700" fill="#241629" text-anchor="start" >Back to Library</text>
+<text x="1124" y="826" font-family="Manrope" font-size="13" font-weight="600" fill="#241629" text-anchor="end" >Add both drawings to continue</text>
+<rect x="1136" y="806" width="264" height="50" rx="9" fill="#EDE0CA" stroke="#CDB99A" stroke-width="1.5" />
+<text x="1192.4" y="836.5" font-family="Manrope" font-size="15" font-weight="700" fill="#6B5A72" text-anchor="start" >Continue to motion</text>
+</svg>

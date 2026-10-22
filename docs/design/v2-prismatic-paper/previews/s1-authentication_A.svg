@@ -1,0 +1,188 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900"><defs>
+<filter id="grain" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+<feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.14  0 0 0 0 0.086  0 0 0 0 0.16  0 0 0 1.3 -0.5"/></filter>
+<filter id="fiber" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+<feTurbulence type="fractalNoise" baseFrequency="0.012 0.30" numOctaves="2" seed="21"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.45  0 0 0 0 0.30  0 0 0 0 0.20  0 0 0 1.6 -0.7"/></filter>
+<filter id="rough" x="-5%" y="-10%" width="110%" height="120%">
+<feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="3" seed="4" result="n"/>
+<feDisplacementMap in="SourceGraphic" in2="n" scale="16" xChannelSelector="R" yChannelSelector="G"/></filter>
+<pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+<line x1="0" y1="0" x2="0" y2="8" stroke="#6B5A72" stroke-width="1" opacity=".35"/></pattern>
+</defs>
+<rect x="0" y="0" width="1440" height="900" rx="0" fill="#F8AA09" />
+<clipPath id="c84"><rect x="0" y="0" width="1440" height="900" rx="0"/></clipPath>
+<g clip-path="url(#c84)"><rect x="0" y="0" width="1440" height="900" filter="url(#grain)" opacity="0.12"/><rect x="0" y="0" width="1440" height="900" filter="url(#fiber)" opacity="0.07"/></g>
+<rect x="56.0" y="59.2" width="3.5999999999999996" height="24.8" rx="0.8" fill="#4F0964" />
+<rect x="62.8" y="65.60000000000001" width="3.5999999999999996" height="16.8" rx="0.8" fill="#241629" />
+<rect x="69.6" y="65.60000000000001" width="3.5999999999999996" height="16.8" rx="0.8" fill="#241629" />
+<rect x="76.4" y="65.60000000000001" width="3.5999999999999996" height="16.8" rx="0.8" fill="#241629" />
+<rect x="83.2" y="65.60000000000001" width="3.5999999999999996" height="16.8" rx="0.8" fill="#241629" />
+<rect x="90.0" y="65.60000000000001" width="3.5999999999999996" height="16.8" rx="0.8" fill="#241629" />
+<rect x="96.80000000000001" y="59.2" width="3.5999999999999996" height="24.8" rx="0.8" fill="#4F0964" />
+<text x="108.80000000000001" y="84" font-family="Fraunces Display Bold" font-size="47.199999999999996" font-weight="800" fill="#241629" text-anchor="start" >Cue</text>
+<text x="56" y="260" font-family="Fraunces Display" font-size="74" font-weight="600" fill="#241629" text-anchor="start" >Two drawings in.</text>
+<text x="56" y="340" font-family="Fraunces Display" font-size="74" font-weight="600" fill="#241629" text-anchor="start" >One animation out.</text>
+<text x="56" y="394" font-family="Manrope" font-size="19" font-weight="500" fill="#4B3B52" text-anchor="start" >Upload a start and an end drawing, describe the motion in English,</text>
+<text x="56" y="422" font-family="Manrope" font-size="19" font-weight="500" fill="#4B3B52" text-anchor="start" >and Cue draws the frames in between.</text>
+<g filter="url(#rough)"><rect x="56" y="520" width="768" height="300" rx="14" fill="#4F0964"/></g>
+<line x1="162" y1="602" x2="510" y2="602" stroke="#65198A" stroke-width="2.2" opacity=".35"/>
+<line x1="90" y1="703" x2="295" y2="703" stroke="#3B0650" stroke-width="2.7" opacity=".35"/>
+<line x1="115" y1="607" x2="713" y2="607" stroke="#65198A" stroke-width="1.9" opacity=".35"/>
+<line x1="151" y1="757" x2="607" y2="757" stroke="#3B0650" stroke-width="1.3" opacity=".35"/>
+<line x1="210" y1="705" x2="619" y2="705" stroke="#65198A" stroke-width="2.5" opacity=".35"/>
+<line x1="90" y1="715" x2="593" y2="715" stroke="#3B0650" stroke-width="2.2" opacity=".35"/>
+<line x1="85" y1="618" x2="631" y2="618" stroke="#65198A" stroke-width="1.9" opacity=".35"/>
+<line x1="212" y1="727" x2="697" y2="727" stroke="#3B0650" stroke-width="2.8" opacity=".35"/>
+<line x1="200" y1="643" x2="578" y2="643" stroke="#65198A" stroke-width="2.9" opacity=".35"/>
+<line x1="95" y1="769" x2="349" y2="769" stroke="#3B0650" stroke-width="1.4" opacity=".35"/>
+<line x1="145" y1="791" x2="596" y2="791" stroke="#65198A" stroke-width="1.6" opacity=".35"/>
+<line x1="138" y1="672" x2="478" y2="672" stroke="#3B0650" stroke-width="2.2" opacity=".35"/>
+<line x1="216" y1="692" x2="688" y2="692" stroke="#65198A" stroke-width="2.9" opacity=".35"/>
+<line x1="229" y1="763" x2="697" y2="763" stroke="#3B0650" stroke-width="1.3" opacity=".35"/>
+<line x1="225" y1="764" x2="787" y2="764" stroke="#65198A" stroke-width="2.1" opacity=".35"/>
+<line x1="112" y1="726" x2="644" y2="726" stroke="#3B0650" stroke-width="2.1" opacity=".35"/>
+<line x1="90" y1="614" x2="631" y2="614" stroke="#65198A" stroke-width="3.0" opacity=".35"/>
+<line x1="200" y1="563" x2="564" y2="563" stroke="#3B0650" stroke-width="1.3" opacity=".35"/>
+<line x1="195" y1="616" x2="744" y2="616" stroke="#65198A" stroke-width="1.1" opacity=".35"/>
+<line x1="87" y1="700" x2="574" y2="700" stroke="#3B0650" stroke-width="1.7" opacity=".35"/>
+<line x1="227" y1="769" x2="629" y2="769" stroke="#65198A" stroke-width="3.0" opacity=".35"/>
+<line x1="92" y1="621" x2="531" y2="621" stroke="#3B0650" stroke-width="1.1" opacity=".35"/>
+<line x1="141" y1="591" x2="585" y2="591" stroke="#65198A" stroke-width="1.3" opacity=".35"/>
+<line x1="210" y1="551" x2="536" y2="551" stroke="#3B0650" stroke-width="2.9" opacity=".35"/>
+<line x1="137" y1="773" x2="521" y2="773" stroke="#65198A" stroke-width="2.0" opacity=".35"/>
+<line x1="169" y1="707" x2="593" y2="707" stroke="#3B0650" stroke-width="2.2" opacity=".35"/>
+<line x1="156" y1="785" x2="529" y2="785" stroke="#65198A" stroke-width="2.4" opacity=".35"/>
+<line x1="125" y1="602" x2="716" y2="602" stroke="#3B0650" stroke-width="2.0" opacity=".35"/>
+<line x1="82" y1="683" x2="448" y2="683" stroke="#65198A" stroke-width="2.2" opacity=".35"/>
+<line x1="172" y1="545" x2="625" y2="545" stroke="#3B0650" stroke-width="1.1" opacity=".35"/>
+<line x1="150" y1="703" x2="622" y2="703" stroke="#65198A" stroke-width="1.7" opacity=".35"/>
+<line x1="191" y1="724" x2="400" y2="724" stroke="#3B0650" stroke-width="1.1" opacity=".35"/>
+<line x1="224" y1="716" x2="525" y2="716" stroke="#65198A" stroke-width="1.9" opacity=".35"/>
+<line x1="128" y1="694" x2="474" y2="694" stroke="#3B0650" stroke-width="1.6" opacity=".35"/>
+<line x1="169" y1="636" x2="490" y2="636" stroke="#65198A" stroke-width="1.8" opacity=".35"/>
+<line x1="84" y1="741" x2="512" y2="741" stroke="#3B0650" stroke-width="2.5" opacity=".35"/>
+<line x1="113" y1="621" x2="635" y2="621" stroke="#65198A" stroke-width="1.5" opacity=".35"/>
+<line x1="145" y1="589" x2="625" y2="589" stroke="#3B0650" stroke-width="1.2" opacity=".35"/>
+<line x1="130" y1="624" x2="663" y2="624" stroke="#65198A" stroke-width="1.9" opacity=".35"/>
+<line x1="105" y1="762" x2="440" y2="762" stroke="#3B0650" stroke-width="2.3" opacity=".35"/>
+<line x1="148" y1="770" x2="438" y2="770" stroke="#65198A" stroke-width="1.2" opacity=".35"/>
+<line x1="109" y1="678" x2="631" y2="678" stroke="#3B0650" stroke-width="2.7" opacity=".35"/>
+<line x1="122" y1="588" x2="645" y2="588" stroke="#65198A" stroke-width="2.3" opacity=".35"/>
+<line x1="132" y1="750" x2="384" y2="750" stroke="#3B0650" stroke-width="1.6" opacity=".35"/>
+<line x1="121" y1="746" x2="459" y2="746" stroke="#65198A" stroke-width="1.8" opacity=".35"/>
+<line x1="141" y1="649" x2="710" y2="649" stroke="#3B0650" stroke-width="1.3" opacity=".35"/>
+<rect x="88" y="566" width="126" height="174" rx="6" fill="#FFFDF7" />
+<clipPath id="d85"><rect x="88" y="566" width="126" height="174" rx="6"/></clipPath><g clip-path="url(#d85)">
+<path d="M138.9 679.8 L139.8 700.5 M163.1 679.8 L162.2 700.5" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M93.2 739.7 Q99.7 706.1 151.0 704.2 Q202.3 706.1 208.8 739.7" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<ellipse cx="151.0" cy="640.8" rx="33.6" ry="41.0" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M117.4 633.4 Q120.8 592.4 157.7 596.5 Q181.2 601.8 184.6 631.5 Q161.1 615.4 132.5 620.3Z" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<ellipse cx="137.9" cy="639.0" rx="4.7" ry="3.0" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="137.9" cy="639.0" r="1.9" fill="#241629"/>
+<path d="M133.3 631.5 Q137.9 629.2 142.6 631.5" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<ellipse cx="164.1" cy="639.0" rx="4.7" ry="3.0" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="164.1" cy="639.0" r="1.9" fill="#241629"/>
+<path d="M159.4 631.5 Q164.1 629.2 168.7 631.5" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M151.0 641.8 L149.1 651.1 L153.8 651.1" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M142.6 661.3 Q151.0 667.5 159.4 661.3" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<rect x="88" y="566" width="126" height="174" rx="6" fill="none" stroke="#F88526" stroke-width="4" />
+<text x="151" y="770" font-family="Manrope" font-size="14" font-weight="800" fill="#FBF3E4" text-anchor="middle" >Your start</text>
+<rect x="232" y="566" width="126" height="174" rx="6" fill="#FFFDF7" />
+<clipPath id="d86"><rect x="232" y="566" width="126" height="174" rx="6"/></clipPath><g clip-path="url(#d86)">
+<path d="M278.4 679.8 L279.3 700.5 M302.6 679.8 L301.7 700.5" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M237.2 739.7 Q243.7 706.1 290.5 704.2 Q346.3 706.1 352.8 739.7" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<ellipse cx="290.5" cy="640.8" rx="32.5" ry="41.0" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M258.0 633.4 Q261.3 592.4 297.0 596.5 Q319.8 601.8 323.0 631.5 Q300.3 615.4 272.7 620.3Z" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<ellipse cx="275.7" cy="639.0" rx="4.7" ry="3.0" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="274.7" cy="639.0" r="1.9" fill="#241629"/>
+<path d="M271.0 631.5 Q275.7 629.2 280.4 631.5" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<ellipse cx="300.5" cy="639.0" rx="4.7" ry="3.0" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="299.5" cy="639.0" r="1.9" fill="#241629"/>
+<path d="M295.8 631.5 Q300.5 629.2 305.2 631.5" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M286.8 641.8 L284.9 651.1 L289.6 651.1" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M279.1 661.3 Q287.5 668.5 295.9 661.3" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<rect x="232" y="566" width="126" height="174" rx="6" fill="none" stroke="#F6E8D1" stroke-width="1.5" opacity="0.5" />
+<text x="295" y="770" font-family="Manrope" font-size="14" font-weight="800" fill="#FBF3E4" text-anchor="middle" ></text>
+<text x="295" y="770" font-family="Manrope" font-size="13" font-weight="600" fill="#F6E8D1" text-anchor="middle" opacity=".75">Cue draws</text>
+<rect x="376" y="566" width="126" height="174" rx="6" fill="#FFFDF7" />
+<clipPath id="d87"><rect x="376" y="566" width="126" height="174" rx="6"/></clipPath><g clip-path="url(#d87)">
+<path d="M416.8 679.8 L417.7 700.5 M441.1 679.8 L440.1 700.5" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M381.2 739.7 Q387.7 706.1 428.9 704.2 Q490.3 706.1 496.8 739.7" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<ellipse cx="428.9" cy="640.8" rx="31.1" ry="41.0" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M397.8 633.4 Q400.9 592.4 435.2 596.5 Q457.0 601.8 460.1 631.5 Q438.3 615.4 411.8 620.3Z" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<ellipse cx="411.9" cy="639.0" rx="4.7" ry="3.0" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="410.2" cy="639.0" r="1.9" fill="#241629"/>
+<path d="M407.2 631.5 Q411.9 629.2 416.6 631.5" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<ellipse cx="435.1" cy="639.0" rx="4.7" ry="3.0" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="433.4" cy="639.0" r="1.9" fill="#241629"/>
+<path d="M430.4 631.5 Q435.1 629.2 439.7 631.5" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M420.5 641.8 L418.7 651.1 L423.3 651.1" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M413.8 661.3 Q422.2 670.6 430.6 661.3" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<rect x="376" y="566" width="126" height="174" rx="6" fill="none" stroke="#F6E8D1" stroke-width="1.5" opacity="0.5" />
+<text x="439" y="770" font-family="Manrope" font-size="14" font-weight="800" fill="#FBF3E4" text-anchor="middle" ></text>
+<text x="439" y="770" font-family="Manrope" font-size="13" font-weight="600" fill="#F6E8D1" text-anchor="middle" opacity=".75">Cue draws</text>
+<rect x="520" y="566" width="126" height="174" rx="6" fill="#FFFDF7" />
+<clipPath id="d88"><rect x="520" y="566" width="126" height="174" rx="6"/></clipPath><g clip-path="url(#d88)">
+<path d="M555.2 679.8 L556.1 700.5 M579.5 679.8 L578.5 700.5" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M525.2 739.7 Q531.7 706.1 567.3 704.2 Q634.3 706.1 640.8 739.7" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<ellipse cx="567.3" cy="640.8" rx="29.8" ry="41.0" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M537.5 633.4 Q540.5 592.4 573.3 596.5 Q594.2 601.8 597.1 631.5 Q576.3 615.4 550.9 620.3Z" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<ellipse cx="548.1" cy="639.0" rx="4.7" ry="3.0" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="545.9" cy="639.0" r="1.9" fill="#241629"/>
+<path d="M543.4 631.5 Q548.1 629.2 552.7 631.5" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<ellipse cx="569.6" cy="639.0" rx="4.7" ry="3.0" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="567.4" cy="639.0" r="1.9" fill="#241629"/>
+<path d="M565.0 631.5 Q569.6 629.2 574.3 631.5" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M554.3 641.8 L552.4 651.1 L557.1 651.1" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M548.5 661.3 Q556.9 673.6 565.3 661.3" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<rect x="520" y="566" width="126" height="174" rx="6" fill="none" stroke="#F6E8D1" stroke-width="1.5" opacity="0.5" />
+<text x="583" y="770" font-family="Manrope" font-size="14" font-weight="800" fill="#FBF3E4" text-anchor="middle" ></text>
+<text x="583" y="770" font-family="Manrope" font-size="13" font-weight="600" fill="#F6E8D1" text-anchor="middle" opacity=".75">Cue draws</text>
+<rect x="664" y="566" width="126" height="174" rx="6" fill="#FFFDF7" />
+<clipPath id="d89"><rect x="664" y="566" width="126" height="174" rx="6"/></clipPath><g clip-path="url(#d89)">
+<path d="M694.7 679.8 L695.7 700.5 M719.0 679.8 L718.0 700.5" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M669.2 739.7 Q675.7 706.1 706.9 704.2 Q778.3 706.1 784.8 739.7" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<ellipse cx="706.9" cy="640.8" rx="28.7" ry="41.0" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M678.1 633.4 Q681.0 592.4 712.6 596.5 Q732.7 601.8 735.6 631.5 Q715.5 615.4 691.1 620.3Z" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<ellipse cx="685.8" cy="639.0" rx="4.7" ry="3.0" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="683.4" cy="639.0" r="1.9" fill="#241629"/>
+<path d="M681.2 631.5 Q685.8 629.2 690.5 631.5" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<ellipse cx="706.1" cy="639.0" rx="4.7" ry="3.0" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="703.6" cy="639.0" r="1.9" fill="#241629"/>
+<path d="M701.4 631.5 Q706.1 629.2 710.7 631.5" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M690.1 641.8 L688.2 651.1 L692.9 651.1" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M685.0 661.3 Q693.4 677.7 701.8 661.3" fill="none" stroke="#241629" stroke-width="2.0512799999999998" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<rect x="664" y="566" width="126" height="174" rx="6" fill="none" stroke="#F88526" stroke-width="4" />
+<text x="727" y="770" font-family="Manrope" font-size="14" font-weight="800" fill="#FBF3E4" text-anchor="middle" >Your end</text>
+<rect x="880" y="0" width="560" height="900" rx="0" fill="#F6E8D1" />
+<clipPath id="c90"><rect x="880" y="0" width="560" height="900" rx="0"/></clipPath>
+<g clip-path="url(#c90)"><rect x="880" y="0" width="560" height="900" filter="url(#grain)" opacity="0.09"/><rect x="880" y="0" width="560" height="900" filter="url(#fiber)" opacity="0.05"/></g>
+<line x1="880" y1="0" x2="880" y2="900" stroke="#241629" stroke-width="1.5"/>
+<text x="960" y="214" font-family="Fraunces Display" font-size="38" font-weight="600" fill="#241629" text-anchor="start" >Welcome back</text>
+<text x="960" y="246" font-family="Manrope" font-size="16" font-weight="500" fill="#4B3B52" text-anchor="start" >Log in to see your animations.</text>
+<text x="960" y="312" font-family="Manrope" font-size="16" font-weight="800" fill="#241629" text-anchor="start" >Log in</text>
+<rect x="960" y="322" width="56" height="3" rx="1.5" fill="#4F0964" />
+<text x="1072" y="312" font-family="Manrope" font-size="16" font-weight="600" fill="#4B3B52" text-anchor="start" >Create account</text>
+<line x1="960" y1="325" x2="1360" y2="325" stroke="#CDB99A" stroke-width="1.2"/>
+<rect x="960" y="323" width="56" height="3" rx="1.5" fill="#4F0964" />
+<text x="960" y="372" font-family="Manrope" font-size="14" font-weight="800" fill="#241629" text-anchor="start" >Email</text>
+<rect x="960" y="384" width="400" height="46" rx="8" fill="#FBF3E4" stroke="#6B5A72" stroke-width="1.5" />
+<text x="974" y="413" font-family="Manrope" font-size="16" font-weight="500" fill="#241629" text-anchor="start" >mira@studio.example</text>
+<text x="960" y="462" font-family="Manrope" font-size="14" font-weight="800" fill="#241629" text-anchor="start" >Password</text>
+<rect x="960" y="474" width="400" height="46" rx="8" fill="#FBF3E4" stroke="#241629" stroke-width="2.5" />
+<rect x="957" y="471" width="406" height="52" rx="10" fill="none" stroke="#FBF3E4" stroke-width="0"/>
+<text x="974" y="504" font-family="Manrope" font-size="18" font-weight="700" fill="#241629" text-anchor="start" >••••••••••</text>
+<text x="1346" y="503" font-family="Manrope" font-size="14" font-weight="800" fill="#4F0964" text-anchor="end" >Show</text>
+<text x="960" y="546" font-family="Manrope" font-size="13" font-weight="500" fill="#6B5A72" text-anchor="start" >Use at least 8 characters.</text>
+<rect x="960" y="585" width="400" height="52" rx="9" fill="#241629" opacity="0.9" />
+<rect x="960" y="582" width="400" height="52" rx="9" fill="#4F0964" stroke="#241629" stroke-width="1.5" />
+<text x="1134.8" y="613.5" font-family="Manrope" font-size="15" font-weight="700" fill="#FBF3E4" text-anchor="start" >Log in</text>
+<text x="1160.0" y="676" font-family="Manrope" font-size="15" font-weight="700" fill="#4F0964" text-anchor="middle" text-decoration="underline">New to Cue? Create an account</text>
+</svg>
