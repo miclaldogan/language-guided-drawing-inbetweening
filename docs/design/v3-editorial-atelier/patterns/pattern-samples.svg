@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="640" viewBox="0 0 1440 640"><defs>
+<filter id="grain" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+<feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.14  0 0 0 0 0.086  0 0 0 0 0.16  0 0 0 1.3 -0.5"/></filter>
+<filter id="fiber" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.012 0.30" numOctaves="2" seed="21"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.45  0 0 0 0 0.30  0 0 0 0 0.20  0 0 0 1.6 -0.7"/></filter>
+<filter id="sh" x="-10%" y="-10%" width="120%" height="130%"><feGaussianBlur stdDeviation="9"/></filter>
+<filter id="sh2" x="-10%" y="-10%" width="120%" height="140%"><feGaussianBlur stdDeviation="3.5"/></filter>
+<pattern id="reg" width="96" height="96" patternUnits="userSpaceOnUse">
+<g fill="none" stroke="#241629" stroke-width="1" opacity=".20"><circle cx="48" cy="48" r="5"/><path d="M48 37v22M37 48h22"/></g>
+<g fill="#241629" opacity=".18"><circle cx="0" cy="0" r="1.1"/><circle cx="96" cy="0" r="1.1"/><circle cx="0" cy="96" r="1.1"/><circle cx="96" cy="96" r="1.1"/></g></pattern>
+<pattern id="regp" width="96" height="96" patternUnits="userSpaceOnUse">
+<g fill="none" stroke="#431452" stroke-width="1" opacity=".16"><circle cx="48" cy="48" r="5"/><path d="M48 37v22M37 48h22"/></g>
+<g fill="#431452" opacity=".14"><circle cx="0" cy="0" r="1.1"/><circle cx="96" cy="0" r="1.1"/><circle cx="0" cy="96" r="1.1"/><circle cx="96" cy="96" r="1.1"/></g></pattern>
+<pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#6E5F76" stroke-width="1" opacity=".28"/></pattern>
+</defs>
+<rect x="0" y="0" width="1440" height="640" rx="0" fill="#F5EBD8" />
+<text x="48" y="56" font-family="Manrope" font-size="24" font-weight="800" fill="#241629" text-anchor="start" >Background pattern candidates</text>
+<text x="48" y="84" font-family="Manrope" font-size="14" font-weight="500" fill="#4D3D55" text-anchor="start" >One primary language is selected: registration marks. The others are shown for comparison only.</text>
+<defs>
+<pattern id="pa" width="96" height="96" patternUnits="userSpaceOnUse"><g fill="none" stroke="#241629" stroke-width="1" opacity=".2"><circle cx="48" cy="48" r="5"/><path d="M48 37v22M37 48h22"/></g><g fill="#241629" opacity=".18"><circle cx="0" cy="0" r="1.1"/><circle cx="96" cy="0" r="1.1"/><circle cx="0" cy="96" r="1.1"/><circle cx="96" cy="96" r="1.1"/></g></pattern>
+<pattern id="pb" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#241629" stroke-width=".6" opacity=".14"/></pattern>
+<pattern id="pc" width="8" height="8" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#241629" opacity=".16"/></pattern>
+<pattern id="pd" width="64" height="48" patternUnits="userSpaceOnUse"><g fill="#241629" opacity=".16"><rect x="4" y="22" width="2" height="20"/><rect x="10" y="26" width="2" height="16"/><rect x="16" y="26" width="2" height="16"/><rect x="22" y="26" width="2" height="16"/><rect x="28" y="26" width="2" height="16"/><rect x="34" y="26" width="2" height="16"/><rect x="40" y="26" width="2" height="16"/><rect x="46" y="22" width="2" height="20"/></g></pattern></defs>
+<rect x="48" y="118" width="322" height="300" rx="0" fill="#FFB509" />
+<rect x="48" y="118" width="322" height="300" rx="0" fill="url(#pa)" />
+<rect x="48" y="118" width="322" height="300" rx="0" fill="none" stroke="#241629" stroke-width="1" stroke-opacity=".2"/>
+<text x="48" y="448" font-family="Manrope" font-size="15" font-weight="800" fill="#241629" text-anchor="start" >A  Registration marks</text>
+<text x="48" y="472" font-family="Manrope" font-size="13" font-weight="500" fill="#4D3D55" text-anchor="start" >Selected. Sparse, precise, from </text>
+<text x="48" y="490" font-family="Manrope" font-size="13" font-weight="500" fill="#4D3D55" text-anchor="start" >animation paper. Reads as print, not </text>
+<text x="48" y="508" font-family="Manrope" font-size="13" font-weight="500" fill="#4D3D55" text-anchor="start" >decoration. </text>
+<rect x="394" y="118" width="322" height="300" rx="0" fill="#FFB509" />
+<rect x="394" y="118" width="322" height="300" rx="0" fill="url(#pb)" />
+<rect x="394" y="118" width="322" height="300" rx="0" fill="none" stroke="#241629" stroke-width="1" stroke-opacity=".2"/>
+<text x="394" y="448" font-family="Manrope" font-size="15" font-weight="800" fill="#241629" text-anchor="start" >B  Drafting grid</text>
+<text x="394" y="472" font-family="Manrope" font-size="13" font-weight="500" fill="#4D3D55" text-anchor="start" >Rejected as primary: competes with ruled </text>
+<text x="394" y="490" font-family="Manrope" font-size="13" font-weight="500" fill="#4D3D55" text-anchor="start" >lanes and thumbnails. </text>
+<rect x="740" y="118" width="322" height="300" rx="0" fill="#FFB509" />
+<rect x="740" y="118" width="322" height="300" rx="0" fill="url(#pc)" />
+<rect x="740" y="118" width="322" height="300" rx="0" fill="none" stroke="#241629" stroke-width="1" stroke-opacity=".2"/>
+<text x="740" y="448" font-family="Manrope" font-size="15" font-weight="800" fill="#241629" text-anchor="start" >C  Halftone dots</text>
+<text x="740" y="472" font-family="Manrope" font-size="13" font-weight="500" fill="#4D3D55" text-anchor="start" >Rejected: busy at 200% zoom and looks </text>
+<text x="740" y="490" font-family="Manrope" font-size="13" font-weight="500" fill="#4D3D55" text-anchor="start" >like a generic texture. </text>
+<rect x="1086" y="118" width="322" height="300" rx="0" fill="#FFB509" />
+<rect x="1086" y="118" width="322" height="300" rx="0" fill="url(#pd)" />
+<rect x="1086" y="118" width="322" height="300" rx="0" fill="none" stroke="#241629" stroke-width="1" stroke-opacity=".2"/>
+<text x="1086" y="448" font-family="Manrope" font-size="15" font-weight="800" fill="#241629" text-anchor="start" >D  Frame-sequence rhythm</text>
+<text x="1086" y="472" font-family="Manrope" font-size="13" font-weight="500" fill="#4D3D55" text-anchor="start" >Rejected: repeats the sixteen-frame </text>
+<text x="1086" y="490" font-family="Manrope" font-size="13" font-weight="500" fill="#4D3D55" text-anchor="start" >strip, which is a component, not a </text>
+<text x="1086" y="508" font-family="Manrope" font-size="13" font-weight="500" fill="#4D3D55" text-anchor="start" >backdrop. </text>
+</svg>

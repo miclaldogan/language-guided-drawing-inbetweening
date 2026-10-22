@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900"><defs>
+<filter id="grain" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+<feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.14  0 0 0 0 0.086  0 0 0 0 0.16  0 0 0 1.3 -0.5"/></filter>
+<filter id="fiber" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.012 0.30" numOctaves="2" seed="21"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.45  0 0 0 0 0.30  0 0 0 0 0.20  0 0 0 1.6 -0.7"/></filter>
+<filter id="sh" x="-10%" y="-10%" width="120%" height="130%"><feGaussianBlur stdDeviation="9"/></filter>
+<filter id="sh2" x="-10%" y="-10%" width="120%" height="140%"><feGaussianBlur stdDeviation="3.5"/></filter>
+<pattern id="reg" width="96" height="96" patternUnits="userSpaceOnUse">
+<g fill="none" stroke="#241629" stroke-width="1" opacity=".20"><circle cx="48" cy="48" r="5"/><path d="M48 37v22M37 48h22"/></g>
+<g fill="#241629" opacity=".18"><circle cx="0" cy="0" r="1.1"/><circle cx="96" cy="0" r="1.1"/><circle cx="0" cy="96" r="1.1"/><circle cx="96" cy="96" r="1.1"/></g></pattern>
+<pattern id="regp" width="96" height="96" patternUnits="userSpaceOnUse">
+<g fill="none" stroke="#431452" stroke-width="1" opacity=".16"><circle cx="48" cy="48" r="5"/><path d="M48 37v22M37 48h22"/></g>
+<g fill="#431452" opacity=".14"><circle cx="0" cy="0" r="1.1"/><circle cx="96" cy="0" r="1.1"/><circle cx="0" cy="96" r="1.1"/><circle cx="96" cy="96" r="1.1"/></g></pattern>
+<pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#6E5F76" stroke-width="1" opacity=".28"/></pattern>
+</defs>
+<rect x="0" y="0" width="1440" height="900" rx="0" fill="#F5EBD8" />
+<rect x="0" y="0" width="1440" height="900" rx="0" fill="url(#regp)" />
+<clipPath id="c23"><rect x="0" y="0" width="1440" height="900" rx="0"/></clipPath>
+<g clip-path="url(#c23)"><rect x="0" y="0" width="1440" height="900" filter="url(#grain)" opacity="0.05"/><rect x="0" y="0" width="1440" height="900" filter="url(#fiber)" opacity="0"/></g>
+<rect x="0" y="0" width="1440" height="64" rx="0" fill="#431452" />
+<clipPath id="c24"><rect x="0" y="0" width="1440" height="64" rx="0"/></clipPath>
+<g clip-path="url(#c24)"><rect x="0" y="0" width="1440" height="64" filter="url(#grain)" opacity="0.06"/><rect x="0" y="0" width="1440" height="64" filter="url(#fiber)" opacity="0"/></g>
+<rect x="40.0" y="23.240000000000002" width="2.04" height="17.759999999999998" rx="0.48" fill="#FFB509" />
+<rect x="44.08" y="29.0" width="2.04" height="12.0" rx="0.48" fill="#FFFAF0" opacity="0.85" />
+<rect x="48.16" y="29.0" width="2.04" height="12.0" rx="0.48" fill="#FFFAF0" opacity="0.85" />
+<rect x="52.24" y="29.0" width="2.04" height="12.0" rx="0.48" fill="#FFFAF0" opacity="0.85" />
+<rect x="56.32" y="29.0" width="2.04" height="12.0" rx="0.48" fill="#FFFAF0" opacity="0.85" />
+<rect x="60.400000000000006" y="29.0" width="2.04" height="12.0" rx="0.48" fill="#FFFAF0" opacity="0.85" />
+<rect x="64.48" y="23.240000000000002" width="2.04" height="17.759999999999998" rx="0.48" fill="#FFB509" />
+<text x="72.16" y="41" font-family="Fraunces Display Bold" font-size="26.880000000000003" font-weight="800" fill="#FFFAF0" text-anchor="start" >Cue</text>
+<line x1="196" y1="18" x2="196" y2="46" stroke="#FFFAF0" stroke-opacity=".18"/>
+<text x="220" y="38" font-family="Manrope" font-size="15" font-weight="700" fill="#FFFAF0" text-anchor="start" >Library</text>
+<rect x="220" y="58" width="52" height="3" rx="0" fill="#FFB509" />
+<line x1="1176" y1="18" x2="1176" y2="46" stroke="#FFFAF0" stroke-opacity=".18"/>
+<circle cx="1210" cy="32" r="15" fill="#FFB509"/>
+<text x="1210" y="38" font-family="Manrope" font-size="14" font-weight="800" fill="#241629" text-anchor="middle" >M</text>
+<text x="1234" y="37" font-family="Manrope" font-size="13.5" font-weight="600" fill="#FFFAF0" text-anchor="start" >mira@studio.example</text>
+<g transform="translate(1380,24) scale(1.0)" fill="none" stroke="#FFFAF0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l5 5 5-5"/></g>
+<rect x="0" y="64" width="1440" height="4" rx="0" fill="#FFB509" />
+<rect x="44" y="106" width="1352" height="774" rx="14" fill="#241629" opacity=".20" filter="url(#sh)"/>
+<rect x="40" y="92" width="1360" height="780" rx="14" fill="#FFFAF0" stroke="#241629" stroke-width="1" stroke-opacity=".10"/>
+<clipPath id="c25"><rect x="40" y="92" width="1360" height="780" rx="14"/></clipPath>
+<g clip-path="url(#c25)"><rect x="40" y="92" width="1360" height="780" filter="url(#grain)" opacity="0.05"/><rect x="40" y="92" width="1360" height="780" filter="url(#fiber)" opacity="0.0"/></g>
+<text x="72" y="140" font-family="Manrope" font-size="28" font-weight="800" fill="#241629" text-anchor="start" letter-spacing="-0.4">Editorial Atelier</text>
+<text x="72" y="166" font-family="Manrope" font-size="14.5" font-weight="500" fill="#4D3D55" text-anchor="start" >Warm paper for work, deep purple for structure, golden yellow for the brand ground.</text>
+<rect x="72" y="196" width="100" height="76" rx="8" fill="#FFB509" stroke="#241629" stroke-width="1" stroke-opacity=".18"/>
+<text x="72" y="292" font-family="Manrope" font-size="12" font-weight="700" fill="#241629" text-anchor="start" >Golden yellow</text>
+<text x="72" y="308" font-family="Manrope" font-size="12" font-weight="500" fill="#6E5F76" text-anchor="start" >#FFB509</text>
+<rect x="182" y="196" width="100" height="76" rx="8" fill="#431452" stroke="#241629" stroke-width="1" stroke-opacity=".18"/>
+<text x="182" y="292" font-family="Manrope" font-size="12" font-weight="700" fill="#241629" text-anchor="start" >Deep purple</text>
+<text x="182" y="308" font-family="Manrope" font-size="12" font-weight="500" fill="#6E5F76" text-anchor="start" >#431452</text>
+<rect x="292" y="196" width="100" height="76" rx="8" fill="#F5EBD8" stroke="#241629" stroke-width="1" stroke-opacity=".18"/>
+<text x="292" y="292" font-family="Manrope" font-size="12" font-weight="700" fill="#241629" text-anchor="start" >Warm paper</text>
+<text x="292" y="308" font-family="Manrope" font-size="12" font-weight="500" fill="#6E5F76" text-anchor="start" >#F5EBD8</text>
+<rect x="402" y="196" width="100" height="76" rx="8" fill="#FFFAF0" stroke="#241629" stroke-width="1" stroke-opacity=".18"/>
+<text x="402" y="292" font-family="Manrope" font-size="12" font-weight="700" fill="#241629" text-anchor="start" >Elevated paper</text>
+<text x="402" y="308" font-family="Manrope" font-size="12" font-weight="500" fill="#6E5F76" text-anchor="start" >#FFFAF0</text>
+<rect x="512" y="196" width="100" height="76" rx="8" fill="#241629" stroke="#241629" stroke-width="1" stroke-opacity=".18"/>
+<text x="512" y="292" font-family="Manrope" font-size="12" font-weight="700" fill="#241629" text-anchor="start" >Dark ink</text>
+<text x="512" y="308" font-family="Manrope" font-size="12" font-weight="500" fill="#6E5F76" text-anchor="start" >#241629</text>
+<rect x="622" y="196" width="100" height="76" rx="8" fill="#23437C" stroke="#241629" stroke-width="1" stroke-opacity=".18"/>
+<text x="622" y="292" font-family="Manrope" font-size="12" font-weight="700" fill="#241629" text-anchor="start" >Painted blue</text>
+<text x="622" y="308" font-family="Manrope" font-size="12" font-weight="500" fill="#6E5F76" text-anchor="start" >#23437C</text>
+<rect x="732" y="196" width="100" height="76" rx="8" fill="#ED782A" stroke="#241629" stroke-width="1" stroke-opacity=".18"/>
+<text x="732" y="292" font-family="Manrope" font-size="12" font-weight="700" fill="#241629" text-anchor="start" >Pigment orange</text>
+<text x="732" y="308" font-family="Manrope" font-size="12" font-weight="500" fill="#6E5F76" text-anchor="start" >#ED782A</text>
+<text x="72" y="348" font-family="Manrope" font-size="13" font-weight="800" fill="#241629" text-anchor="start" >Distribution (visual guide)</text>
+<rect x="72" y="360" width="425.6" height="24" rx="0" fill="#F5EBD8" stroke="#241629" stroke-width="1" stroke-opacity=".18"/>
+<rect x="497.6" y="360" width="212.8" height="24" rx="0" fill="#FFB509" stroke="#241629" stroke-width="1" stroke-opacity=".18"/>
+<rect x="710.4000000000001" y="360" width="76.0" height="24" rx="0" fill="#431452" stroke="#241629" stroke-width="1" stroke-opacity=".18"/>
+<rect x="786.4000000000001" y="360" width="22.8" height="24" rx="0" fill="#23437C" stroke="#241629" stroke-width="1" stroke-opacity=".18"/>
+<rect x="809.2" y="360" width="22.8" height="24" rx="0" fill="#ED782A" stroke="#241629" stroke-width="1" stroke-opacity=".18"/>
+<text x="72" y="404" font-family="Manrope" font-size="12.5" font-weight="500" fill="#6E5F76" text-anchor="start" >Paper and work surfaces 56%  ·  Gold brand ground 28%  ·  Purple and pigment accents 16%</text>
+<text x="72" y="462" font-family="Manrope" font-size="13" font-weight="800" fill="#241629" text-anchor="start" >Typography</text>
+<text x="72" y="506" font-family="Fraunces Display" font-size="40" font-weight="600" fill="#241629" text-anchor="start" letter-spacing="-0.8">Two drawings in.</text>
+<text x="72" y="530" font-family="Manrope" font-size="13" font-weight="500" fill="#6E5F76" text-anchor="start" >Fraunces for the login hero, wordmark and printed numerals</text>
+<text x="72" y="574" font-family="Manrope" font-size="28" font-weight="800" fill="#241629" text-anchor="start" letter-spacing="-0.4">Your animations</text>
+<text x="72" y="598" font-family="Manrope" font-size="13" font-weight="500" fill="#6E5F76" text-anchor="start" >Manrope for navigation, titles, forms, buttons and metadata</text>
+<text x="72" y="650" font-family="Manrope" font-size="13" font-weight="800" fill="#241629" text-anchor="start" >Components</text>
+<rect x="72" y="668" width="190" height="46" rx="8" fill="#431452" />
+<text x="92.3" y="696.2" font-family="Manrope" font-size="14.5" font-weight="700" fill="#FFFAF0" text-anchor="start" >Generate animation</text>
+<rect x="276" y="668" width="120" height="46" rx="8" fill="#FFFAF0" stroke="#85748A" stroke-width="1" />
+<text x="319.4" y="696.2" font-family="Manrope" font-size="14.5" font-weight="700" fill="#241629" text-anchor="start" >Back</text>
+<rect x="410" y="668" width="160" height="46" rx="8" fill="#FFFAF0" stroke="#A1413C" stroke-width="1" />
+<text x="465.1" y="696.2" font-family="Manrope" font-size="14.5" font-weight="700" fill="#A1413C" text-anchor="start" >Cancel</text>
+<rect x="72" y="734" width="114.0" height="26" rx="13.0" fill="#E1E9F4" />
+<g transform="translate(82,740.0) scale(0.875)" fill="none" stroke="#23437C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6" stroke-dasharray="4 3"/><circle cx="8" cy="8" r="1.8" fill="#23437C" stroke="none"/></g>
+<text x="101" y="751.5" font-family="Manrope" font-size="12.5" font-weight="700" fill="#23437C" text-anchor="start" >Processing</text>
+<rect x="200" y="734" width="68.4" height="26" rx="13.0" fill="#DFEBD9" />
+<g transform="translate(210,740.0) scale(0.875)" fill="none" stroke="#2F6B3B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 8.5 6.5 12.5 13.5 4"/></g>
+<text x="229" y="751.5" font-family="Manrope" font-size="12.5" font-weight="700" fill="#2F6B3B" text-anchor="start" >Done</text>
+<rect x="290" y="734" width="83.6" height="26" rx="13.0" fill="#EBDFC8" />
+<g transform="translate(300,740.0) scale(0.875)" fill="none" stroke="#4D3D55" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><path d="M8 4.5V8l2.5 1.5"/></g>
+<text x="319" y="751.5" font-family="Manrope" font-size="12.5" font-weight="700" fill="#4D3D55" text-anchor="start" >Queued</text>
+<rect x="394" y="734" width="83.6" height="26" rx="13.0" fill="#F8E0DC" />
+<g transform="translate(404,740.0) scale(0.875)" fill="none" stroke="#A1413C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2 14.5 13.5H1.5Z"/><path d="M8 6.5v3.2M8 11.8v.1"/></g>
+<text x="423" y="751.5" font-family="Manrope" font-size="12.5" font-weight="700" fill="#A1413C" text-anchor="start" >Failed</text>
+<rect x="72" y="782" width="330" height="44" rx="8" fill="#FFFAF0" stroke="#85748A" stroke-width="1" />
+<text x="86" y="810" font-family="#6E5F76" font-size="14.5" font-weight="500" fill="#241629" text-anchor="start" >Describe the motion</text>
+<rect x="432.9375" y="790" width="6" height="26" rx="1.2" fill="#431452" />
+<rect x="444.8125" y="799.88" width="6" height="16.12" rx="1.2" fill="#241629" opacity="0.55" />
+<rect x="456.6875" y="799.88" width="6" height="16.12" rx="1.2" fill="#241629" opacity="0.55" />
+<rect x="468.5625" y="799.88" width="6" height="16.12" rx="1.2" fill="#241629" opacity="0.55" />
+<rect x="480.4375" y="799.88" width="6" height="16.12" rx="1.2" fill="#241629" opacity="0.55" />
+<rect x="492.3125" y="799.88" width="6" height="16.12" rx="1.2" fill="#241629" opacity="0.55" />
+<rect x="504.1875" y="799.88" width="6" height="16.12" rx="1.2" fill="#241629" opacity="0.55" />
+<rect x="516.0625" y="799.88" width="6" height="16.12" rx="1.2" fill="#241629" opacity="0.55" />
+<rect x="527.9375" y="799.88" width="6" height="16.12" rx="1.2" fill="#241629" opacity="0.55" />
+<rect x="539.8125" y="799.88" width="6" height="16.12" rx="1.2" fill="#241629" opacity="0.55" />
+<rect x="551.6875" y="799.88" width="6" height="16.12" rx="1.2" fill="#241629" opacity="0.55" />
+<rect x="563.5625" y="799.88" width="6" height="16.12" rx="1.2" fill="#241629" opacity="0.55" />
+<rect x="575.4375" y="799.88" width="6" height="16.12" rx="1.2" fill="#241629" opacity="0.55" />
+<rect x="587.3125" y="799.88" width="6" height="16.12" rx="1.2" fill="#241629" opacity="0.55" />
+<rect x="599.1875" y="799.88" width="6" height="16.12" rx="1.2" fill="#241629" opacity="0.55" />
+<rect x="611.0625" y="790" width="6" height="26" rx="1.2" fill="#FFB509" stroke="#241629" stroke-width="1" />
+<text x="700" y="462" font-family="Manrope" font-size="13" font-weight="800" fill="#241629" text-anchor="start" >Border hierarchy</text>
+<rect x="700" y="480" width="190" height="66" rx="8" fill="#F5EBD8" />
+<text x="714" y="508" font-family="Manrope" font-size="13.5" font-weight="700" fill="#241629" text-anchor="start" >No border</text>
+<text x="714" y="528" font-family="Manrope" font-size="12" font-weight="500" fill="#6E5F76" text-anchor="start" >spacing and tone group it</text>
+<rect x="910" y="480" width="190" height="66" rx="8" fill="#FFFAF0" stroke="#241629" stroke-width="1" stroke-opacity=".14"/>
+<text x="924" y="508" font-family="Manrope" font-size="13.5" font-weight="700" fill="#241629" text-anchor="start" >Hairline</text>
+<text x="924" y="528" font-family="Manrope" font-size="12" font-weight="500" fill="#6E5F76" text-anchor="start" >secondary surfaces</text>
+<rect x="1120" y="480" width="192" height="66" rx="8" fill="#FFFAF0" stroke="#431452" stroke-width="2" />
+<text x="1134" y="508" font-family="Manrope" font-size="13.5" font-weight="700" fill="#241629" text-anchor="start" >Strong outline</text>
+<text x="1134" y="528" font-family="Manrope" font-size="12" font-weight="500" fill="#6E5F76" text-anchor="start" >selected, focus, input</text>
+<text x="700" y="600" font-family="Manrope" font-size="13" font-weight="800" fill="#241629" text-anchor="start" >Background pattern: registration marks</text>
+<rect x="700" y="618" width="300" height="130" rx="0" fill="#FFB509" />
+<rect x="700" y="618" width="300" height="130" rx="0" fill="url(#reg)" />
+<clipPath id="c26"><rect x="700" y="618" width="300" height="130" rx="0"/></clipPath>
+<g clip-path="url(#c26)"><rect x="700" y="618" width="300" height="130" filter="url(#grain)" opacity="0.07"/><rect x="700" y="618" width="300" height="130" filter="url(#fiber)" opacity="0"/></g>
+<rect x="1012" y="618" width="300" height="130" rx="0" fill="#F5EBD8" />
+<rect x="1012" y="618" width="300" height="130" rx="0" fill="url(#regp)" />
+<text x="700" y="770" font-family="Manrope" font-size="12" font-weight="500" fill="#6E5F76" text-anchor="start" >On the gold ground, 20% ink</text>
+<text x="1012" y="770" font-family="Manrope" font-size="12" font-weight="500" fill="#6E5F76" text-anchor="start" >On paper margins, 16% purple</text>
+<text x="700" y="806" font-family="Manrope" font-size="12.5" font-weight="500" fill="#4D3D55" text-anchor="start" >Texture (paper grain) and pattern are separate layers. Neither is used under text, inputs or artwork.</text>
+</svg>
