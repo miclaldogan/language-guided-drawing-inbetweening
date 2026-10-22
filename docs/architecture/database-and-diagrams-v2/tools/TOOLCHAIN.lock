@@ -1,0 +1,10 @@
+# Cue v2 araç zinciri — doğrulanan sürümler (2026-10-22). Sistem Python'u ve sistem paketleri DEĞİŞTİRİLMEDİ; sudo kullanılmadı.
+# Kapsayıcı görüntüleri özet (sha256) ile sabitlenmiştir; etiket yerine özet kullanılır.
+postgres        = postgres:18@sha256:edb0c08dc33befd0262ab3b5cf1c4f3f8cfd8b09e88c05b45adee29d6761ddb6   # PostgreSQL 18.6 (Debian 13)
+plantuml        = plantuml/plantuml@sha256:9b5071ab56a4192aac458ab4b0d42261c22c8109695894ae5be6013c3be6cac1  # PlantUML 1.2026.9 (18d0aae), Graphviz 14.0.1, OpenJDK 21.0.12.1, DejaVu fontları
+docker          = 29.8.0 (mevcuttu; kullanıcı docker grubunda)
+uv              = 0.12.8 (mevcuttu)  # geçici izole ortam: python 3.11.15 (pyproject: >=3.11,<3.12)
+psycopg         = 3.3.6 (binary)
+pytest          = 9.1.1
+argon2-cffi     = 25.1.0
+rsvg-convert    = 2.62.3 (mevcuttu)  # SVG -> PDF
