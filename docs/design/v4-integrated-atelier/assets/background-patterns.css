@@ -1,0 +1,9 @@
+/* Cue Editorial Atelier: background pattern layer. Original assets, no external images.
+   Apply only to the page ground and brand panels, never under panels' content, inputs, artwork or video. */
+:root {
+  --pattern-gold: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Cg fill='none' stroke='%23241629' stroke-width='1' opacity='.2'%3E%3Ccircle cx='48' cy='48' r='5'/%3E%3Cpath d='M48 37v22M37 48h22'/%3E%3C/g%3E%3Cg fill='%23241629' opacity='.18'%3E%3Ccircle cx='0' cy='0' r='1.1'/%3E%3Ccircle cx='96' cy='0' r='1.1'/%3E%3Ccircle cx='0' cy='96' r='1.1'/%3E%3Ccircle cx='96' cy='96' r='1.1'/%3E%3C/g%3E%3C/svg%3E");
+  --pattern-paper: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Cg fill='none' stroke='%23431452' stroke-width='1' opacity='.16'%3E%3Ccircle cx='48' cy='48' r='5'/%3E%3Cpath d='M48 37v22M37 48h22'/%3E%3C/g%3E%3Cg fill='%23431452' opacity='.14'%3E%3Ccircle cx='0' cy='0' r='1.1'/%3E%3Ccircle cx='96' cy='0' r='1.1'/%3E%3Ccircle cx='0' cy='96' r='1.1'/%3E%3Ccircle cx='96' cy='96' r='1.1'/%3E%3C/g%3E%3C/svg%3E");
+}
+.ground-gold  { background-color: var(--bg-ground-gold);  background-image: var(--pattern-gold);  background-size: 96px 96px; }
+.ground-paper { background-color: var(--bg-ground-paper); background-image: var(--pattern-paper); background-size: 96px 96px; }
+@media (prefers-contrast: more), (forced-colors: active) { .ground-gold, .ground-paper { background-image: none; } }

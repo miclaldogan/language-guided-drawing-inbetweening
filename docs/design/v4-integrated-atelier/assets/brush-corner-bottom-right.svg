@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="120" viewBox="0 0 320 120">
+  <defs><filter id="r" x="-5%" y="-10%" width="110%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.016" numOctaves="2" seed="9" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="8" xChannelSelector="R" yChannelSelector="G"/></filter></defs>
+  <g filter="url(#r)"><path d="M320 120 V0 C308 40 288 66 264 86 C210 112 110 118 0 120 Z" fill="#FFB509"/></g>
+</svg>
