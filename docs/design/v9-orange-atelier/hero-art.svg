@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 760" fill="none">
+  <defs>
+    <linearGradient id="paper" x1="163" y1="80" x2="764" y2="707" gradientUnits="userSpaceOnUse"><stop stop-color="#F4F0E6"/><stop offset="1" stop-color="#DCD8C9"/></linearGradient>
+    <linearGradient id="blue" x1="733" y1="114" x2="877" y2="676" gradientUnits="userSpaceOnUse"><stop stop-color="#A7C8EA"/><stop offset="1" stop-color="#4E83B5"/></linearGradient>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" stroke="#BBD6F1" stroke-opacity=".08"/></pattern>
+    <pattern id="etch" width="8" height="8" patternUnits="userSpaceOnUse"><path d="M1 0V8M5 0V8" stroke="#29333B" stroke-opacity=".27" stroke-width=".7"/></pattern>
+    <filter id="papergrain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".72" numOctaves="2" seed="14"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="table" tableValues="0 .08"/></feComponentTransfer><feBlend in="SourceGraphic" mode="multiply"/></filter>
+  </defs>
+  <rect width="1000" height="760" rx="2" fill="#A9472A"/>
+  <rect width="1000" height="760" fill="url(#grid)"/>
+  <path d="M48 40h904v680H48z" stroke="#E3D9C2" stroke-opacity=".68"/>
+  <path d="M58 50h884v660H58z" stroke="#E3D9C2" stroke-opacity=".28"/>
+  <path d="M90 126H910M90 630H910" stroke="#E3D9C2" stroke-opacity=".28"/>
+  <path d="M698 52v656" stroke="#E3D9C2" stroke-opacity=".22"/>
+  <circle cx="511" cy="352" r="218" fill="url(#blue)"/>
+  <circle cx="511" cy="352" r="190" stroke="#F3D991" stroke-opacity=".84" stroke-width="1.2"/>
+  <circle cx="511" cy="352" r="176" stroke="#F3D991" stroke-opacity=".44" stroke-width="1"/>
+  <path d="M780 120h108v185H780z" fill="url(#blue)"/>
+  <path d="M781 438h108v147H781z" fill="#F2F0E7"/>
+  <path d="M780 321h108v97H780z" fill="#29333B"/>
+  <path d="M741 120v465M731 120v465" stroke="#F0E9D7" stroke-opacity=".55"/>
+  <g id="profile-figure" fill="url(#paper)" stroke="#29333B" stroke-width="2">
+    <path d="M325 621c17-48 34-82 82-110 34-20 48-38 48-68-44-29-69-84-69-147 0-85 49-148 132-148 76 0 124 55 124 134 0 37-10 63-31 91-13 18-17 41 1 65 24 31 45 66 63 113l22 70H325Z"/>
+    <path d="M498 180c-35 21-55 64-55 116 0 57 25 102 67 125 23 13 54 16 79 4l13-32 34-15-20-26 13-17-20-16 11-24c-18-34-46-48-75-49-29-1-47-18-47-42v-24Z" fill="#D6D0C0"/>
+  </g>
+  <use href="#profile-figure" transform="translate(-52 13)" opacity=".28"/>
+  <use href="#profile-figure" transform="translate(43 -8)" opacity=".19"/>
+  <path d="M498 180c-35 21-55 64-55 116 0 57 25 102 67 125 23 13 54 16 79 4l13-32 34-15-20-26 13-17-20-16 11-24c-18-34-46-48-75-49-29-1-47-18-47-42v-24Z" fill="url(#etch)"/>
+  <path d="M570 338c-12-4-24-3-35 3m44 16-33 8m13 25c-17 8-33 8-49 0m122 56c-39-20-85-18-119 0m160 44c-72-33-164-34-237-5m272 38c-89-41-203-40-292-2m330 39c-92-43-224-50-339-7" stroke="#344C5E" stroke-width="1.5" stroke-linecap="round"/>
+  <g stroke="#F4EEDF" stroke-opacity=".75" stroke-width="1" stroke-linecap="round">
+    <path d="M202 465c45-160 115-246 228-269m-214 303c47-161 119-258 235-284m-220 326c48-161 123-267 246-301m-224 342c46-148 126-275 263-319m-246 362c44-148 129-281 281-333m-265 373c46-151 144-285 301-340"/>
+    <path d="M200 513c78 10 144 38 198 83m-183-131c78 12 146 42 204 91m-189-145c77 11 151 46 212 102m-191-153c77 11 153 47 220 109"/>
+  </g>
+  <path d="M119 92h60M119 92v60M881 92h-60M881 92v60M119 668h60M119 668v-60M881 668h-60M881 668v-60" stroke="#F0C75C" stroke-width="2"/>
+  <g fill="#F4F0E6" font-family="monospace" font-size="13" letter-spacing="2">
+    <text x="82" y="80">CUE / MOVEMENT STUDY</text><text x="787" y="80">FIG. 01</text>
+    <text x="90" y="657">A / 00</text><text x="452" y="657">B / 08</text><text x="788" y="657">C / 16</text>
+    <text x="90" y="694" fill="#B9D5F0">LINE, LIGHT, TIME</text><text x="762" y="694" fill="#F0C75C">45°  /  01:16</text>
+  </g>
+  <path d="M90 632h818" stroke="#F0C75C" stroke-width="2"/>
+  <path d="M90 626v12m51-8v8m51-8v8m51-8v8m51-8v8m51-8v8m51-8v8m51-12v12m51-8v8m51-8v8m51-8v8m51-8v8m51-8v8m51-8v8m51-8v8m51-12v12" stroke="#F0C75C" stroke-width="1"/>
+</svg>

@@ -1,0 +1,23 @@
+.hero-wave {
+  position: absolute;
+  z-index: 2;
+  inset: 5px 0 20px 16px;
+  width: calc(100% - 16px);
+  height: calc(100% - 25px);
+  display: block;
+  border: 1px solid rgba(243, 239, 224, .62);
+  pointer-events: auto;
+  touch-action: pan-y;
+}
+
+.hero-art-wrap.shader-ready .hero-art { opacity: 0; }
+.hero-art { transition: opacity .3s ease; }
+.cover-art-image { width: 100%; height: 100%; display: block; object-fit: cover; }
+
+@media (max-width: 760px) {
+  .hero-wave {
+    inset: 3px 8px 17px 0;
+    width: calc(100% - 8px);
+    height: calc(100% - 20px);
+  }
+}

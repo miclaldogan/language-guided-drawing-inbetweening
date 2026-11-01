@@ -1,0 +1,66 @@
+{
+  "$description": "Cue design tokens v1.0 — Bordo Herbaryum. Semantic roles match docs/design/v10-bordo-herbaryum/styles.css. The five selected palette colors remain the brand palette; neutral surface variants support legibility.",
+  "primitive": {
+    "color": {
+      "field-burgundy": "#4B2834",
+      "paper": "#F4EBDD",
+      "sage": "#91AA8A",
+      "copper": "#D39A62",
+      "ink": "#2B2727",
+      "paper-light": "#FBF8F1",
+      "muted": "#756E68",
+      "rule": "#D5CABC",
+      "white": "#FFFDF8"
+    },
+    "font-family": {
+      "display": "Georgia, Iowan Old Style, Times New Roman, serif",
+      "ui": "Arial, Helvetica, sans-serif",
+      "metadata": "SFMono-Regular, Consolas, Liberation Mono, monospace"
+    },
+    "space": { "0": "0", "1": "4px", "2": "8px", "3": "12px", "4": "16px", "5": "20px", "6": "24px", "8": "32px", "10": "40px", "12": "48px", "16": "64px", "20": "80px" },
+    "duration": { "instant": "80ms", "fast": "120ms", "base": "200ms", "slow": "320ms" },
+    "easing": { "standard": "cubic-bezier(0.2, 0.7, 0.2, 1)" }
+  },
+  "semantic": {
+    "color": {
+      "bg-app": "{primitive.color.paper}",
+      "bg-paper": "{primitive.color.paper-light}",
+      "bg-brand": "{primitive.color.field-burgundy}",
+      "bg-drawing-mat": "{primitive.color.paper}",
+      "text-primary": "{primitive.color.ink}",
+      "text-secondary": "{primitive.color.muted}",
+      "text-on-brand": "{primitive.color.paper}",
+      "action-primary": "{primitive.color.copper}",
+      "action-primary-text": "{primitive.color.ink}",
+      "selected": "{primitive.color.sage}",
+      "approved": "{primitive.color.sage}",
+      "attention": "{primitive.color.copper}",
+      "focus-ring": "{primitive.color.field-burgundy}",
+      "border-default": "{primitive.color.rule}",
+      "border-strong": "{primitive.color.field-burgundy}"
+    },
+    "layout": {
+      "page-margin-desktop": "6.4vw",
+      "page-margin-mobile": "17px",
+      "content-max": "1440px",
+      "topbar-height": "68px",
+      "media-aspect": "8 / 5",
+      "workflow-steps": 4,
+      "sequence-frames": 16
+    }
+  },
+  "typography": {
+    "display": { "family": "display", "weight": 400, "line-height": "0.96", "letter-spacing": "-0.055em" },
+    "body": { "family": "ui", "weight": 400, "size": "12px", "line-height": "1.8" },
+    "metadata": { "family": "metadata", "weight": 400, "size": "8px", "letter-spacing": "0.08em" }
+  },
+  "component": {
+    "button": { "min-height": "45px", "shape": "square corner", "padding-x": "18px" },
+    "input": { "height": "46px", "shape": "square corner", "padding-x": "12px" },
+    "job-card": { "aspect": "8 / 5", "padding": "16px", "shape": "square corner" },
+    "frame-strip": { "count": 16, "endpoint-emphasis": "copper" },
+    "focus": { "ring-width": "2px", "ring-offset": "3px" },
+    "target-min": "40px"
+  },
+  "breakpoint": { "compact": "400px", "narrow": "720px", "tablet": "980px", "desktop": "1280px" }
+}
