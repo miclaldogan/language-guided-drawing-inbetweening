@@ -107,6 +107,31 @@ Planned evaluation dimensions are endpoint consistency, perceptual image similar
 
 Possible metrics under investigation include SSIM, LPIPS, PSNR where useful, FVD or appropriate video-level metrics, and text-video / text-motion alignment metrics. **Metrics are provisional until baselines are established.** Pixel agreement alone cannot establish that one of several valid motions is correct. See the [metric plan](docs/experiments/METRICS.md) and [experiment plan](docs/experiments/EXPERIMENT_PLAN.md). No scores have been measured.
 
+## Cue: the web studio
+
+**Cue** is the product built on top of this research: a web animation studio where a signed-in user uploads two keyframe drawings, optionally describes the motion in one English sentence, approves a structured motion plan, and receives a short generated animation (up to 16 frames, MP4 plus frames). Generation is asynchronous: a GPU worker claims jobs from a PostgreSQL-backed queue, so a request is answered immediately and progress is followed from the user's personal library.
+
+Committed capabilities: account creation and login, a personal library (list, status, delete), keyframe upload with validation, an optional English instruction with a reviewed plan, asynchronous generation with status and clear errors, cancellation, MP4 playback and download, and a per-generation record (inputs, plan, model version, seed, duration). Out of scope: training a video model from scratch, long video, video input, password reset, sharing, admin panel, negative prompts.
+
+| Area | Where |
+| --- | --- |
+| Six-screen UI design (specification, tokens, previews, Figma hand-off) | [`docs/design/`](docs/design/) |
+| Database schema, migrations, data dictionary, indexes | [`docs/architecture/database-and-diagrams-v2/database/`](docs/architecture/database-and-diagrams-v2/database/) |
+| UML, ER, sequence, state, deployment and AI-pipeline diagrams (English and Turkish) | [`docs/architecture/database-and-diagrams-v2/diagrams/`](docs/architecture/database-and-diagrams-v2/diagrams/) |
+| Week 2 delivery (technology stack table, checklist) | [`docs/architecture/database-and-diagrams-v2/week-02/`](docs/architecture/database-and-diagrams-v2/week-02/) |
+
+### Chosen stack (proposal) and what is verified
+
+React frontend, FastAPI backend, **PostgreSQL 18** (users, sessions, job queue, motion plan as JSONB, model versions, media metadata), a file store for drawings, frames archive and MP4 behind a `MediaStore` interface, a separate GPU worker, Docker Compose. The AI components (ToonCrafter backbone, LoRA, plan module, English plan interpreter) are research hypotheses and are **not implemented or verified yet**.
+
+The database design is verified against a disposable PostgreSQL 18 container: constraints and ownership foreign keys, column-level permissions, job state consistency, concurrent workers claiming jobs (`FOR UPDATE SKIP LOCKED`), worker crash and cancellation races, idempotent submission, migrations (up/down/up), a row-level-security proposal, and backup/restore with media reconciliation. 110 tests, run with Docker and `uv` (no system packages needed):
+
+```bash
+docs/architecture/database-and-diagrams-v2/database/validation/run.sh
+```
+
+Diagrams are PlantUML sources (`.puml`) with rendered `.svg`/`.png`/`.pdf`; Turkish versions are generated from the English sources (`tools/build_tr.py`). SVG files reference the DejaVu Sans font by name; use the PNG or PDF files for sharing. See the [database and diagrams README](docs/architecture/database-and-diagrams-v2/README.md) for regeneration commands.
+
 ## System Architecture
 
 The eventual system is expected to contain a frontend, backend/API, model service, dataset pipeline, training pipeline, evaluation pipeline, database, and experiment tracking. Boundaries and technology choices are provisional; the initial prototype may run locally without separately deployed services.
@@ -114,6 +139,8 @@ The eventual system is expected to contain a frontend, backend/API, model servic
 See [system architecture](docs/architecture/SYSTEM_ARCHITECTURE.md) and the [AI pipeline](docs/architecture/AI_PIPELINE.md).
 
 ## Project Status
+
+Research and data:
 
 - [x] Project definition
 - [x] Initial literature review (project-provided status; bibliography to be recorded)
@@ -124,8 +151,19 @@ See [system architecture](docs/architecture/SYSTEM_ARCHITECTURE.md) and the [AI 
 - [ ] Baseline model
 - [ ] Language conditioning experiments
 - [ ] Full model integration
+
+Product (Cue web studio):
+
+- [x] Requirements baseline (12 functional, 7 non-functional) and six-screen flow
+- [x] UI design specification (six screens, tokens, component spec; design studies v1-v10)
+- [x] Database design: PostgreSQL schema, migrations, data dictionary, indexes (verified, 110 tests)
+- [x] Engineering diagrams: use case, architecture, three activity flows, AI pipeline, job state machine, ER, seven sequence diagrams, deployment
+- [x] Week 2 technology stack table
+- [ ] Clickable Figma prototype (six screens)
+- [ ] Backend skeleton (database, authentication, endpoints, Swagger)
+- [ ] Frontend, GPU worker, plan interpreter, end-to-end MVP
 - [ ] Web prototype
-- [ ] Deployment
+- [ ] Deployment (Docker Compose, HTTPS, logging)
 - [ ] Final evaluation
 
 The capture protocol included here is a draft awaiting pilot validation. The literature-review status follows the supplied project brief and is not a claim that this repository contains a verified literature review.
@@ -200,4 +238,4 @@ This repository belongs to a university Artificial Intelligence / Engineering De
 
 ## Status
 
-The repository is currently at the project-foundation stage: structure, tooling, CI, and planning documents are in place; no models, datasets, or training code exist yet. Progress is tracked in the [backlog](docs/BACKLOG.md).
+The repository contains the research foundation (scope, dataset and experiment plans, tooling, CI), the Cue product design (UI specification and engineering diagrams) and a tested database design. No trained model, dataset, backend, frontend or worker implementation exists yet. Progress is tracked in the [backlog](docs/BACKLOG.md) and the [roadmap](docs/ROADMAP.md).
