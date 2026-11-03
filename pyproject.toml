@@ -25,6 +25,9 @@ namespaces = false
 [tool.ruff]
 target-version = "py311"
 line-length = 100
+# Doğrulama betikleri, diyagram araçları ve tasarım önizleme betikleri ürün kodu değildir; kanca açıkça verilen dosyalarda da atlasın diye force-exclude.
+extend-exclude = ["docs/architecture/database-and-diagrams-v2", "docs/design"]
+force-exclude = true
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]
