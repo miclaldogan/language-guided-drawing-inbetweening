@@ -120,6 +120,40 @@ Committed capabilities: account creation and login, a personal library (list, st
 | UML, ER, sequence, state, deployment and AI-pipeline diagrams (English and Turkish) | [`docs/architecture/database-and-diagrams-v2/diagrams/`](docs/architecture/database-and-diagrams-v2/diagrams/) |
 | Week 2 delivery (technology stack table, checklist) | [`docs/architecture/database-and-diagrams-v2/week-02/`](docs/architecture/database-and-diagrams-v2/week-02/) |
 
+## Mockups and diagrams
+
+Quick access to every page of the UI mockup and every engineering diagram.
+
+### UI mockup pages (Bordo Herbaryum, 1440 px screenshots)
+
+Interactive source: [`docs/design/v10-bordo-herbaryum/index.html`](docs/design/v10-bordo-herbaryum/index.html) (open in a browser, no build step). Mockup only: no API, database or model is connected.
+
+[Landing](docs/design/v10-bordo-herbaryum/screenshots/01-landing.png) · [Sign in](docs/design/v10-bordo-herbaryum/screenshots/02-signin.png) · [Library](docs/design/v10-bordo-herbaryum/screenshots/03-library.png) · [Keyframes (empty)](docs/design/v10-bordo-herbaryum/screenshots/04a-keyframes-empty.png) · [Keyframes (ready)](docs/design/v10-bordo-herbaryum/screenshots/04b-keyframes-ready.png) · [Motion plan (empty)](docs/design/v10-bordo-herbaryum/screenshots/05a-plan-empty.png) · [Motion plan (preview)](docs/design/v10-bordo-herbaryum/screenshots/05b-plan-preview.png) · [Motion plan (approved)](docs/design/v10-bordo-herbaryum/screenshots/05c-plan-approved.png) · [Status: queued](docs/design/v10-bordo-herbaryum/screenshots/06-status-queued.png) · [Status: running](docs/design/v10-bordo-herbaryum/screenshots/06-status-running.png) · [Status: done](docs/design/v10-bordo-herbaryum/screenshots/06-status-done.png) · [Status: failed](docs/design/v10-bordo-herbaryum/screenshots/06-status-failed.png) · [Status: cancelled](docs/design/v10-bordo-herbaryum/screenshots/06-status-cancelled.png) · [Result](docs/design/v10-bordo-herbaryum/screenshots/07-result.png) · [Wave-Line study](docs/design/v10-bordo-herbaryum/screenshots/08-wave-line-lab.png) · [Library (mobile)](docs/design/v10-bordo-herbaryum/screenshots/09-library-mobile.png) · [Landing (mobile)](docs/design/v10-bordo-herbaryum/screenshots/10-landing-mobile.png)
+
+### Engineering diagrams
+
+English PNGs; each has a Turkish version under `diagrams/tr/`, plus `.puml` source, `.svg` and `.pdf` beside it. Index: [`INDEX.md`](docs/architecture/database-and-diagrams-v2/diagrams/INDEX.md). All diagrams are proposals pending approval.
+
+| Diagram | English | Türkçe |
+| --- | --- | --- |
+| Use case | [PNG](docs/architecture/database-and-diagrams-v2/diagrams/use-case/uc-01-use-case.png) | [PNG](docs/architecture/database-and-diagrams-v2/diagrams/tr/use-case/uc-01-use-case.png) |
+| System architecture (containers) | [PNG](docs/architecture/database-and-diagrams-v2/diagrams/architecture/arch-01-container.png) | [PNG](docs/architecture/database-and-diagrams-v2/diagrams/tr/architecture/arch-01-container.png) |
+| Activity: authentication | [PNG](docs/architecture/database-and-diagrams-v2/diagrams/activity/act-01-authentication.png) | [PNG](docs/architecture/database-and-diagrams-v2/diagrams/tr/activity/act-01-authentication.png) |
+| Activity: animation creation | [PNG](docs/architecture/database-and-diagrams-v2/diagrams/activity/act-02-animation-creation.png) | [PNG](docs/architecture/database-and-diagrams-v2/diagrams/tr/activity/act-02-animation-creation.png) |
+| Activity: job execution | [PNG](docs/architecture/database-and-diagrams-v2/diagrams/activity/act-03-job-execution.png) | [PNG](docs/architecture/database-and-diagrams-v2/diagrams/tr/activity/act-03-job-execution.png) |
+| AI pipeline | [PNG](docs/architecture/database-and-diagrams-v2/diagrams/ai-pipeline/ai-01-pipeline.png) | [PNG](docs/architecture/database-and-diagrams-v2/diagrams/tr/ai-pipeline/ai-01-pipeline.png) |
+| Job state machine | [PNG](docs/architecture/database-and-diagrams-v2/diagrams/state-machine/sm-01-job-state-machine.png) | [PNG](docs/architecture/database-and-diagrams-v2/diagrams/tr/state-machine/sm-01-job-state-machine.png) |
+| ER: conceptual | [PNG](docs/architecture/database-and-diagrams-v2/diagrams/database/conceptual-erd.png) | [PNG](docs/architecture/database-and-diagrams-v2/diagrams/tr/database/conceptual-erd.png) |
+| ER: physical schema | [PNG](docs/architecture/database-and-diagrams-v2/diagrams/database/physical-erd.png) | [PNG](docs/architecture/database-and-diagrams-v2/diagrams/tr/database/physical-erd.png) |
+| Sequence: authentication | [PNG](docs/architecture/database-and-diagrams-v2/diagrams/sequence/sd-01-authentication.png) | [PNG](docs/architecture/database-and-diagrams-v2/diagrams/tr/sequence/sd-01-authentication.png) |
+| Sequence: keyframe upload | [PNG](docs/architecture/database-and-diagrams-v2/diagrams/sequence/sd-02-keyframe-upload.png) | [PNG](docs/architecture/database-and-diagrams-v2/diagrams/tr/sequence/sd-02-keyframe-upload.png) |
+| Sequence: plan preview | [PNG](docs/architecture/database-and-diagrams-v2/diagrams/sequence/sd-03-plan-preview.png) | [PNG](docs/architecture/database-and-diagrams-v2/diagrams/tr/sequence/sd-03-plan-preview.png) |
+| Sequence: job submission | [PNG](docs/architecture/database-and-diagrams-v2/diagrams/sequence/sd-04a-job-submission.png) | [PNG](docs/architecture/database-and-diagrams-v2/diagrams/tr/sequence/sd-04a-job-submission.png) |
+| Sequence: job execution | [PNG](docs/architecture/database-and-diagrams-v2/diagrams/sequence/sd-04b-job-execution.png) | [PNG](docs/architecture/database-and-diagrams-v2/diagrams/tr/sequence/sd-04b-job-execution.png) |
+| Sequence: status and result | [PNG](docs/architecture/database-and-diagrams-v2/diagrams/sequence/sd-05-status-and-result.png) | [PNG](docs/architecture/database-and-diagrams-v2/diagrams/tr/sequence/sd-05-status-and-result.png) |
+| Sequence: cancel, failure, delete | [PNG](docs/architecture/database-and-diagrams-v2/diagrams/sequence/sd-06-cancel-failure-delete.png) | [PNG](docs/architecture/database-and-diagrams-v2/diagrams/tr/sequence/sd-06-cancel-failure-delete.png) |
+| Deployment | [PNG](docs/architecture/database-and-diagrams-v2/diagrams/deployment/dep-01-deployment.png) | [PNG](docs/architecture/database-and-diagrams-v2/diagrams/tr/deployment/dep-01-deployment.png) |
+
 ### Chosen stack (proposal) and what is verified
 
 React frontend, FastAPI backend, **PostgreSQL 18** (users, sessions, job queue, motion plan as JSONB, model versions, media metadata), a file store for drawings, frames archive and MP4 behind a `MediaStore` interface, a separate GPU worker, Docker Compose. The AI components (ToonCrafter backbone, LoRA, plan module, English plan interpreter) are research hypotheses and are **not implemented or verified yet**.

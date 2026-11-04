@@ -83,6 +83,9 @@ secrets/
 *.bmp
 *.tif
 *.tiff
+# Documentation images only (diagrams and UI mockup screenshots); data frames stay excluded.
+!docs/architecture/database-and-diagrams-v2/diagrams/**/*.png
+!docs/design/v10-bordo-herbaryum/screenshots/*.png
 *.gif
 
 # Runtime, generated media, and experiment artifacts

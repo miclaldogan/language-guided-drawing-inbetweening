@@ -63,7 +63,7 @@ function botanicalArt({ small = false, alternate = 0 } = {}) {
   const shift = alternate % 3;
   const stem = shift === 1 ? 'M244 494c3-105-5-180-54-288' : shift === 2 ? 'M244 494c12-110 31-186 90-290' : 'M244 494c0-117 0-198 0-305';
   const budX = shift === 1 ? 189 : shift === 2 ? 334 : 244;
-  return `<svg class="${cls}" viewBox="0 0 480 560" role="img" aria-label="Engraved botanical study, frame ${shift + 1}">
+  return `<svg xmlns="http://www.w3.org/2000/svg" class="${cls}" viewBox="0 0 480 560" role="img" aria-label="Engraved botanical study, frame ${shift + 1}">
     <defs><pattern id="hatch-${instance}" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(18)"><path d="M0 0v6M3 0v6" stroke="#4B2834" stroke-opacity=".26" stroke-width=".7"/></pattern><pattern id="fine-${instance}" width="18" height="18" patternUnits="userSpaceOnUse"><path d="M18 0H0V18" fill="none" stroke="#4B2834" stroke-opacity=".08" stroke-width=".6"/></pattern></defs>
     <rect width="480" height="560" fill="#F4EBDD"/><rect width="480" height="560" fill="url(#fine-${instance})"/>
     <path d="M24 24h432v512H24z" fill="none" stroke="#4B2834" stroke-opacity=".3"/><path d="M34 34h412v492H34z" fill="none" stroke="#4B2834" stroke-opacity=".12"/>
