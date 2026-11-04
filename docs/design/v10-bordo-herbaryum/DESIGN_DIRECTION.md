@@ -20,7 +20,7 @@ Sage marks selection and approved interpretation. Copper marks primary actions a
 - The public opening uses an asymmetric editorial spread: a large typographic statement against burgundy, paired with an original botanical motion plate.
 - Product views use a narrow top navigation, a visible four-step sequence, and open paper surfaces. No sidebar, generic metric cards, glass panels, heavy rounded containers, or repeated stat tiles.
 - Drawings sit on pale paper mats with fine plate rules, registration ticks, small specimen labels, and restrained engraved contours.
-- Headings use a system serif; the interface stays neutral sans-serif; technical annotations use monospace. No external font requests.
+- Headings use Fraunces, the interface uses Manrope (both self-hosted in `fonts/`, no external requests). Monospace appears only on IDs, file names and counters. Text is never smaller than 12 px.
 - The selected palette colors are retained; the component composition and illustration are redesigned.
 
 ## Product flow and boundaries
