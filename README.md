@@ -124,6 +124,8 @@ Committed capabilities: account creation and login, a personal library (list, st
 
 Quick access to every page of the UI mockup and every engineering diagram.
 
+**Report (Turkish, 18 pages):** database design, the 17 diagrams explained, and the UI mockups in one document: [Word](docs/reports/Cue_Veritabani_Diyagramlar_Mockuplar_Raporu.docx) · [PDF](docs/reports/Cue_Veritabani_Diyagramlar_Mockuplar_Raporu.pdf)
+
 ### UI mockup pages (Bordo Herbaryum, 1440 px screenshots)
 
 Interactive source: [`docs/design/v10-bordo-herbaryum/index.html`](docs/design/v10-bordo-herbaryum/index.html) (open in a browser, no build step). Mockup only: no API, database or model is connected.
