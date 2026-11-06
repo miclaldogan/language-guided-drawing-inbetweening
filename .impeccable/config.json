@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "docs/design/v11-cue-sheet/index.html"
+        ],
+        "createdAt": "2026-11-05T23:03:14.273Z",
+        "reason": "Claude triage: the four hits are edge-to-edge media (drawing stage, frame strip top edge, full-bleed zoetrope band in .hist, full-width .status surface); no text sits against a boundary, verified in screenshots"
+      }
+    ]
+  }
+}
