@@ -86,6 +86,16 @@ secrets/
 # Documentation images only (diagrams and UI mockup screenshots); data frames stay excluded.
 !docs/architecture/database-and-diagrams-v2/diagrams/**/*.png
 !docs/design/v10-bordo-herbaryum/screenshots/*.png
+!docs/design/v11-cue-sheet/screenshots/*.png
+!docs/design/v11-cue-sheet/assets/*.jpg
+!docs/design/v11-cue-sheet/assets/*.webp
+!docs/design/v11-cue-sheet/assets/*.webm
+!docs/reports/ekran-goruntuleri/*.png
+!docs/reports/ekran-goruntuleri/*.jpg
+!app/frontend/public/art/*.webp
+!app/frontend/public/archive/*.jpg
+!app/frontend/public/archive/*.webp
+!app/frontend/public/archive/*.webm
 *.gif
 
 # Runtime, generated media, and experiment artifacts

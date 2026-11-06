@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cue — draw the ends, say the middle</title>
+  <meta name="description" content="Cue is a research prototype for language-guided drawing inbetweening: a model generates the frames between two drawings, and an optional English sentence sets the order of motion.">
+  <meta name="theme-color" content="#0d060b">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 40 40%27%3E%3Crect width=%2740%27 height=%2740%27 rx=%278%27 fill=%27%230d060b%27/%3E%3Crect x=%276%27 y=%2711%27 width=%2710%27 height=%2718%27 rx=%272%27 fill=%27none%27 stroke=%27white%27 stroke-width=%272.4%27/%3E%3Crect x=%2724%27 y=%2711%27 width=%2710%27 height=%2718%27 rx=%272%27 fill=%27none%27 stroke=%27white%27 stroke-width=%272.4%27/%3E%3Ccircle cx=%2720%27 cy=%2720%27 r=%273%27 fill=%27%23ff488b%27/%3E%3C/svg%3E">
+  <link rel="preload" href="fonts/switzer-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/switzer-600.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="page.css">
+  <script>document.documentElement.classList.add("js");</script>
+</head>
+<body>
+  <a class="skip" href="#playground">Skip to the live cue sheet</a>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero" id="top">
+    <div class="hero__bar">
+      <a class="mark" href="#top" aria-label="Cue, home">
+        <svg viewBox="0 0 40 28" width="40" height="28" aria-hidden="true">
+          <rect x="1" y="4" width="14" height="20" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+          <rect x="25" y="4" width="14" height="20" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+          <circle cx="20" cy="14" r="3" fill="#ff488b"/>
+        </svg>
+        <span>Cue</span>
+      </a>
+      <a class="hero__signin" href="app.html#s1">Log in</a>
+    </div>
+
+    <div class="hero__column">
+      <h1>Draw the ends.<br>Say the middle.</h1>
+      <p class="hero__lead">Cue generates the sixteen frames between a start drawing and an end drawing. One optional English sentence sets the order of the motion.</p>
+      <div class="hero__actions">
+        <a class="btn btn--accent" href="app.html#s2">Open the studio</a>
+        <a class="textlink" href="#how">How a plan is made <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+
+    <!-- The live thing: a working cue sheet. Type a sentence; the plan and the 16 frames follow. -->
+    <section class="play" id="playground" aria-labelledby="play-title">
+      <h2 class="visually-hidden" id="play-title">Try a sentence</h2>
+      <div class="cuesheet" data-ui data-playground>
+        <div class="cs__instruction">
+          <label class="cs__label" for="cs-text">Describe the motion <span class="cs__opt">(optional)</span></label>
+          <textarea id="cs-text" rows="3" spellcheck="false" aria-describedby="cs-help">First move the eyes to the left, then slowly turn the head, and begin smiling near the end.</textarea>
+          <p class="cs__help" id="cs-help">Say the order in English. Leave it empty and Cue moves everything together.</p>
+          <div class="cs__chips" role="group" aria-label="Example sentences">
+            <button type="button" class="chip" data-example="0">Eyes, then head, then smile</button>
+            <button type="button" class="chip" data-example="1">All at once</button>
+            <button type="button" class="chip" data-example="2">With a wave</button>
+            <button type="button" class="chip" data-example="reject">Turn right</button>
+          </div>
+        </div>
+
+        <div class="cs__stage">
+          <div class="stage" data-stage aria-live="off">
+            <div class="stage__layer is-shown" data-layer="a"></div>
+            <div class="stage__layer" data-layer="b"></div>
+            <span class="stage__tag" data-stage-tag>Your start drawing</span>
+          </div>
+          <div class="transport">
+            <button type="button" class="tbtn" data-act="prev" aria-label="Previous frame"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 5 8l5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <button type="button" class="tbtn tbtn--play" data-act="play" aria-label="Play"><svg class="i-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.2v9.6L12.6 8z" fill="currentColor"/></svg><svg class="i-pause" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 3h2.6v10H4.5zM8.9 3h2.6v10H8.9z" fill="currentColor"/></svg></button>
+            <button type="button" class="tbtn" data-act="next" aria-label="Next frame"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m6 3 5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <span class="transport__count" data-count>Frame 1 of 16</span>
+            <label class="toggle"><input type="checkbox" data-onion checked> Onion skin</label>
+          </div>
+        </div>
+
+        <div class="cs__plan">
+          <div class="plan__head">
+            <span class="plan__title">Plan</span>
+            <span class="plan__note" data-plan-note>Order shown, not exact timing</span>
+          </div>
+          <div class="plan__grid" data-plan aria-hidden="true"></div>
+          <ol class="plan__list" data-plan-list aria-label="Plan in reading order"></ol>
+          <div class="plan__added" data-plan-added></div>
+        </div>
+
+        <div class="cs__strip">
+          <div class="strip" data-strip role="listbox" aria-label="Sixteen frames"></div>
+        </div>
+      </div>
+    </section>
+  </header>
+
+  <main>
+    <!-- ============ HOW IT WORKS (pinned fragment) ============ -->
+    <section class="how" id="how" aria-labelledby="how-title">
+      <div class="how__text">
+        <h2 id="how-title" class="h-sec" data-reveal>From two drawings to a clip</h2>
+        <div class="how__step" data-how="0">
+          <p class="how__line">Put down the first and the last drawing.</p>
+          <p class="how__sub">Two images, shown at 8:5. Order is spatial: start on the left, end on the right, and you can swap them.</p>
+        </div>
+        <div class="how__step" data-how="1">
+          <p class="how__line">Then say the order in English.</p>
+          <p class="how__sub">Cue turns the sentence into a cue sheet you can read before anything is generated, or tells you why it can't.</p>
+        </div>
+        <div class="how__step" data-how="2">
+          <p class="how__line">Approve the plan. Cue draws the rest.</p>
+          <p class="how__sub">Sixteen frames, with your two drawings as the first and the last. You watch it step by step and export an MP4.</p>
+        </div>
+      </div>
+      <div class="how__stage">
+        <div class="how__sticky">
+          <div class="howui" data-ui data-howui data-state="0">
+            <!-- state 0: keyframes -->
+            <div class="howui__pane" data-pane="0">
+              <div class="kf">
+                <figure class="kf__slot"><figcaption>Start drawing</figcaption><div class="kf__img" data-draw="start"></div><span class="kf__file">start_front.png · 1280 × 800</span></figure>
+                <div class="kf__link" aria-hidden="true"><span></span><button type="button" class="kf__swap" tabindex="-1" aria-label="Swap drawings"><svg viewBox="0 0 16 16"><path d="M3 5h9l-2.5-2.5M13 11H4l2.5 2.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span></span></div>
+                <figure class="kf__slot"><figcaption>End drawing</figcaption><div class="kf__img" data-draw="end"></div><span class="kf__file">end_left_smile.png · 1280 × 800</span></figure>
+              </div>
+              <div class="howui__foot"><span class="pill pill--pos">Both drawings ready</span><span class="fakebtn">Continue to motion</span></div>
+            </div>
+            <!-- state 1: plan -->
+            <div class="howui__pane" data-pane="1">
+              <p class="howui__quote">“First move the eyes to the left, then slowly turn the head, and begin smiling near the end.”</p>
+              <div class="miniplan" data-miniplan></div>
+              <label class="howui__approve"><span class="fakecheck" aria-hidden="true"></span> This plan is correct</label>
+              <div class="howui__foot"><span class="howui__hint">Plan approved · 3 steps</span><span class="fakebtn fakebtn--dark">Generate animation</span></div>
+            </div>
+            <!-- state 2: result -->
+            <div class="howui__pane" data-pane="2">
+              <div class="howui__result" data-result></div>
+              <div class="ministrip" data-ministrip></div>
+              <div class="howui__foot"><span class="pill pill--pos">Done · 16 frames</span><span class="fakebtn fakebtn--dark">Download MP4</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SHOWCASE (dark row) ============ -->
+    <section class="show" aria-labelledby="show-title">
+      <h2 id="show-title" class="visually-hidden">Pieces of the studio</h2>
+      <div class="show__row" data-showrow tabindex="0" aria-label="Pieces of the studio, scroll sideways">
+        <article class="show__panel" data-name="The library" data-desc="Every animation you made, newest first, with its status in a word. Running jobs keep updating after you leave." data-ui>
+          <div class="sp sp--lib">
+            <div class="sp__title">Your animations <span>6</span></div>
+            <div class="lib" data-lib></div>
+          </div>
+        </article>
+        <article class="show__panel" data-name="A plan that says no" data-desc="When a sentence can't reach the end drawing, Cue explains why and offers a sentence that would. Your text stays as you wrote it." data-ui>
+          <div class="sp">
+            <div class="sp__field">Turn the head to the right and smile.</div>
+            <div class="alert"><strong>Cue couldn't turn this into a plan.</strong> The end drawing faces left, so a turn to the right can't reach it.<span class="alert__try">Try: “First move the eyes to the left, then turn the head.”</span></div>
+          </div>
+        </article>
+        <article class="show__panel" data-name="Generating, honestly" data-desc="Queued, running, done, failed or cancelled. No invented percentage and no ETA: the strip shimmers to show activity, not progress." data-ui>
+          <div class="sp">
+            <div class="sp__row"><span class="sp__strong">Eyes, then head, then smile</span><span class="pill pill--run">Running</span></div>
+            <div class="gen">
+              <div class="gen__end" data-draw="start"></div>
+              <div class="gen__ticks" data-ticks></div>
+              <div class="gen__end" data-draw="end"></div>
+            </div>
+            <div class="sp__meta"><span>Generating 16 frames</span><span>Elapsed 2 min 10 s</span></div>
+          </div>
+        </article>
+        <article class="show__panel" data-name="Frame by frame" data-desc="Sixteen discrete frames, so the player steps one at a time. The first and the last are marked as yours." data-ui>
+          <div class="sp">
+            <div class="player" data-draw="mid"></div>
+            <div class="scrub" data-scrub></div>
+            <div class="sp__meta"><span>Frame 9 of 16</span><span>Space plays · ← → step</span></div>
+          </div>
+        </article>
+        <article class="show__panel" data-name="What was used" data-desc="The sentence, the plan, the model version and the seed stay with every result, so a clip can be explained later." data-ui>
+          <div class="sp">
+            <dl class="kv">
+              <div><dt>Instruction</dt><dd>First move the eyes to the left, then slowly turn the head…</dd></div>
+              <div><dt>Plan</dt><dd>3 steps · gaze, head, expression</dd></div>
+              <div><dt>Model</dt><dd class="num">cue-ib 0.1-dev</dd></div>
+              <div><dt>Seed</dt><dd class="num">48213</dd></div>
+              <div><dt>Generation</dt><dd class="num">3 min 42 s</dd></div>
+              <div><dt>File</dt><dd class="num">512 × 320 · 16 frames · 184 KB</dd></div>
+            </dl>
+          </div>
+        </article>
+        <article class="show__panel" data-name="Uploads that explain" data-desc="A slot that refuses a file says what was wrong and what to do, in place, without clearing the other drawing." data-ui>
+          <div class="sp">
+            <div class="slot slot--err">
+              <span class="slot__label">End drawing</span>
+              <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 8v5m0 3.2v.3M10.3 3.9 2.6 17.3A2 2 0 0 0 4.3 20.3h15.4a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+              <p><strong>sketch.heic</strong> isn't a PNG or JPEG.</p>
+              <p class="slot__fix">Export it as PNG and drop it here again.</p>
+            </div>
+          </div>
+        </article>
+      </div>
+      <div class="show__caption" aria-live="polite">
+        <p class="show__name" data-showname>The library</p>
+        <p class="show__desc" data-showdesc>Every animation you made, newest first, with its status in a word. Running jobs keep updating after you leave.</p>
+      </div>
+    </section>
+
+    <!-- ============ HISTORY (staggered fragment cells, with real pictures) ============ -->
+    <section class="hist" aria-labelledby="hist-title">
+      <h2 id="hist-title" class="h-big" data-reveal>Inbetweening, since 1833</h2>
+      <div class="hist__band" aria-hidden="true">
+        <div class="hist__drift">
+          <img src="assets/zoetrope-strip-dancers.jpg" width="4000" height="470" alt="">
+        </div>
+      </div>
+      <div class="hist__grid">
+        <article class="cell cell--txt-top" data-reveal>
+          <div class="cell__txt"><h3>A disc of in-between poses</h3><p>Phenakistiscope discs, from the 1830s, put twelve drawings round a wheel. Spun behind slits, the in-between poses became one movement.</p></div>
+          <img class="cell__pic" src="assets/phenakistiscope-disc-dancing-man-simon.webp" width="1024" height="1014" loading="lazy" alt="A hand-coloured phenakistiscope disc with a dancing figure drawn in twelve poses around the rim.">
+        </article>
+        <article class="cell cell--pic-top" data-reveal>
+          <img class="cell__pic" src="assets/plate-number-57-walking-turning.webp" width="1024" height="645" loading="lazy" alt="Muybridge plate: a woman carrying a basket on her head, walking and turning, photographed in three rows of frames.">
+          <div class="cell__txt"><h3>One motion, recorded under control</h3><p>Muybridge's plates from 1887 photographed one movement at a time against a fixed backdrop. Cue's dataset plans the same thing: short controlled recordings, then a drawing for every frame.</p></div>
+        </article>
+        <article class="cell cell--txt-top" data-reveal>
+          <div class="cell__txt"><h3>Motion as a study</h3><p>Stanford's 1882 book printed the horse's gait frame by frame to settle how it really moves. Measuring motion is older than the cinema.</p></div>
+          <img class="cell__pic" src="assets/the-horse-in-motion-as-shown-by.jpg" width="1920" height="1314" loading="lazy" alt="Title page and frontispiece of the 1882 book The Horse in Motion, by J. D. B. Stillman.">
+        </article>
+        <article class="cell cell--pic-top" data-reveal>
+          <video class="cell__pic cell__pic--dark" data-loop muted loop playsinline preload="none" poster="assets/fantasmagorie-1908-poster.jpg" width="1049" height="576" aria-label="Émile Cohl's Fantasmagorie, 1908: white line drawings on black, transforming from one to the next."><source src="assets/fantasmagorie-1908.webm" type="video/webm"></video>
+          <div class="cell__txt"><h3>Drawn line by line</h3><p>Émile Cohl's Fantasmagorie, 1908, is chalk-white lines on black, each frame a new drawing. Cue's frames are line drawings for the same reason: the line is the character.</p></div>
+        </article>
+        <article class="cell cell--txt-top" data-reveal>
+          <div class="cell__txt"><h3>Every frame by hand</h3><p>Winsor McCay drew Gertie the Dinosaur himself, frame after frame, in 1914. The in-between work is still the slowest part of drawn animation.</p></div>
+          <img class="cell__pic" src="assets/winsor-mccay-and-gertie-the-dinosaur-original.jpg" width="1920" height="1419" loading="lazy" alt="Original ink drawing by Winsor McCay of Gertie the Dinosaur bending down beside a small man in black.">
+        </article>
+        <article class="cell cell--pic-top cell--ui" data-reveal>
+          <div class="cell__frag" data-ui><div class="mini16" data-mini16></div></div>
+          <div class="cell__txt"><h3>Now, with a sentence</h3><p>Two drawings fix the ends; they don't fix the order. One sentence says what moves first, and the plan is shown to you before a frame is made.</p></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ WHERE THE RESEARCH STANDS ============ -->
+    <section class="status" aria-labelledby="status-title">
+      <div class="status__row">
+        <div class="status__text">
+          <h2 id="status-title" class="h-sec" data-reveal>Where the research stands</h2>
+          <p class="status__lead" data-reveal>Cue is a ten-week university design project. The studio on this page is a mockup: the drawings are drawn in code and no frame here comes from a model.</p>
+        </div>
+        <div class="status__frag" data-ui data-reveal>
+          <table class="rt">
+            <caption class="visually-hidden">Ten-week roadmap</caption>
+            <thead><tr><th scope="col">Week</th><th scope="col">Work</th><th scope="col">State</th></tr></thead>
+            <tbody>
+              <tr><td class="num">1</td><td>Requirements, architecture, AI pipeline</td><td><span class="pill pill--pos">Reviewed</span></td></tr>
+              <tr class="is-now"><td class="num">2</td><td>Mockups, database design, capture protocol</td><td><span class="pill pill--run">This page</span></td></tr>
+              <tr><td class="num">3</td><td>Pilot dataset, held-out split, first baseline</td><td><span class="pill pill--neutral">Next</span></td></tr>
+              <tr><td class="num">4–6</td><td>API, database, model service, 2–3 experiments</td><td><span class="pill pill--neutral">Planned</span></td></tr>
+              <tr><td class="num">7</td><td>End-to-end: drawings and a sentence in, frames out</td><td><span class="pill pill--neutral">Planned</span></td></tr>
+              <tr><td class="num">8–10</td><td>Deployment, tests, held-out evaluation</td><td><span class="pill pill--neutral">Planned</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="status__row status__row--flip">
+        <div class="status__frag status__frag--figs" data-ui data-reveal>
+          <dl class="figs">
+            <div><dt>Clips, long-term target</dt><dd>~1,000</dd></div>
+            <div><dt>Seconds per clip</dt><dd>~10</dd></div>
+            <div><dt>Frames sampled per second</dt><dd>~15</dd></div>
+            <div><dt>Real ↔ drawing frame pairs, at most</dt><dd>150,000</dd></div>
+          </dl>
+        </div>
+        <div class="status__text">
+          <h3 class="h-sub" data-reveal>A dataset that starts small</h3>
+          <p data-reveal>A pilot comes first. Splits are made by video and by person, so no one's frames sit in both training and test. Adjacent frames are close to identical; 150,000 pairs are not 150,000 independent samples.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CTA: a sentence with a blank ============ -->
+    <section class="cta" aria-labelledby="cta-title">
+      <h2 id="cta-title" class="visually-hidden">Write your own sentence</h2>
+      <form class="cta__form" data-ctaform>
+        <p class="cta__sentence">
+          <span>In between,</span>
+          <label class="visually-hidden" for="cta-input">Your motion sentence</label>
+          <input id="cta-input" type="text" autocomplete="off" placeholder="the eyes go left, then the head turns" maxlength="140">
+          <button type="submit" class="cta__go">plan it.</button>
+        </p>
+        <p class="cta__after">Your sentence goes into the cue sheet at the top of the page and the sixteen frames are redrawn. Nothing leaves your browser.</p>
+      </form>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER (tiles) ============ -->
+  <footer class="foot">
+    <div class="foot__tile foot__statement">
+      <p>A language-guided drawing inbetweening project, built as a university AI engineering design course.</p>
+      <p class="credits">Pictures and film: <a href="https://www.rawpixel.com/image/10050326/photo-image-animal-face-person">“Plate Number 57. Walking turning”</a>, Eadweard Muybridge, <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a>, via rawpixel; <a href="https://www.rawpixel.com/image/8845904/phenakistiscope-disc-with-dancing-man">“Phenakistiscope Disc Dancing Man, Simon”</a>, <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a>, via rawpixel; <a href="https://commons.wikimedia.org/wiki/File:Fantasmagorie_(1908).webm">“Fantasmagorie”</a> (film, 1908, excerpt), Émile Cohl, public domain, via Wikimedia Commons; <a href="https://commons.wikimedia.org/wiki/File:Winsor_McCay_and_Gertie_the_Dinosaur_(original_art).jpg">“Winsor McCay and Gertie the Dinosaur (original art)”</a>, public domain, via Wikimedia Commons; “The horse in motion as shown by instantaneous photography”, J. D. B. Stillman, 1882, <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a>, via Openverse; “Zoetrope Strip, Dancers”, c. 1860, <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a>, via Openverse.</p>
+    </div>
+    <nav class="foot__tile foot__nav" aria-label="Footer">
+      <ul>
+        <li><a href="app.html#s2">Studio mockup</a></li>
+        <li><a href="../../../README.md">Research plan</a></li>
+        <li><a href="../../dataset/DATASET_CARD.md">Dataset card</a></li>
+        <li><a href="../README.md">Earlier design studies</a></li>
+      </ul>
+    </nav>
+    <div class="foot__tile foot__place">
+      <p>Elazığ, Türkiye</p>
+      <p class="foot__time"><span data-clock>—</span> local time</p>
+    </div>
+    <div class="foot__tile foot__repo">
+      <p>Source</p>
+      <a href="https://github.com/miclaldogan/language-guided-drawing-inbetweening">github.com/miclaldogan/<wbr>language-guided-drawing-inbetweening</a>
+    </div>
+    <div class="foot__tile foot__word" aria-hidden="true"><span>Cue</span></div>
+    <a class="foot__tile foot__go" href="app.html#s2">
+      <span>Open the studio</span>
+      <svg viewBox="0 0 48 48" width="48" height="48" aria-hidden="true"><path d="M10 38 38 10M16 10h22v22" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="square"/></svg>
+    </a>
+  </footer>
+
+  <script src="cue.js"></script>
+  <script src="page.js"></script>
+</body>
+</html>
